@@ -1,0 +1,112 @@
+const constants = {
+  INPUT_FIELDS: {
+    NAME: {
+      labelProps: {
+        htmlFor: "title",
+      },
+      labelText: "Título",
+      inputProps: {
+        id: "title",
+        name: "title",
+        placeholder: "Título de la obra",
+        type: "text",
+        ["aria-describedby"]: "ntitleame-helper",
+      },
+      messageProps: {
+        id: "title-helper",
+      },
+    },
+    REFERENCE: {
+      labelProps: {
+        htmlFor: "reference",
+      },
+      labelText: "Referencia",
+      inputProps: {
+        id: "reference",
+        name: "reference",
+        placeholder: "Referencia de la obra",
+        type: "text",
+        ["aria-describedby"]: "reference-helper",
+      },
+      messageProps: {
+        id: "reference-helper",
+      },
+    },
+    WIDTH: {
+      labelProps: {
+        htmlFor: "width",
+      },
+      labelText: "Ancho",
+      inputProps: {
+        id: "width",
+        name: "width",
+        placeholder: "Ancho de la obra",
+        type: "number",
+        ["aria-describedby"]: "width-helper",
+      },
+      messageProps: {
+        id: "width-helper",
+      },
+    },
+    HEIGHT: {
+      labelProps: {
+        htmlFor: "height",
+      },
+      labelText: "Alto",
+      inputProps: {
+        id: "height",
+        name: "height",
+        placeholder: "Alto de la obra",
+        type: "number",
+        ["aria-describedby"]: "height-helper",
+      },
+      messageProps: {
+        id: "height-helper",
+      },
+    },
+  },
+
+  SELECT_FIELDS: {
+    ARTIST: {
+      labelText: "Artista",
+      name: "artistId",
+      placeholder: "Artista de la obra",
+    },
+    SUPPORT: {
+      labelText: "Soporte",
+      name: "supportId",
+      placeholder: "Soporte de la obra",
+    },
+    COLOR: {
+      labelText: "Color",
+      name: "colorId",
+      placeholder: "Color de la obra",
+    },
+    STYLE: {
+      labelText: "Estilo",
+      name: "styleId",
+      placeholder: "Estilo de la obra",
+    },
+    FINISH: {
+      labelText: "Acabado",
+      name: "finishId",
+      placeholder: "Acabado de la obra",
+    },
+    FORMAT: {
+      labelText: "Formato",
+      name: "formatId",
+      placeholder: "Formato de la obra",
+    },
+  },
+  BUTTON_PROPS: {
+    SUBMIT: {
+      fullWidth: true,
+      label: "Register",
+      type: "submit",
+    },
+    SUBMIT_LABEL_CREATE: "Crear",
+    SUBMIT_LABEL_UPDATE: "Actualizar",
+  },
+} as const;
+
+export default constants;

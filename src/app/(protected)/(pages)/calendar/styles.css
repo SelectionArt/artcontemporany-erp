@@ -1,0 +1,7 @@
+.fc-theme-standard .fc-scrollgrid {
+  border-left-width: 0px;
+}
+
+.fc a[data-navlink]:hover {
+  text-decoration: none;
+}
