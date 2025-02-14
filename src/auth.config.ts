@@ -1,6 +1,5 @@
 // Vendors
 import { CredentialsSignin } from "next-auth";
-import bcryptjs from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
@@ -9,6 +8,8 @@ import type { NextAuthConfig } from "next-auth";
 import { prisma } from "@/lib/prisma";
 // Schemas
 import { loginSchema } from "@/app/(auth)/(pages)/login/schemas/login.schema";
+
+import { comparePassword } from "@/test";
 
 class CustomAuthError extends CredentialsSignin {
   constructor(code: string) {
@@ -35,7 +36,7 @@ export default {
           throw new CustomAuthError("Invalid credentials");
         }
 
-        const passwordMatch = await bcryptjs.compare(password, user.password);
+        const passwordMatch = await comparePassword(password, user.password);
 
         if (!passwordMatch) {
           throw new CustomAuthError("Invalid credentials");
