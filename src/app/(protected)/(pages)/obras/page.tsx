@@ -42,3 +42,4 @@ const ArtworksPage = async () => {
 };
 
 export default ArtworksPage;
+// amarillo 22 azul 23 blanco 13 gris 5 marron 21 naranja 4 negro 39 neutro 3 oro 7 plata 2 purpura 0 rojo 13 rosa 3 verde 17

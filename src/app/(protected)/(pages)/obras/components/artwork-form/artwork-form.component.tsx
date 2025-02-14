@@ -168,7 +168,13 @@ const ArtworkForm = ({
                   <SelectContent>
                     {colors.map((color) => (
                       <SelectItem key={color.id} value={color.id}>
-                        {color.name}
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="h-4 w-4 rounded-full"
+                            style={{ backgroundColor: color.hex }}
+                          />
+                          <span>{color.name}</span>
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>

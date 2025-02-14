@@ -20,6 +20,8 @@ const createColor = async ({
   values,
 }: CreateColorProps): Promise<CreateColorReturn> => {
   const validatedFields = colorSchema.safeParse(values);
+  console.log("validatedFields", validatedFields);
+  console.log("validatedFields", validatedFields.data);
 
   if (!validatedFields.success) {
     return { error: "Campos inválidos. Por favor, revisa los datos" };
