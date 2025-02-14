@@ -17,7 +17,7 @@ import constants from "./constants/new-password-form.constants";
 // Hooks
 import { NewPasswordHook } from "../../hooks/new-password.hook";
 
-const NewPasswordForm = (): React.ReactElement => {
+const NewPasswordForm = () => {
   const {
     alert,
     form,

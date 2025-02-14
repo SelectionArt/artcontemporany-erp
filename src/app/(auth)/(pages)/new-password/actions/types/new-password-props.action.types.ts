@@ -1,7 +1,7 @@
 // Types
-import { NewPasswordFormValuesType } from "../../schemas/types/new-password.schema.types";
+import { NewPasswordSchema } from "../../schemas/types/new-password.schema.types";
 
 export type NewPasswordActionPropsType = {
-  values: NewPasswordFormValuesType;
+  values: NewPasswordSchema;
   token: string | null;
 };

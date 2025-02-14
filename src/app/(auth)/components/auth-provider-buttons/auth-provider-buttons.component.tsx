@@ -8,7 +8,7 @@ import { AuthProviderButtonsHook } from "./hooks/auth-provider-buttons.hook";
 // Icons
 import { LoaderCircle } from "lucide-react";
 
-const AuthProviderButtons = (): React.ReactElement => {
+const AuthProviderButtons = () => {
   const { handleButtonClick, loading } = AuthProviderButtonsHook();
 
   return (

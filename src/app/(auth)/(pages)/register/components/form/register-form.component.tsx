@@ -17,7 +17,7 @@ import constants from "./constants/register-form.constants";
 // Hooks
 import { RegisterHook } from "../../hooks/register.hook";
 
-const RegisterForm = (): React.ReactElement => {
+const RegisterForm = () => {
   const {
     alert,
     form,

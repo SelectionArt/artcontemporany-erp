@@ -7,7 +7,7 @@ import constants from "./constants/content.constants";
 // Hooks
 import { VerificationHook } from "../../hooks/verification.hook";
 
-const Content = (): React.ReactElement => {
+const Content = () => {
   const { alert, loading } = VerificationHook();
 
   return (
