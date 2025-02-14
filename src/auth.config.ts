@@ -1,3 +1,4 @@
+export const config = { runtime: "nodejs" };
 // Vendors
 import { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
