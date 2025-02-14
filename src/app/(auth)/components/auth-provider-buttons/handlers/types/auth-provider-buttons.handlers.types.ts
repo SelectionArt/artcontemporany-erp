@@ -1,12 +1,12 @@
 // Types
-import { AuthStoreType } from "@/app/(auth)/stores/auth-provider/types/auth-provider.store.types";
+import { AuthStore } from "@/app/(auth)/stores/auth-provider/types/auth-provider.store.types";
 
 type AuthProviderButtonsHandlersReturn = {
   handleButtonClick: (provider: string) => void;
 };
 
 type AuthProviderButtonsHandlersProps = {
-  setLoading: AuthStoreType["setLoading"];
+  setLoading: AuthStore["setLoading"];
 };
 
 type AuthProviderButtonClick = AuthProviderButtonsHandlersProps & {
