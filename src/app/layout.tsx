@@ -1,6 +1,8 @@
 // Vendors
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 // Auth
 import { auth } from "../auth";
 // Components
@@ -42,6 +44,8 @@ async function RootLayout({
             <TooltipProvider>{children}</TooltipProvider>
           </ThemeProvider>
           <Toaster />
+          <Analytics />F
+          <SpeedInsights />
         </body>
       </html>
     </SessionProvider>
