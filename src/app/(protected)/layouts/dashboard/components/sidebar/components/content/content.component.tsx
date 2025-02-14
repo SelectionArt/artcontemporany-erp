@@ -6,7 +6,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "../../../../../../../../components/ui/collapsible";
+} from "@/components/ui/collapsible";
 import {
   SidebarContent,
   SidebarGroup,
@@ -17,7 +17,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "../../../../../../../../components/ui/sidebar";
+} from "@/components/ui/sidebar";
 // Icons
 import { ChevronRight, type LucideIcon } from "lucide-react";
 

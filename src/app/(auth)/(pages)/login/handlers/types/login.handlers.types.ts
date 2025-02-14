@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";
 // Types
-import type { AlertFormProps } from "../../../../../../components/ui/alert-form";
+import type { AlertFormProps } from "@/components/ui/alert-form";
 import type { LoginSchema } from "../../schemas/types/login.schema.types";
 
 type LoginHandlersProps = {

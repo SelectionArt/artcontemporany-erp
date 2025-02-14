@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../../../../components/ui/card";
+} from "@/components/ui/card";
 import { Content } from "./components/content/content.component";
 // Constants
 import constants from "./constants/logout.constants";

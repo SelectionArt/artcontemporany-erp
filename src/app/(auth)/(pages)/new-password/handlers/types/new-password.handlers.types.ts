@@ -2,7 +2,7 @@
 import { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";
 // Types
-import type { AlertFormProps } from "../../../../../../components/ui/alert-form";
+import type { AlertFormProps } from "@/components/ui/alert-form";
 import type { NewPasswordSchema } from "../../schemas/types/new-password.schema.types";
 
 type NewPasswordHandlersProps = {

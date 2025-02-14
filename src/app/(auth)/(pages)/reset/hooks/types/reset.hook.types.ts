@@ -1,7 +1,7 @@
 // Vendors
 import type { UseFormReturn } from "react-hook-form";
 // Types
-import type { AlertFormProps } from "../../../../../../components/ui/alert-form";
+import type { AlertFormProps } from "@/components/ui/alert-form";
 import type { ResetSchema } from "../../schemas/types/reset.schema.types";
 
 type ResetHookReturn = {

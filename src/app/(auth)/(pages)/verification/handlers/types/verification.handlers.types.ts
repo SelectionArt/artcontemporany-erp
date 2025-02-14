@@ -1,7 +1,7 @@
 // Vendors
 import { Dispatch, SetStateAction } from "react";
 // Types
-import type { AlertFormProps } from "../../../../../../components/ui/alert-form";
+import type { AlertFormProps } from "@/components/ui/alert-form";
 
 type VerificationHandlersProps = {
   setAlert: Dispatch<SetStateAction<AlertFormProps | null>>;

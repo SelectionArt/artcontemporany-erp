@@ -1,7 +1,7 @@
 import Link from "next/link";
 // Components
-import { Avatar, AvatarFallback } from "../../../../../../components/ui/avatar";
-import { Button } from "../../../../../../components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../../../../../components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 // Icons
 import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from "lucide-react";
 // Typess

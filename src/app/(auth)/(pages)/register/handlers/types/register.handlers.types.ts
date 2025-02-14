@@ -2,7 +2,7 @@
 import { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";
 // Types
-import type { AlertFormProps } from "../../../../../../components/ui/alert-form";
+import type { AlertFormProps } from "@/components/ui/alert-form";
 import type { RegisterSchema } from "../../schemas/types/register.schema.types";
 
 type RegisterHandlersProps = {

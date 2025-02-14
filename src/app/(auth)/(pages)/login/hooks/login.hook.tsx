@@ -8,7 +8,7 @@ import { LoginHandlers } from "../handlers/login.handlers";
 // Schemas
 import { loginSchema } from "../schemas/login.schema";
 // Types
-import type { AlertFormProps } from "../../../../../components/ui/alert-form";
+import type { AlertFormProps } from "@/components/ui/alert-form";
 import type { LoginSchema } from "../schemas/types/login.schema.types";
 import type { LoginHookReturn } from "./types/login.hook.types";
 

@@ -8,7 +8,7 @@ import { NewPasswordHandlers } from "../handlers/new-password.handlers";
 // Schemas
 import { newPasswordSchema } from "../schemas/new-password.schema";
 // Types
-import type { AlertFormProps } from "../../../../../components/ui/alert-form";
+import type { AlertFormProps } from "@/components/ui/alert-form";
 import type { NewPasswordHookReturn } from "./types/new-password.hook.types";
 import type { NewPasswordSchema } from "../schemas/types/new-password.schema.types";
 

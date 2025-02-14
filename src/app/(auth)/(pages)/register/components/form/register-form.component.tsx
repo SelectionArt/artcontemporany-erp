@@ -1,8 +1,8 @@
 "use client";
 // Components
-import { AlertForm } from "../../../../../../components/ui/alert-form";
-import { ButtonLoading } from "../../../../../../components/ui/button-loading";
-import { ButtonTogglePassword } from "../../../../../../components/ui/button-toggle-password";
+import { AlertForm } from "@/components/ui/alert-form";
+import { ButtonLoading } from "@/components/ui/button-loading";
+import { ButtonTogglePassword } from "@/components/ui/button-toggle-password";
 import {
   Form,
   FormControl,
@@ -10,8 +10,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../../../../../components/ui/form";
-import { Input } from "../../../../../../components/ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 // Constants
 import constants from "./constants/register-form.constants";
 // Hooks

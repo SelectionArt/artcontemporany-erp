@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 // Handlers
 import { VerificationHandlers } from "../handlers/verification.handlers";
 // Types
-import type { AlertFormProps } from "../../../../../components/ui/alert-form";
+import type { AlertFormProps } from "@/components/ui/alert-form";
 import type { VerificationHookReturn } from "./types/verification.hook.types";
 
 const VerificationHook = (): VerificationHookReturn => {

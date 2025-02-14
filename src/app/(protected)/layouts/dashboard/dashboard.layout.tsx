@@ -1,7 +1,7 @@
 "use client";
 // Components
 import { Sidebar } from "./components/sidebar/sidebar.component";
-import { SidebarTrigger } from "../../../../components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ToggleTheme } from "./components/toggle-theme/toggle-theme.component";
 import { UserNav } from "./components/user-nav/user-nav";
 // Types

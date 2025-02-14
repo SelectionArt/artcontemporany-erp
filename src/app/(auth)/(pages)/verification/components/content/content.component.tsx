@@ -1,6 +1,6 @@
 "use client";
 // Components
-import { AlertForm } from "../../../../../../components/ui/alert-form";
+import { AlertForm } from "@/components/ui/alert-form";
 import { BeatLoader } from "react-spinners";
 // Constants
 import constants from "./constants/content.constants";

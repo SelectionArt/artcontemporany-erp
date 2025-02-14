@@ -7,7 +7,7 @@ import { RegisterHandlers } from "../handlers/register.handlers";
 // Schemas
 import { registerSchema } from "../schemas/register.schema";
 // Types
-import type { AlertFormProps } from "../../../../../components/ui/alert-form";
+import type { AlertFormProps } from "@/components/ui/alert-form";
 import type { RegisterSchema } from "../schemas/types/register.schema.types";
 import type { RegisterHookReturn } from "./types/register.hook.types";
 

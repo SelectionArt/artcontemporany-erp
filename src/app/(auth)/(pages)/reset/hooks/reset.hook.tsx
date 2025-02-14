@@ -7,7 +7,7 @@ import { ResetHandlers } from "../handlers/reset.handlers";
 // Schemas
 import { resetSchema } from "../schemas/reset.schema";
 // Types
-import type { AlertFormProps } from "../../../../../components/ui/alert-form";
+import type { AlertFormProps } from "@/components/ui/alert-form";
 import type { ResetSchema } from "../schemas/types/reset.schema.types";
 import type { ResetHookReturn } from "./types/reset.hook.types";
 

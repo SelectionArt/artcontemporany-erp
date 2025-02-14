@@ -4,12 +4,12 @@ import { SessionProvider } from "next-auth/react";
 // Auth
 import { auth } from "../auth";
 // Components
-import { Toaster } from "../components/ui/sonner";
+import { Toaster } from "@/components/ui/sonner";
 // Fonts
 import { Inter } from "next/font/google";
 // Providers
 import { ThemeProvider } from "next-themes";
-import { TooltipProvider } from "../components/ui/tooltip";
+import { TooltipProvider } from "@/components/ui/tooltip";
 // Styles
 import "./globals.css";
 

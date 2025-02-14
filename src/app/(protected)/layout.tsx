@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 // Layout
 import { DashboardLayout } from "./layouts/dashboard/dashboard.layout";
 // Providers
-import { SidebarProvider } from "../../components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 // Styles
 import "./layout.css";
 

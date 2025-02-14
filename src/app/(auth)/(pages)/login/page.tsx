@@ -1,7 +1,7 @@
 // Vendors
 import type { Metadata } from "next";
 // Components
-import { ButtonLink } from "../../../../components/ui/button-link";
+import { ButtonLink } from "@/components/ui/button-link";
 import {
   Card,
   CardContent,
@@ -9,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../../../components/ui/card";
+} from "@/components/ui/card";
 import { LoginForm } from "./components/form/login-form.component";
 // Constants
 import constants from "./constants/login.constants";
