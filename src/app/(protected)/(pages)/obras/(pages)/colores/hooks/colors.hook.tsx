@@ -57,7 +57,7 @@ const ColorsHook = ({ initialData }: ColorsHookProps): ColorsHookReturn => {
     setSelectedRows,
   });
 
-  const columns = getColumnsConfig<Color>({ handleDelete, handleEdit });
+  const columns = getColumnsConfig({ handleDelete, handleEdit });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,
   });
