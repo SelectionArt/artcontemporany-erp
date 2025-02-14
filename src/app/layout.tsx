@@ -30,11 +30,7 @@ async function RootLayout({
   const session = await auth();
 
   return (
-    <SessionProvider
-      baseUrl="https://artcontemporany-erp.vercel.app"
-      basePath="/next"
-      session={session}
-    >
+    <SessionProvider session={session}>
       <html lang="en" suppressHydrationWarning>
         <body className={`flex min-h-dvh antialiased ${inter.className}`}>
           <ThemeProvider
