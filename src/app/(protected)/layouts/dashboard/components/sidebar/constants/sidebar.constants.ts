@@ -100,11 +100,6 @@ const ITEMS = {
       ],
     },
     {
-      title: "Calendar",
-      url: "/calendar",
-      icon: Calendar,
-    },
-    {
       title: "Tarifas",
       url: "#",
       icon: ChartCandlestick,
