@@ -129,7 +129,6 @@ const submitHandlerCreate = async ({
   values,
 }: SubmitHandlerCreateProps): Promise<void> => {
   setLoading(true);
-  console.log("values", values);
 
   try {
     const { color, error, success } = await createColor({ values });
