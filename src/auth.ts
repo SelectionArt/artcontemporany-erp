@@ -1,3 +1,4 @@
+export const config = { runtime: "nodejs" };
 // Vendors
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
@@ -42,11 +43,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return true;
       }
 
-      const twoFactorConfirmation = await prisma.twoFactorConfirmation.findUnique({
-        where: {
-          userId: existingUser.id,
-        },
-      });
+      const twoFactorConfirmation =
+        await prisma.twoFactorConfirmation.findUnique({
+          where: {
+            userId: existingUser.id,
+          },
+        });
 
       if (!twoFactorConfirmation) {
         return false;
