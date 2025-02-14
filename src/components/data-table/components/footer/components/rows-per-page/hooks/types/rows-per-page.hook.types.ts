@@ -6,7 +6,7 @@ type RowsPerPageHookProps<TData> = {
   table: Table<TData>;
 };
 
-type RowsPerPageHookReturn<TData> = RowsPerPageHandlersReturn & {
+type RowsPerPageHookReturn = RowsPerPageHandlersReturn & {
   pageSize: string;
 };
 

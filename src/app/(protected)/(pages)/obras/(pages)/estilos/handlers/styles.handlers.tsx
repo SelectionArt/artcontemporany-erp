@@ -67,9 +67,12 @@ const openChangeAlertDialogHandler = ({
 }: OpenChangeAlertDialogHandlerProps): void => {
   setOpenAlert(open);
 
-  if (!open) {
-    selectedRow && setSelectedRow(null);
-    selectedRows.length && setSelectedRows([]);
+  if (!open && selectedRow) {
+    setSelectedRow(null);
+  }
+
+  if (!open && selectedRows.length) {
+    setSelectedRows([]);
   }
 };
 
@@ -81,8 +84,6 @@ const openChangeDialogHandler = ({
   setSelectedRow,
 }: OpenChangeDialogHandlerProps): void => {
   setOpenDialog(open);
-
-  console.log("openChangeDialogHandler", open, selectedRow);
 
   if (!open && selectedRow) {
     form.reset();

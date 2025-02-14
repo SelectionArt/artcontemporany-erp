@@ -8,7 +8,7 @@ import { PaginationHandlers } from "../handlers/pagination.handlers";
 
 const PaginationHook = <TData>({
   table,
-}: PaginationHookProps<TData>): PaginationHookReturn<TData> => {
+}: PaginationHookProps<TData>): PaginationHookReturn => {
   const disabledFirstPage = !table.getCanPreviousPage();
   const disabledLastPage = !table.getCanNextPage();
   const disabledNextPage = !table.getCanNextPage();

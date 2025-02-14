@@ -6,7 +6,7 @@ type PaginationHookProps<TData> = {
   table: Table<TData>;
 };
 
-type PaginationHookReturn<TData> = PaginationHandlersReturn & {
+type PaginationHookReturn = PaginationHandlersReturn & {
   disabledFirstPage: boolean;
   disabledLastPage: boolean;
   disabledNextPage: boolean;

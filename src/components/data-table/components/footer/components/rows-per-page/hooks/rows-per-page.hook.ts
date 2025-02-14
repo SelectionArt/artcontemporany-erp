@@ -8,7 +8,7 @@ import { RowsPerPageHandlers } from "../handlers/rows-per-page.handlers";
 
 const RowsPerPageHook = <TData>({
   table,
-}: RowsPerPageHookProps<TData>): RowsPerPageHookReturn<TData> => {
+}: RowsPerPageHookProps<TData>): RowsPerPageHookReturn => {
   const pageSize = table.getState().pagination.pageSize.toString();
 
   const { handleValueChange } = RowsPerPageHandlers<TData>({ table });
