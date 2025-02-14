@@ -57,7 +57,7 @@ const FormatsHook = ({ initialData }: FormatsHookProps): FormatsHookReturn => {
     setSelectedRows,
   });
 
-  const columns = getColumnsConfig<Format>({ handleDelete, handleEdit });
+  const columns = getColumnsConfig({ handleDelete, handleEdit });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,
   });

@@ -1,5 +1,5 @@
 // Actions
-import { fetchArtists } from "../artistas/actions/artists.actions";
+import { fetchArtists } from "./(pages)/artistas/actions/artists.actions";
 import { fetchArtworks } from "./actions/artworks.actions";
 import { fetchColors } from "./(pages)/colores/actions/colors.actions";
 import { fetchFinishes } from "./(pages)/acabados/actions/finishes.actions";

@@ -1,6 +1,6 @@
 "use server";
 // Libs
-import { prisma } from "../../../../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 // Schemas
 import { finishSchema } from "../schemas/finish.schema";
 // Types
@@ -25,11 +25,9 @@ const createFinish = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  const { name } = validatedFields.data;
-
   try {
     const newFinish = await prisma.finish.create({
-      data: { name },
+      data: validatedFields.data,
     });
 
     return { success: "Acabado creado con éxito", finish: newFinish };
@@ -95,12 +93,10 @@ const updateFinish = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  const { name } = validatedFields.data;
-
   try {
     const updatedFinish = await prisma.finish.update({
       where: { id },
-      data: { name },
+      data: validatedFields.data,
     });
 
     return { success: "Acabado actualizado con éxito", finish: updatedFinish };

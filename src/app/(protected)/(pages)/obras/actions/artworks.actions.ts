@@ -1,6 +1,6 @@
 "use server";
 // Libs
-import { prisma } from "../../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 // Schemas
 import { artworkSchema } from "../schemas/artwork.schema";
 // Types

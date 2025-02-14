@@ -2,7 +2,7 @@
 // Vendors
 import bcrypt from "bcryptjs";
 // Libs
-import { prisma } from "../../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 // Schemas
 import { newPasswordSchema } from "../schemas/new-password.schema";
 // Types

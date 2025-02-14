@@ -1,7 +1,7 @@
 // Vendors
 import { v4 as uuidv4 } from "uuid";
 // Libs
-import { prisma } from "../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 const generatePasswordResetToken = async (email: string) => {
   const token = uuidv4();

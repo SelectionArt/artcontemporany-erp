@@ -1,9 +1,9 @@
 "use client";
 // Components
-import { AlertDialogWrapper } from "../../../../components/alert-dialog-wrapper/alert-dialog-wrapper.component";
+import { AlertDialogWrapper } from "../../../../../../components/alert-dialog-wrapper/alert-dialog-wrapper.component";
 import { ArtistForm } from "./components/artist-form/artist-form.component";
-import { DataTable } from "../../../../components/data-table/data-table.component";
-import { DialogWrapper } from "../../../../components/dialog-wrapper/dialog-wrapper.component";
+import { DataTable } from "@/components/data-table/data-table.component";
+import { DialogWrapper } from "../../../../../../components/dialog-wrapper/dialog-wrapper.component";
 // Hooks
 import { ArtistsHook } from "./hooks/artists.hook";
 // Types

@@ -1,6 +1,6 @@
 "use server";
 // Libs
-import { prisma } from "../../../../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 // Schemas
 import { supportSchema } from "../schemas/support.schema";
 // Types
@@ -25,11 +25,9 @@ const createSupport = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  const { name } = validatedFields.data;
-
   try {
     const newSupport = await prisma.support.create({
-      data: { name },
+      data: validatedFields.data,
     });
 
     return { success: "Soporte creado con éxito", support: newSupport };
@@ -95,12 +93,10 @@ const updateSupport = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  const { name } = validatedFields.data;
-
   try {
     const updatedSupport = await prisma.support.update({
       where: { id },
-      data: { name },
+      data: validatedFields.data,
     });
 
     return {

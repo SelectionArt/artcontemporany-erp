@@ -2,7 +2,7 @@
 // Components
 import { AlertDialogWrapper } from "../../../../../../components/alert-dialog-wrapper/alert-dialog-wrapper.component";
 import { FinishForm } from "./components/finish-form/finish-form.component";
-import { DataTable } from "../../../../../../components/data-table/data-table.component";
+import { DataTable } from "@/components/data-table/data-table.component";
 import { DialogWrapper } from "../../../../../../components/dialog-wrapper/dialog-wrapper.component";
 // Hooks
 import { FinishesHook } from "./hooks/finishes.hook";

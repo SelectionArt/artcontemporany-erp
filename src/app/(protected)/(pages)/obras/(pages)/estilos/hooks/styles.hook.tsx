@@ -57,7 +57,7 @@ const StylesHook = ({ initialData }: StylesHookProps): StylesHookReturn => {
     setSelectedRows,
   });
 
-  const columns = getColumnsConfig<Style>({ handleDelete, handleEdit });
+  const columns = getColumnsConfig({ handleDelete, handleEdit });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,
   });

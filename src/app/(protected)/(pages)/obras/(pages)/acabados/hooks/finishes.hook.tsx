@@ -59,7 +59,7 @@ const FinishesHook = ({
     setSelectedRows,
   });
 
-  const columns = getColumnsConfig<Finish>({ handleDelete, handleEdit });
+  const columns = getColumnsConfig({ handleDelete, handleEdit });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,
   });

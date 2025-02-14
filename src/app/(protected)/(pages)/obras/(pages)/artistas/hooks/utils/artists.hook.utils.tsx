@@ -1,11 +1,12 @@
 // Components
-import { RowActions } from "../../../../../../components/data-table/components/row-actions/row-actions.component";
-import { SelectAllCheckbox } from "../../../../../../components/data-table/components/select-all-checkbox/select-all-checkbox.component";
-import { SelectRowCheckbox } from "../../../../../../components/data-table/components/select-row-checkbox/select-row-checkbox.component";
-import { ColumnSorter } from "../../../../../../components/data-table/components/column-sorter/column-sorter.component";
+import { RowActions } from "@/components/data-table/components/row-actions/row-actions.component";
+import { SelectAllCheckbox } from "@/components/data-table/components/select-all-checkbox/select-all-checkbox.component";
+import { SelectRowCheckbox } from "@/components/data-table/components/select-row-checkbox/select-row-checkbox.component";
+import { ColumnSorter } from "@/components/data-table/components/column-sorter/column-sorter.component";
 // Icons
 import { Ellipsis, SquarePen, Trash2 } from "lucide-react";
 // Types
+import type { Artist } from "../../types/artists.container.types";
 import type {
   GetColumnsConfigProps,
   GetColumnsConfigReturn,
@@ -13,10 +14,10 @@ import type {
   GetMultipleSelectActionsReturn,
 } from "./types/artists.hook.utils.types";
 
-function getColumnsConfig<TData>({
+function getColumnsConfig({
   handleDelete,
   handleEdit,
-}: GetColumnsConfigProps<TData>): GetColumnsConfigReturn<TData> {
+}: GetColumnsConfigProps<Artist>): GetColumnsConfigReturn<Artist> {
   return [
     {
       cell: ({ row }) => <SelectRowCheckbox row={row} />,

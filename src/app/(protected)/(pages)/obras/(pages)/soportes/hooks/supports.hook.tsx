@@ -59,7 +59,7 @@ const SupportsHook = ({
     setSelectedRows,
   });
 
-  const columns = getColumnsConfig<Support>({ handleDelete, handleEdit });
+  const columns = getColumnsConfig({ handleDelete, handleEdit });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,
   });

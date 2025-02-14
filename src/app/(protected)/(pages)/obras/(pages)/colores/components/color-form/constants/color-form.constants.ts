@@ -16,6 +16,22 @@ const constants = {
         id: "name-helper",
       },
     },
+    HEX: {
+      labelProps: {
+        htmlFor: "hex",
+      },
+      labelText: "Código hexadecimal",
+      inputProps: {
+        id: "hex",
+        name: "hex",
+        placeholder: "Código hexadecimal",
+        type: "text",
+        ["aria-describedby"]: "hex-helper",
+      },
+      messageProps: {
+        id: "hex-helper",
+      },
+    },
   },
   BUTTON_PROPS: {
     SUBMIT: {

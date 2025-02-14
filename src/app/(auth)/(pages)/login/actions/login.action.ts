@@ -4,7 +4,7 @@ import { AuthError } from "next-auth";
 // Auth
 import { signIn } from "../../../../../auth";
 // Libs
-import { prisma } from "../../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 // Schemas
 import { loginSchema } from "../schemas/login.schema";
 // Types

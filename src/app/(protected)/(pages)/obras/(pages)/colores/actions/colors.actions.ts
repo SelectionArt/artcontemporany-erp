@@ -1,6 +1,6 @@
 "use server";
 // Libs
-import { prisma } from "../../../../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 // Schemas
 import { colorSchema } from "../schemas/color.schema";
 // Types
@@ -25,11 +25,9 @@ const createColor = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  const { name } = validatedFields.data;
-
   try {
     const newColor = await prisma.color.create({
-      data: { name },
+      data: validatedFields.data,
     });
 
     return { success: "Color creado con éxito", color: newColor };
@@ -95,12 +93,10 @@ const updateColor = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  const { name } = validatedFields.data;
-
   try {
     const updatedColor = await prisma.color.update({
       where: { id },
-      data: { name },
+      data: validatedFields.data,
     });
 
     return { success: "Color actualizado con éxito", color: updatedColor };

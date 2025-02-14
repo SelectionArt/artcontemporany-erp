@@ -2,7 +2,7 @@
 // Vendors
 import bcryptjs from "bcryptjs";
 // Libs
-import { prisma } from "../../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 // Schemas
 import { registerSchema } from "../schemas/register.schema";
 // Types

@@ -57,7 +57,7 @@ const ArtistsHook = ({ initialData }: ArtistsHookProps): ArtistsHookReturn => {
     setSelectedRows,
   });
 
-  const columns = getColumnsConfig<Artist>({ handleDelete, handleEdit });
+  const columns = getColumnsConfig({ handleDelete, handleEdit });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,
   });

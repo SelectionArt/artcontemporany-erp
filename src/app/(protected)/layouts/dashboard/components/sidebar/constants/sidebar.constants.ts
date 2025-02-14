@@ -4,7 +4,6 @@ import {
   ChartLine,
   Home,
   Image,
-  Palette,
   Settings2,
   Settings,
 } from "lucide-react";
@@ -15,11 +14,6 @@ const ITEMS = {
       title: "Home",
       url: "/",
       icon: Home,
-    },
-    {
-      title: "Artistas",
-      url: "/artistas",
-      icon: Palette,
     },
     {
       title: "Obras",
@@ -35,6 +29,10 @@ const ITEMS = {
         {
           title: "Acabados",
           url: "/obras/acabados",
+        },
+        {
+          title: "Artistas",
+          url: "/obras/artistas",
         },
         {
           title: "Colores",

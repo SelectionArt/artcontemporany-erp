@@ -42,6 +42,27 @@ const ColorForm = ({ form, handleSubmit, label, loading }: ColorFormProps) => (
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name={constants.FIELD_PROPS.HEX.inputProps.name}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel {...constants.FIELD_PROPS.HEX.labelProps}>
+                {constants.FIELD_PROPS.HEX.labelText}
+              </FormLabel>
+              <FormControl>
+                <Input
+                  {...{
+                    ...field,
+                    ...constants.FIELD_PROPS.HEX.inputProps,
+                    disabled: loading,
+                  }}
+                />
+              </FormControl>
+              <FormMessage {...constants.FIELD_PROPS.HEX.messageProps} />
+            </FormItem>
+          )}
+        />
       </div>
       <ButtonLoading
         {...{

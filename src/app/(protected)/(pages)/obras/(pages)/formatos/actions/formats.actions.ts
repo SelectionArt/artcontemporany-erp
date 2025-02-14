@@ -1,6 +1,6 @@
 "use server";
 // Libs
-import { prisma } from "../../../../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 // Schemas
 import { formatSchema } from "../schemas/format.schema";
 // Types
@@ -25,11 +25,9 @@ const createFormat = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  const { name } = validatedFields.data;
-
   try {
     const newFormat = await prisma.format.create({
-      data: { name },
+      data: validatedFields.data,
     });
 
     return { success: "Formato creado con éxito", format: newFormat };
@@ -95,12 +93,10 @@ const updateFormat = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  const { name } = validatedFields.data;
-
   try {
     const updatedFormat = await prisma.format.update({
       where: { id },
-      data: { name },
+      data: validatedFields.data,
     });
 
     return { success: "Formato actualizado con éxito", format: updatedFormat };

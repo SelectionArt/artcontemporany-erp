@@ -1,6 +1,6 @@
 "use server";
 // Libs
-import { prisma } from "../../../../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 // Schemas
 import { styleSchema } from "../schemas/style.schema";
 // Types
@@ -25,11 +25,9 @@ const createStyle = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  const { name } = validatedFields.data;
-
   try {
     const newStyle = await prisma.style.create({
-      data: { name },
+      data: validatedFields.data,
     });
 
     return { success: "Estilo creado con éxito", style: newStyle };
@@ -95,12 +93,10 @@ const updateStyle = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  const { name } = validatedFields.data;
-
   try {
     const updatedStyle = await prisma.style.update({
       where: { id },
-      data: { name },
+      data: validatedFields.data,
     });
 
     return { success: "Estilo actualizado con éxito", style: updatedStyle };

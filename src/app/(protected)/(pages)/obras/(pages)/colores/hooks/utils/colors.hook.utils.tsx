@@ -1,11 +1,12 @@
 // Components
-import { RowActions } from "../../../../../../../../components/data-table/components/row-actions/row-actions.component";
-import { SelectAllCheckbox } from "../../../../../../../../components/data-table/components/select-all-checkbox/select-all-checkbox.component";
-import { SelectRowCheckbox } from "../../../../../../../../components/data-table/components/select-row-checkbox/select-row-checkbox.component";
-import { ColumnSorter } from "../../../../../../../../components/data-table/components/column-sorter/column-sorter.component";
+import { RowActions } from "@/components/data-table/components/row-actions/row-actions.component";
+import { SelectAllCheckbox } from "@/components/data-table/components/select-all-checkbox/select-all-checkbox.component";
+import { SelectRowCheckbox } from "@/components/data-table/components/select-row-checkbox/select-row-checkbox.component";
+import { ColumnSorter } from "@/components/data-table/components/column-sorter/column-sorter.component";
 // Icons
 import { Ellipsis, SquarePen, Trash2 } from "lucide-react";
 // Types
+import type { Color } from "../../types/colors.container.types";
 import type {
   GetColumnsConfigProps,
   GetColumnsConfigReturn,
@@ -13,10 +14,10 @@ import type {
   GetMultipleSelectActionsReturn,
 } from "./types/colors.hook.utils.types";
 
-function getColumnsConfig<TData>({
+function getColumnsConfig({
   handleDelete,
   handleEdit,
-}: GetColumnsConfigProps<TData>): GetColumnsConfigReturn<TData> {
+}: GetColumnsConfigProps<Color>): GetColumnsConfigReturn<Color> {
   return [
     {
       cell: ({ row }) => <SelectRowCheckbox row={row} />,
@@ -28,6 +29,22 @@ function getColumnsConfig<TData>({
       accessorKey: "name",
       header: ({ column }) => <ColumnSorter column={column} label="Nombre" />,
       meta: "Nombre",
+    },
+    {
+      accessorKey: "hex",
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-2">
+            <div
+              className="h-8 w-8 rounded-full"
+              style={{ backgroundColor: row.original.hex }}
+            />
+            <span>{row.original.hex}</span>
+          </div>
+        );
+      },
+      header: ({ column }) => <ColumnSorter column={column} label="Código" />,
+      meta: "Código",
     },
     {
       cell: ({ row }) => (

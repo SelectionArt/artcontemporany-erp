@@ -1,5 +1,5 @@
 // Types
-import type { Artist } from "../../../../artistas/types/artists.container.types";
+import type { Artist } from "../../../(pages)/artistas/types/artists.container.types";
 import type { Color } from "../../../(pages)/colores/types/colors.container.types";
 import type { Finish } from "../../../(pages)/acabados/types/finishes.container.types";
 import type { Format } from "../../../(pages)/formatos/types/formats.container.types";

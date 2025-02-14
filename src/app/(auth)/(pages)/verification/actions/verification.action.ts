@@ -1,6 +1,6 @@
 "use server";
 // Libs
-import { prisma } from "../../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 // Types
 import type {
   VerificationActionProps,
