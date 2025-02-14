@@ -4,7 +4,7 @@ import { LogoutHook } from "../../hooks/logout.hook";
 // Icons
 import { LoaderCircle } from "lucide-react";
 
-const Content = ():  => {
+const Content = () => {
   LogoutHook();
 
   return (
