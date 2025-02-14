@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Artistas",
-  description: "Página de gestión artistas",
+  description: "Página de artistas",
 };
 
 const ArtistsPage = async () => {
