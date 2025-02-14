@@ -16,7 +16,7 @@ async function ProtectedLayout({
   const defaultOpen = cookieStore.get("sidebar")?.value === "true";
 
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
+    <SidebarProvider defaultOpen={true}>
       <DashboardLayout>{children}</DashboardLayout>
     </SidebarProvider>
   );
