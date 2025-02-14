@@ -7,7 +7,7 @@ import { UserNav } from "./components/user-nav/user-nav";
 // Types
 import { DashboardProps } from "./types/dashboard.types";
 
-const DashboardLayout = ({ children }: DashboardProps) => {
+const DashboardLayout = ({ children, session }: DashboardProps) => {
   return (
     <div className="flex w-full flex-1">
       <Sidebar />
@@ -17,7 +17,7 @@ const DashboardLayout = ({ children }: DashboardProps) => {
           <div className="flex gap-2">
             <SidebarTrigger />
             <ToggleTheme />
-            <UserNav />
+            <UserNav session={session} />
           </div>
         </header>
 

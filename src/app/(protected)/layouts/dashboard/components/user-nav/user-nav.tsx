@@ -1,8 +1,13 @@
 // Vendors
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
+
 import Link from "next/link";
 // Components
-import { Avatar, AvatarFallback, AvatarImage } from "../../../../../../components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../../../../components/ui/avatar";
 import { Button } from "../../../../../../components/ui/button";
 import {
   DropdownMenu,
@@ -15,22 +20,23 @@ import {
 } from "../../../../../../components/ui/dropdown-menu";
 // Icons
 import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from "lucide-react";
+// Typess
+import { Session } from "next-auth";
 
-const UserNav = () => {
-  const { data: session } = useSession();
+type UserNavProps = {
+  session: Session | null;
+};
 
-  const alt = session?.user?.name ?? "User avatar";
+const UserNav = ({ session }: UserNavProps) => {
   const email = session?.user?.email;
-  const fallback = email?.charAt(0).toUpperCase();
-  const image = session?.user?.image ?? undefined;
-  const name = session?.user?.name ?? "";
+  const name = session?.user?.name;
+  const fallback = name?.charAt(0).toUpperCase();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
           <Avatar>
-            <AvatarImage src={image} alt={alt} />
             <AvatarFallback className="text-base">{fallback}</AvatarFallback>
           </Avatar>
         </Button>
@@ -39,12 +45,11 @@ const UserNav = () => {
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
-              <AvatarImage src={image} alt={alt} />
               <AvatarFallback className="rounded-lg">{fallback}</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              {name && <span className="truncate font-medium">{name}</span>}
-              <span className="truncate text-xs text-muted-foreground">
+              <span className="truncate font-medium">{name}</span>
+              <span className="text-muted-foreground truncate text-xs">
                 {email}
               </span>
             </div>

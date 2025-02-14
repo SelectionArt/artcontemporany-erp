@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 // Layout
 import { DashboardLayout } from "./layouts/dashboard/dashboard.layout";
 // Providers
@@ -10,9 +11,10 @@ async function ProtectedLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <SidebarProvider defaultOpen={true}>
-      <DashboardLayout>{children}</DashboardLayout>
+      <DashboardLayout session={session}>{children}</DashboardLayout>
     </SidebarProvider>
   );
 }
