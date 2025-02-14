@@ -1,4 +1,3 @@
-export const config = { runtime: "nodejs" };
 // Vendors
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
