@@ -31,9 +31,6 @@ const RegisterForm = () => {
     ? constants.FIELD_PROPS.PASSWORD_TYPE_VISIBLE
     : constants.FIELD_PROPS.PASSWORD_TYPE_HIDDEN;
 
-  const isSubmitting =
-    loading.status && loading.provider === constants.PROVIDER_CREDENTIALS;
-
   return (
     <Form {...form}>
       <form
@@ -54,7 +51,7 @@ const RegisterForm = () => {
                     {...{
                       ...field,
                       ...constants.FIELD_PROPS.EMAIL.inputProps,
-                      disabled: loading.status,
+                      disabled: loading,
                     }}
                   />
                 </FormControl>
@@ -76,7 +73,7 @@ const RegisterForm = () => {
                       {...{
                         ...field,
                         ...constants.FIELD_PROPS.PASSWORD.inputProps,
-                        disabled: loading.status,
+                        disabled: loading,
                         type: passwordType,
                         className: "pr-12",
                       }}
@@ -99,7 +96,7 @@ const RegisterForm = () => {
         {alert && <AlertForm {...alert} />}
 
         <ButtonLoading
-          {...{ ...constants.BUTTON_PROPS.SUBMIT, loading: isSubmitting }}
+          {...{ ...constants.BUTTON_PROPS.SUBMIT, loading: loading }}
         />
       </form>
     </Form>

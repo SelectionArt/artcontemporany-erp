@@ -2,8 +2,6 @@
 import bcryptjs from "bcryptjs";
 import { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import Github from "next-auth/providers/github";
-import Google from "next-auth/providers/google";
 import type { NextAuthConfig } from "next-auth";
 // Libs
 import { prisma } from "./lib/prisma";
@@ -43,14 +41,6 @@ export default {
 
         return user;
       },
-    }),
-    Github({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    }),
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
 } satisfies NextAuthConfig;

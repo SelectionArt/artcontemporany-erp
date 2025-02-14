@@ -16,11 +16,10 @@ const constants = {
     },
     SUBMIT: {
       fullWidth: true,
+      label: "Login",
       showLabel: false,
       type: "submit",
     },
-    SUBMIT_LABEL_DEFAULT: "Login",
-    SUBMIT_LABEL_OTP: "Confirm",
     TOGGLE_PASSWORD: {
       ["aria-label"]: "Toggle password visibility",
     },
@@ -62,24 +61,7 @@ const constants = {
     },
     PASSWORD_TYPE_HIDDEN: "password",
     PASSWORD_TYPE_VISIBLE: "text",
-    OTP: {
-      labelProps: {
-        htmlFor: "otp",
-      },
-      labelText: "One-time password",
-      inputProps: {
-        id: "otp",
-        maxLength: 6,
-        name: "otp",
-        type: "text",
-        ["aria-describedby"]: "otp-helper",
-      },
-      messageProps: {
-        id: "otp-helper",
-      },
-    },
   },
-  PROVIDER_CREDENTIALS: "credentials",
 } as const;
 
 export default constants;

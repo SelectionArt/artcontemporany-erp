@@ -1,7 +1,6 @@
 // Vendors
 import type { Metadata } from "next";
 // Components
-import { AuthProviderButtons } from "../../components/auth-provider-buttons/auth-provider-buttons.component";
 import { ButtonLink } from "../../../../components/ui/button-link";
 import {
   Card,
@@ -9,7 +8,6 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardSeparator,
   CardTitle,
 } from "../../../../components/ui/card";
 import { RegisterForm } from "./components/form/register-form.component";
@@ -29,8 +27,6 @@ const RegisterPage = () => (
     </CardHeader>
 
     <CardContent>
-      <AuthProviderButtons />
-      <CardSeparator>{constants.CARD_SEPARATOR}</CardSeparator>
       <RegisterForm />
     </CardContent>
 

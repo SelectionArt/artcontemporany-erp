@@ -15,7 +15,6 @@ import type {
 // Utils
 import { generateTwoFactorToken } from "../../../utils/token/generate-two-factor-token.util";
 import { generateVerificationToken } from "../../../utils/token/generate-verification-token.util";
-import { sendTwoFactorAuthenticationEmail } from "../../../utils/email/send-two-factor-authentication-email.util";
 import { sendVerificationTokenEmail } from "../../../utils/email/send-verification-token-email.util";
 
 const loginAction = async ({
@@ -27,7 +26,7 @@ const loginAction = async ({
     return { error: "Invalid fields" };
   }
 
-  const { email, password, otp } = validatedFields.data;
+  const { email, password } = validatedFields.data;
 
   const existingUser = await prisma.user.findUnique({
     where: {
@@ -48,59 +47,6 @@ const loginAction = async ({
     });
 
     return { success: "Confirmation email sent" };
-  }
-
-  if (existingUser.isTwoFactorEnabled && existingUser.email && !otp) {
-    const twoFactorToken = await generateTwoFactorToken(existingUser.email);
-
-    await sendTwoFactorAuthenticationEmail({
-      email: twoFactorToken.email,
-      token: twoFactorToken.token,
-    });
-
-    return { twoFactor: true };
-  }
-
-  if (existingUser.isTwoFactorEnabled && existingUser.email && otp) {
-    const twoFactorToken = await prisma.twoFactorToken.findFirst({
-      where: {
-        email: existingUser.email,
-      },
-    });
-
-    if (!twoFactorToken) {
-      return { error: "Invalid otp" };
-    }
-
-    if (twoFactorToken.token !== otp) {
-      return { error: "Invalid otp" };
-    }
-
-    const hasExpired = new Date(twoFactorToken.expires) < new Date();
-
-    if (hasExpired) {
-      return { error: "Code expired" };
-    }
-
-    await prisma.twoFactorToken.delete({
-      where: { id: twoFactorToken.id },
-    });
-
-    const existingConfirmation = await prisma.twoFactorConfirmation.findUnique({
-      where: { userId: existingUser.id },
-    });
-
-    if (existingConfirmation) {
-      await prisma.twoFactorConfirmation.delete({
-        where: { id: existingConfirmation.id },
-      });
-    }
-
-    await prisma.twoFactorConfirmation.create({
-      data: {
-        userId: existingUser.id,
-      },
-    });
   }
 
   try {

@@ -58,7 +58,6 @@ const constants = {
     PASSWORD_TYPE_HIDDEN: "password",
     PASSWORD_TYPE_VISIBLE: "text",
   },
-  PROVIDER_CREDENTIALS: "credentials",
 } as const;
 
 export default constants;

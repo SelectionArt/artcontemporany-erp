@@ -15,15 +15,14 @@ const submitHandler = async ({
   form,
   router,
   setAlert,
-  setShowTwoFactor,
   setLoading,
   values,
 }: SubmitHandlerProps): Promise<void> => {
   setAlert(null);
-  setLoading({ provider: "credentials", status: true });
+  setLoading(true);
 
   try {
-    const { error, success, twoFactor } = (await loginAction({ values })) ?? {};
+    const { error, success } = (await loginAction({ values })) ?? {};
 
     if (error) {
       setAlert({ type: "error", message: error });
@@ -37,16 +36,11 @@ const submitHandler = async ({
       return;
     }
 
-    if (twoFactor) {
-      setShowTwoFactor(true);
-      return;
-    }
-
     router.push(DEFAULT_LOGIN_REDIRECT);
   } catch {
     setAlert({ type: "error", message: "Something went wrong" });
   } finally {
-    setLoading({ provider: "credentials", status: false });
+    setLoading(false);
   }
 };
 
@@ -62,7 +56,6 @@ const LoginHandlers = ({
   router,
   setAlert,
   setShowPassword,
-  setShowTwoFactor,
   setLoading,
   showPassword,
 }: LoginHandlersProps): LoginHandlersReturn => {
@@ -72,7 +65,6 @@ const LoginHandlers = ({
         form,
         router,
         setAlert,
-        setShowTwoFactor,
         setLoading,
         values,
       }),

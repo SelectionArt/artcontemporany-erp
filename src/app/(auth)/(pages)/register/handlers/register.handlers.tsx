@@ -16,7 +16,7 @@ const submitHandler = async ({
   values,
 }: SubmitHandlerProps): Promise<void> => {
   setAlert(null);
-  setLoading({ provider: "credentials", status: true });
+  setLoading(true);
 
   try {
     const { error, success } = (await registerAction({ values })) ?? {};
@@ -32,7 +32,7 @@ const submitHandler = async ({
     setAlert({ type: "error", message: "Something went wrong" });
   } finally {
     form.reset();
-    setLoading({ provider: "credentials", status: false });
+    setLoading(false);
   }
 };
 

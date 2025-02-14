@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";
 // Types
 import type { AlertFormProps } from "../../../../../../components/ui/alert-form";
-import type { AuthStore } from "../../../../stores/auth-provider/types/auth-provider.store.types";
 import type { LoginSchema } from "../../schemas/types/login.schema.types";
 
 type LoginHandlersProps = {
@@ -12,8 +11,7 @@ type LoginHandlersProps = {
   router: ReturnType<typeof useRouter>;
   setAlert: Dispatch<SetStateAction<AlertFormProps | null>>;
   setShowPassword: Dispatch<SetStateAction<boolean>>;
-  setShowTwoFactor: Dispatch<SetStateAction<boolean>>;
-  setLoading: AuthStore["setLoading"];
+  setLoading: Dispatch<SetStateAction<boolean>>;
   showPassword: boolean;
 };
 
