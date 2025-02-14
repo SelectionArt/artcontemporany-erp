@@ -13,7 +13,6 @@ import type {
   LoginActionReturn,
 } from "./types/login.action.types";
 // Utils
-import { generateTwoFactorToken } from "../../../utils/token/generate-two-factor-token.util";
 import { generateVerificationToken } from "../../../utils/token/generate-verification-token.util";
 import { sendVerificationTokenEmail } from "../../../utils/email/send-verification-token-email.util";
 
@@ -21,7 +20,6 @@ const loginAction = async ({
   values,
 }: LoginActionProps): Promise<LoginActionReturn | undefined> => {
   const validatedFields = loginSchema.safeParse(values);
-
   if (!validatedFields.success) {
     return { error: "Invalid fields" };
   }
