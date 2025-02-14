@@ -107,26 +107,26 @@ model Artist {
 
 model Artwork {
   id        String @id @default(cuid())
-  title     String
+  title     String?
   reference String @unique
   width     Int
   height    Int
   artistId  String
-  finishId  String
-  supportId String
-  colorId   String
-  styleId   String
-  formatId  String
+  finishId  String?
+  supportId String?
+  colorId   String?
+  styleId   String?
+  formatId  String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   artist  Artist  @relation(fields: [artistId], references: [id])
-  support Support @relation(fields: [supportId], references: [id])
-  color   Color   @relation(fields: [colorId], references: [id])
-  style   Style   @relation(fields: [styleId], references: [id])
-  finish  Finish  @relation(fields: [finishId], references: [id])
-  format  Format  @relation(fields: [formatId], references: [id])
+  support Support? @relation(fields: [supportId], references: [id])
+  color   Color?   @relation(fields: [colorId], references: [id])
+  style   Style?   @relation(fields: [styleId], references: [id])
+  finish  Finish?  @relation(fields: [finishId], references: [id])
+  format  Format?  @relation(fields: [formatId], references: [id])
 }
 
 model Finish {

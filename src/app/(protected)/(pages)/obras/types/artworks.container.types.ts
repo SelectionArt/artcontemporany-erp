@@ -19,3 +19,12 @@ type ArtworksProps = {
 };
 
 export type { Artwork, ArtworksProps };
+// Cristal 37  Lienzo 37  Tablero 0
+
+//  Abstracto 63  Figurativo 10  Monocromático 0  Paisaje 1
+
+//    Acrílico 11  Acrílico con textura 21  Collage 6  Técnica Mixta 43
+
+//    Cuadrado 31  Díptico 0  Horizontal 1  Vertical 4
+
+//     Arqués 44  C.Grau 0  E.Pont 1  Ferrero 0  Guirao 0  Jeremías-Cappa 3  Konrad 0  Mar Revert 2  Marzal 0  Medina 17  Pablo Salamnca 0  Penades 0  Raúl 0  Reyes 7
