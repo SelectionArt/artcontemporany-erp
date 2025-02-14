@@ -23,11 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   callbacks: {
-    async signIn({ user, account }) {
-      if (account?.provider !== "credentials") {
-        return true;
-      }
-
+    async signIn({ user }) {
       const existingUser = await prisma.user.findUnique({
         where: {
           id: user.id,
@@ -69,13 +65,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       if (session.user) {
-        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
-      }
-
-      if (session.user) {
         session.user.name = token.name;
         session.user.email = token.email as string;
-        session.user.isOAuth = token.isOAuth as boolean;
       }
 
       return session;
@@ -95,17 +86,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return token;
       }
 
-      const existingAccount = await prisma.account.findFirst({
-        where: {
-          userId: existingUser.id,
-        },
-      });
-
-      token.isOAuth = !!existingAccount;
       token.name = existingUser.name;
       token.email = existingUser.email;
       token.role = existingUser.role;
-      token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
       return token;
     },
