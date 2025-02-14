@@ -21,6 +21,23 @@ const constants = {
     },
   },
   FIELD_PROPS: {
+    NAME: {
+      labelProps: {
+        htmlFor: "name",
+      },
+      labelText: "Name",
+      inputProps: {
+        autoComplete: "name",
+        id: "name",
+        name: "name",
+        placeholder: "John Doe",
+        type: "text",
+        ["aria-describedby"]: "name-helper",
+      },
+      messageProps: {
+        id: "name-helper",
+      },
+    },
     EMAIL: {
       labelProps: {
         htmlFor: "email",

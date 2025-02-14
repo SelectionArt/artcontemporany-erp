@@ -19,6 +19,7 @@ const RegisterHook = (): RegisterHookReturn => {
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },

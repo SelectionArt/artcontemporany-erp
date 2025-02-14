@@ -23,7 +23,7 @@ const registerAction = async ({
     return { error: "Invalid fields" };
   }
 
-  const { email, password } = validatedFields.data;
+  const { name, email, password } = validatedFields.data;
 
   const existingUser = await prisma.user.findUnique({
     where: {
@@ -39,6 +39,7 @@ const registerAction = async ({
 
   await prisma.user.create({
     data: {
+      name,
       email,
       password: hashedPassword,
     },

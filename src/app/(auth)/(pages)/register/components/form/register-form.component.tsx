@@ -40,6 +40,27 @@ const RegisterForm = () => {
         <div className="flex flex-col gap-4">
           <FormField
             control={form.control}
+            name={constants.FIELD_PROPS.NAME.inputProps.name}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel {...constants.FIELD_PROPS.NAME.labelProps}>
+                  {constants.FIELD_PROPS.NAME.labelText}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...{
+                      ...field,
+                      ...constants.FIELD_PROPS.NAME.inputProps,
+                      disabled: loading,
+                    }}
+                  />
+                </FormControl>
+                <FormMessage {...constants.FIELD_PROPS.NAME.messageProps} />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name={constants.FIELD_PROPS.EMAIL.inputProps.name}
             render={({ field }) => (
               <FormItem>
