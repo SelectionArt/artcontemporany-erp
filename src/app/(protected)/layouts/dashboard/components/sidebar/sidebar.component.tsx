@@ -11,7 +11,7 @@ import { ITEMS } from "./constants/sidebar.constants";
 const Sidebar = () => {
   return (
     <SidebarComponent collapsible="icon">
-      <Header items={ITEMS.teams} />
+      <Header />
       <Content items={ITEMS.navMain} />
       <SidebarRail />
     </SidebarComponent>
