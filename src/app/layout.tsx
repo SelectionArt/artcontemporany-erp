@@ -20,8 +20,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Next ERP",
-  description: "Generic ERP built with Next.js",
+  title: "Art Contemporany ERP",
+  description: "Art Contemporany ERP built with Next.js",
 };
 
 async function RootLayout({
@@ -44,7 +44,7 @@ async function RootLayout({
             <TooltipProvider>{children}</TooltipProvider>
           </ThemeProvider>
           <Toaster />
-          <Analytics />F
+          <Analytics />
           <SpeedInsights />
         </body>
       </html>
