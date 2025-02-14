@@ -1,3 +1,4 @@
+"use server";
 // Vendors
 import { CredentialsSignin } from "next-auth";
 import bcryptjs from "bcryptjs";
