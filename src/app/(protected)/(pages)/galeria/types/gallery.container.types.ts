@@ -1,7 +1,7 @@
-type Gallery = {};
+// type Gallery = {};
 
-type GalleryProps = {
-  gallery: Gallery;
-};
+// type GalleryProps = {
+//   gallery: Gallery;
+// };
 
-export type { Gallery, GalleryProps };
+// export type { Gallery, GalleryProps };

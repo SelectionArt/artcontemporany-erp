@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 const GalleryPage = async () => {
   // const gallery = await fetchGallery();
 
-  return <GalleryContainer gallery={gallery} />;
+  // return <GalleryContainer gallery={gallery} />;
+  return <GalleryContainer />;
 };
 
 export default GalleryPage;
