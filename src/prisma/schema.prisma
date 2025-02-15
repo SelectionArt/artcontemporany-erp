@@ -97,36 +97,47 @@ model TwoFactorConfirmation {
   @@unique([userId])
 }
 
+model Artwork {
+  id              String  @id @default(cuid())
+  title           String?
+  referenceNumber Int     @unique
+  referenceCode   String?
+  width           Int
+  height          Int
+  artistId        String
+  colorId         String?
+  finishId        String?
+  formatId        String?
+  styleId         String?
+  supportId       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  images  Image[]
+  artist  Artist   @relation(fields: [artistId], references: [id])
+  color   Color?   @relation(fields: [colorId], references: [id])
+  finish  Finish?  @relation(fields: [finishId], references: [id])
+  format  Format?  @relation(fields: [formatId], references: [id])
+  style   Style?   @relation(fields: [styleId], references: [id])
+  support Support? @relation(fields: [supportId], references: [id])
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  url       String
+  artworkId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  artwork   Artwork @relation(fields: [artworkId], references: [id])
+}
+
 model Artist {
   id        String    @id @default(cuid())
   name      String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   artworks  Artwork[]
-}
-
-model Artwork {
-  id        String @id @default(cuid())
-  title     String?
-  reference String @unique
-  width     Int
-  height    Int
-  artistId  String
-  finishId  String?
-  supportId String?
-  colorId   String?
-  styleId   String?
-  formatId  String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  artist  Artist  @relation(fields: [artistId], references: [id])
-  support Support? @relation(fields: [supportId], references: [id])
-  color   Color?   @relation(fields: [colorId], references: [id])
-  style   Style?   @relation(fields: [styleId], references: [id])
-  finish  Finish?  @relation(fields: [finishId], references: [id])
-  format  Format?  @relation(fields: [formatId], references: [id])
 }
 
 model Finish {

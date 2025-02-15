@@ -6,7 +6,22 @@ import type { Format } from "../(pages)/formatos/types/formats.container.types";
 import type { Style } from "../(pages)/estilos/types/styles.container.types";
 import type { Support } from "../(pages)/soportes/types/supports.container.types";
 
-type Artwork = Omit<PrismaArtwork, "createdAt" | "updatedAt">;
+// type Artwork = Omit<PrismaArtwork, "crFeatedAt" | "updatedAt">;
+
+type Artwork = {
+  id: string;
+  title: string;
+  referenceNumber: number;
+  referenceCode: string;
+  width: number;
+  height: number;
+  artistId: string;
+  finishId: string;
+  supportId: string;
+  colorId: string;
+  styleId: string;
+  formatId: string;
+};
 
 type ArtworksProps = {
   artists: Artist[];

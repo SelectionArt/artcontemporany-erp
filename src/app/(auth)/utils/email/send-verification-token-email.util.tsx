@@ -13,7 +13,7 @@ const sendVerificationTokenEmail = async ({
 }: SendVerificationTokenEmailPropsType): Promise<void> => {
   await resend.emails.send({
     from: "Acme <onboarding@resend.dev>",
-    to: ["delivered@resend.dev"],
+    to: email,
     subject: "Confirm your email",
     react: <VerificationTokenEmail token={token} email={email} />,
   });

@@ -62,6 +62,12 @@ function getColumnsConfig({
     },
     {
       accessorKey: "reference",
+      cell: ({ row }) => {
+        const { referenceNumber, referenceCode } = row.original;
+        return referenceCode
+          ? `${referenceNumber}-${referenceCode}`
+          : referenceNumber;
+      },
       header: ({ column }) => (
         <ColumnSorter column={column} label="Referencia" />
       ),
@@ -69,8 +75,23 @@ function getColumnsConfig({
     },
     {
       accessorKey: "colorId",
-      cell: ({ row }) =>
-        colors.find((color) => color.id === row.original.colorId)?.name,
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-2">
+            <div
+              className="h-6 w-6 rounded-full"
+              style={{
+                backgroundColor: colors.find(
+                  (color) => color.id === row.original.colorId,
+                )?.hex,
+              }}
+            />
+            <span>
+              {colors.find((color) => color.id === row.original.colorId)?.name}
+            </span>
+          </div>
+        );
+      },
       header: ({ column }) => <ColumnSorter column={column} label="Color" />,
       meta: "Color",
     },

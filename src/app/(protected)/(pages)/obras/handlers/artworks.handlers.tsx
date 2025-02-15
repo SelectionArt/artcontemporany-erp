@@ -5,6 +5,7 @@ import {
   createArtwork,
   deleteArtwork,
   deleteMultipleArtworks,
+  generateUniqueReferenceNumber,
   updateArtwork,
 } from "../actions/artworks.actions";
 // Types
@@ -24,7 +25,12 @@ import type {
   SubmitHandlerProps,
 } from "./types/artworks.handlers.types";
 
-const createHandler = ({ setOpenDialog }: CreateHandlerProps): void => {
+const createHandler = async ({
+  form,
+  setOpenDialog,
+}: CreateHandlerProps): Promise<void> => {
+  const randomReferenceNumber = await generateUniqueReferenceNumber();
+  form.setValue("referenceNumber", randomReferenceNumber);
   setOpenDialog(true);
 };
 
@@ -270,7 +276,7 @@ const ArtworksHandlers = ({
   setSelectedRows,
 }: ArtworksHandlersProps): ArtworksHandlersReturn => {
   return {
-    handleCreate: () => createHandler({ setOpenDialog }),
+    handleCreate: () => createHandler({ form, setOpenDialog }),
     handleDelete: (row) => deleteHandler({ row, setSelectedRow, setOpenAlert }),
     handleDeleteMultiple: (rows) =>
       deleteMultipleHandler({ rows, setSelectedRows, setOpenAlert }),

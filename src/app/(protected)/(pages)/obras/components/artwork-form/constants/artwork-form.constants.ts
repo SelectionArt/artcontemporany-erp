@@ -16,20 +16,36 @@ const constants = {
         id: "title-helper",
       },
     },
-    REFERENCE: {
+    REFERENCE_NUMBER: {
       labelProps: {
-        htmlFor: "reference",
+        htmlFor: "referenceNumber",
       },
-      labelText: "Referencia",
+      labelText: "Número de referencia",
       inputProps: {
-        id: "reference",
-        name: "reference",
-        placeholder: "Referencia de la obra",
-        type: "text",
-        ["aria-describedby"]: "reference-helper",
+        id: "referenceNumber",
+        name: "referenceNumber",
+        placeholder: "Número de referencia",
+        type: "number",
+        ["aria-describedby"]: "referenceNumber-helper",
       },
       messageProps: {
-        id: "reference-helper",
+        id: "referenceNumber-helper",
+      },
+    },
+    REFERENCE_CODE: {
+      labelProps: {
+        htmlFor: "referenceCode",
+      },
+      labelText: "Código de referencia",
+      inputProps: {
+        id: "referenceCode",
+        name: "referenceCode",
+        placeholder: "Código de referencia",
+        type: "text",
+        ["aria-describedby"]: "referenceCode-helper",
+      },
+      messageProps: {
+        id: "referenceCode-helper",
       },
     },
     WIDTH: {

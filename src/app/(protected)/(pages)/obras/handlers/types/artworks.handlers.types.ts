@@ -28,7 +28,7 @@ type ArtworksHandlersReturn = {
   handleSubmitDeleteMultiple: () => void;
 };
 
-type CreateHandlerProps = Pick<ArtworksHandlersProps, "setOpenDialog">;
+type CreateHandlerProps = Pick<ArtworksHandlersProps, "form" | "setOpenDialog">;
 
 type DeleteHandlerProps = Pick<
   ArtworksHandlersProps,

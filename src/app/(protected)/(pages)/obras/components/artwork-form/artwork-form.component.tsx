@@ -25,8 +25,8 @@ const ArtworkForm = ({
   artists,
   colors,
   finishes,
-  formats,
   form,
+  formats,
   handleSubmit,
   label,
   loading,
@@ -60,27 +60,58 @@ const ArtworkForm = ({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name={constants.INPUT_FIELDS.REFERENCE.inputProps.name}
-          render={({ field }) => (
-            <FormItem className="grow basis-1/2">
-              <FormLabel {...constants.INPUT_FIELDS.REFERENCE.labelProps}>
-                {constants.INPUT_FIELDS.REFERENCE.labelText}
-              </FormLabel>
-              <FormControl>
-                <Input
-                  {...{
-                    ...field,
-                    ...constants.INPUT_FIELDS.REFERENCE.inputProps,
-                    disabled: loading,
-                  }}
+        <div className="flex gap-4">
+          <FormField
+            control={form.control}
+            name={constants.INPUT_FIELDS.REFERENCE_NUMBER.inputProps.name}
+            render={({ field }) => (
+              <FormItem className="grow basis-1/2">
+                <FormLabel
+                  {...constants.INPUT_FIELDS.REFERENCE_NUMBER.labelProps}
+                >
+                  {constants.INPUT_FIELDS.REFERENCE_NUMBER.labelText}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...{
+                      ...field,
+                      ...constants.INPUT_FIELDS.REFERENCE_NUMBER.inputProps,
+                      disabled: loading,
+                    }}
+                  />
+                </FormControl>
+                <FormMessage
+                  {...constants.INPUT_FIELDS.REFERENCE_NUMBER.messageProps}
                 />
-              </FormControl>
-              <FormMessage {...constants.INPUT_FIELDS.REFERENCE.messageProps} />
-            </FormItem>
-          )}
-        />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={constants.INPUT_FIELDS.REFERENCE_CODE.inputProps.name}
+            render={({ field }) => (
+              <FormItem className="grow basis-1/2">
+                <FormLabel
+                  {...constants.INPUT_FIELDS.REFERENCE_CODE.labelProps}
+                >
+                  {constants.INPUT_FIELDS.REFERENCE_CODE.labelText}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...{
+                      ...field,
+                      ...constants.INPUT_FIELDS.REFERENCE_CODE.inputProps,
+                      disabled: loading,
+                    }}
+                  />
+                </FormControl>
+                <FormMessage
+                  {...constants.INPUT_FIELDS.REFERENCE_CODE.messageProps}
+                />
+              </FormItem>
+            )}
+          />
+        </div>
         <div className="flex gap-4">
           <FormField
             control={form.control}
@@ -143,6 +174,50 @@ const ArtworkForm = ({
                   </SelectContent>
                 </Select>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex gap-4">
+          <FormField
+            control={form.control}
+            name={constants.INPUT_FIELDS.WIDTH.inputProps.name}
+            render={({ field }) => (
+              <FormItem className="grow basis-1/2">
+                <FormLabel {...constants.INPUT_FIELDS.WIDTH.labelProps}>
+                  {constants.INPUT_FIELDS.WIDTH.labelText}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...{
+                      ...field,
+                      ...constants.INPUT_FIELDS.WIDTH.inputProps,
+                      disabled: loading,
+                    }}
+                  />
+                </FormControl>
+                <FormMessage {...constants.INPUT_FIELDS.WIDTH.messageProps} />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={constants.INPUT_FIELDS.HEIGHT.inputProps.name}
+            render={({ field }) => (
+              <FormItem className="grow basis-1/2">
+                <FormLabel {...constants.INPUT_FIELDS.HEIGHT.labelProps}>
+                  {constants.INPUT_FIELDS.HEIGHT.labelText}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...{
+                      ...field,
+                      ...constants.INPUT_FIELDS.HEIGHT.inputProps,
+                      disabled: loading,
+                    }}
+                  />
+                </FormControl>
+                <FormMessage {...constants.INPUT_FIELDS.HEIGHT.messageProps} />
               </FormItem>
             )}
           />
@@ -273,50 +348,6 @@ const ArtworkForm = ({
                   </SelectContent>
                 </Select>
                 <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="flex gap-4">
-          <FormField
-            control={form.control}
-            name={constants.INPUT_FIELDS.WIDTH.inputProps.name}
-            render={({ field }) => (
-              <FormItem className="grow basis-1/2">
-                <FormLabel {...constants.INPUT_FIELDS.WIDTH.labelProps}>
-                  {constants.INPUT_FIELDS.WIDTH.labelText}
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    {...{
-                      ...field,
-                      ...constants.INPUT_FIELDS.WIDTH.inputProps,
-                      disabled: loading,
-                    }}
-                  />
-                </FormControl>
-                <FormMessage {...constants.INPUT_FIELDS.WIDTH.messageProps} />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name={constants.INPUT_FIELDS.HEIGHT.inputProps.name}
-            render={({ field }) => (
-              <FormItem className="grow basis-1/2">
-                <FormLabel {...constants.INPUT_FIELDS.HEIGHT.labelProps}>
-                  {constants.INPUT_FIELDS.HEIGHT.labelText}
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    {...{
-                      ...field,
-                      ...constants.INPUT_FIELDS.HEIGHT.inputProps,
-                      disabled: loading,
-                    }}
-                  />
-                </FormControl>
-                <FormMessage {...constants.INPUT_FIELDS.HEIGHT.messageProps} />
               </FormItem>
             )}
           />
