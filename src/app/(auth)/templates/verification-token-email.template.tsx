@@ -32,7 +32,10 @@ const constants = {
 
 const domain = process.env.NEXT_PUBLIC_APP_URL;
 
-const VerificationTokenEmail = ({ email, token }: VerificationTokenEmailProps) => {
+const VerificationTokenEmail = ({
+  email,
+  token,
+}: VerificationTokenEmailProps) => {
   const link = `${domain}/verification?token=${token}`;
 
   return (
@@ -53,7 +56,7 @@ const VerificationTokenEmail = ({ email, token }: VerificationTokenEmailProps) =
 
             <Section className="mt-6">
               <Button
-                className="text-md flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-slate-700 px-4 font-medium text-white"
+                className="text-md flex h-12 items-center justify-center gap-2 rounded-md bg-slate-700 px-4 font-medium whitespace-nowrap text-white"
                 href={link}
               >
                 {constants.button}

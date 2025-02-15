@@ -20,6 +20,21 @@ const artworkSchema = z.object({
   height: z.coerce
     .number({ required_error: "El alto es requerido" })
     .positive("El alto debe ser un número positivo"),
+  images: z
+    .array(z.instanceof(File))
+    .min(1, "Por lo menos una imagen es requerida")
+    .max(5, "Máximo 5 imágenes permitidas")
+    .refine(
+      (files) => files.every((file) => file.size < 5 * 1024 * 1024),
+      "El tamaño máximo permitido por imagen es de 5MB",
+    )
+    .refine(
+      (files) =>
+        files.every((file) =>
+          ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+        ),
+      "Solo se permiten imágenes en formato JPEG, PNG o WEBP",
+    ),
   referenceNumber: z.coerce
     .number({ required_error: "El número de referencia es requerido" })
     .positive("El número de referencia debe ser un número positivo")
