@@ -1,6 +1,5 @@
 // Actions
-// import { fetchGallery } from "./actions/gallery.actions";
-
+import { fetchGallery } from "./actions/gallery.actions";
 // Components
 import { GalleryContainer } from "./gallery.container";
 // Types
@@ -12,10 +11,9 @@ export const metadata: Metadata = {
 };
 
 const GalleryPage = async () => {
-  // const gallery = await fetchGallery();
+  const gallery = await fetchGallery();
 
-  // return <GalleryContainer gallery={gallery} />;
-  return <GalleryContainer />;
+  return <GalleryContainer gallery={gallery} />;
 };
 
 export default GalleryPage;

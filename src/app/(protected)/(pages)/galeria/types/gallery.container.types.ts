@@ -1,7 +1,9 @@
-// type Gallery = {};
+import type { FetchGalleryReturn } from "../actions/types/gallery.actions.types";
 
-// type GalleryProps = {
-//   gallery: Gallery;
-// };
+type Gallery = {};
 
-// export type { Gallery, GalleryProps };
+type GalleryProps = {
+  gallery: FetchGalleryReturn;
+};
+
+export type { Gallery, GalleryProps };
