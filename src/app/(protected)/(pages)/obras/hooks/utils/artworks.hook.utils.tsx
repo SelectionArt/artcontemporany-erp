@@ -1,3 +1,5 @@
+// Vendors
+import Image from "next/image";
 // Components
 import { RowActions } from "@/components/data-table/components/row-actions/row-actions.component";
 import { SelectAllCheckbox } from "@/components/data-table/components/select-all-checkbox/select-all-checkbox.component";
@@ -34,11 +36,12 @@ function getColumnsConfig({
     {
       accessorKey: "image",
       cell: ({ row }) => (
-        <div className="h-16 w-16 p-2">
-          <img
+        <div className="relative m-2 size-16">
+          <Image
             src={row.original.images[0]}
             alt="Imagen de la obra"
-            className="h-full w-full rounded-md border object-cover"
+            fill={true}
+            className="rounded-md border object-cover"
           />
         </div>
       ),

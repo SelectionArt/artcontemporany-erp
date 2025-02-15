@@ -1,3 +1,5 @@
+// Vendors
+import Image from "next/image";
 // Components
 import { ButtonLoading } from "@/components/ui/button-loading";
 import {
@@ -65,26 +67,26 @@ const ArtworkForm = ({
         <FormField
           control={form.control}
           name={constants.INPUT_FIELDS.IMAGES.inputProps.name}
-          render={({ field: { value, onChange, ...fieldProps } }) => (
+          render={({ field }) => (
             <FormItem className="grow basis-1/2">
               <FormLabel {...constants.INPUT_FIELDS.IMAGES.labelProps}>
                 {constants.INPUT_FIELDS.IMAGES.labelText}
               </FormLabel>
               <FormControl>
                 <Input
-                  {...{
-                    ...fieldProps,
-                    ...constants.INPUT_FIELDS.IMAGES.inputProps,
-                    disabled: loading,
-                    onChange: (event) => {
-                      const filesArray = Array.from(event.target.files || []);
-                      onChange(filesArray);
-                      const previewsArray = filesArray.map((file) =>
-                        URL.createObjectURL(file),
-                      );
-                      setPreviews(previewsArray);
-                    },
+                  {...constants.INPUT_FIELDS.IMAGES.inputProps}
+                  disabled={loading}
+                  type="file"
+                  multiple
+                  onChange={(event) => {
+                    const filesArray = Array.from(event.target.files || []);
+                    field.onChange(filesArray);
+                    const previewsArray = filesArray.map((file) =>
+                      URL.createObjectURL(file),
+                    );
+                    setPreviews(previewsArray);
                   }}
+                  ref={field.ref}
                 />
               </FormControl>
               <FormMessage {...constants.INPUT_FIELDS.IMAGES.messageProps} />
@@ -93,11 +95,12 @@ const ArtworkForm = ({
         />
         <div className="grid grid-cols-5 gap-4">
           {previews.map((src, index) => (
-            <div key={index} className="relative">
-              <img
+            <div key={index} className="relative h-24">
+              <Image
                 src={src}
                 alt={`Preview ${index}`}
-                className="h-24 w-full rounded-md border object-cover"
+                fill={true}
+                className="rounded-md border object-cover"
               />
             </div>
           ))}
