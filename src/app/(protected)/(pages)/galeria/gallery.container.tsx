@@ -142,9 +142,9 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
         ))}
       </div>
 
-      <div className="grid auto-rows-auto grid-cols-[repeat(auto-fill,minmax(224px,1fr))] gap-4">
-        {filteredArtworks.length > 0 ? (
-          filteredArtworks.map((artwork) => (
+      {filteredArtworks.length > 0 ? (
+        <div className="grid auto-rows-auto grid-cols-[repeat(auto-fill,minmax(224px,1fr))] gap-4">
+          {filteredArtworks.map((artwork) => (
             <div key={artwork.id} className="bg">
               <div className="relative h-48">
                 <Image
@@ -159,13 +159,13 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
                 {artwork.artist?.name}
               </p>
             </div>
-          ))
-        ) : (
-          <p className="text-muted-foreground">
-            No se encontraron obras con los filtros seleccionados.
-          </p>
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-muted-foreground">
+          No se encontraron obras con los filtros seleccionados.
+        </p>
+      )}
     </div>
   );
 };
