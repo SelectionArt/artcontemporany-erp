@@ -21,8 +21,6 @@ const createArtwork = async ({
 }: CreateArtworkProps): Promise<CreateArtworkReturn> => {
   const validatedFields = artworkSchema.safeParse(values);
 
-  console.log("validatedFields", validatedFields.data);
-
   if (!validatedFields.success) {
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
