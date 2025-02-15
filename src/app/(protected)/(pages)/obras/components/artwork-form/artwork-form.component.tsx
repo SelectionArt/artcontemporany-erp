@@ -30,6 +30,8 @@ const ArtworkForm = ({
   handleSubmit,
   label,
   loading,
+  previews,
+  setPreviews,
   styles,
   supports,
 }: ArtworkFormProps) => (
@@ -60,6 +62,46 @@ const ArtworkForm = ({
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name={constants.INPUT_FIELDS.IMAGES.inputProps.name}
+          render={({ field: { value, onChange, ...fieldProps } }) => (
+            <FormItem className="grow basis-1/2">
+              <FormLabel {...constants.INPUT_FIELDS.IMAGES.labelProps}>
+                {constants.INPUT_FIELDS.IMAGES.labelText}
+              </FormLabel>
+              <FormControl>
+                <Input
+                  {...{
+                    ...fieldProps,
+                    ...constants.INPUT_FIELDS.IMAGES.inputProps,
+                    disabled: loading,
+                    onChange: (event) => {
+                      const filesArray = Array.from(event.target.files || []);
+                      onChange(filesArray);
+                      const previewsArray = filesArray.map((file) =>
+                        URL.createObjectURL(file),
+                      );
+                      setPreviews(previewsArray);
+                    },
+                  }}
+                />
+              </FormControl>
+              <FormMessage {...constants.INPUT_FIELDS.IMAGES.messageProps} />
+            </FormItem>
+          )}
+        />
+        <div className="grid grid-cols-5 gap-4">
+          {previews.map((src, index) => (
+            <div key={index} className="relative">
+              <img
+                src={src}
+                alt={`Preview ${index}`}
+                className="h-24 w-full rounded-md border object-cover"
+              />
+            </div>
+          ))}
+        </div>
         <div className="flex gap-4">
           <FormField
             control={form.control}

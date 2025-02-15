@@ -6,18 +6,19 @@ import type { Style } from "../(pages)/estilos/types/styles.container.types";
 import type { Support } from "../(pages)/soportes/types/supports.container.types";
 
 type Artwork = {
-  id: string;
-  title: string;
-  referenceNumber: number;
-  referenceCode: string;
-  width: number;
-  height: number;
   artistId: string;
-  finishId: string;
-  supportId: string;
   colorId: string;
-  styleId: string;
+  finishId: string;
   formatId: string;
+  height: number;
+  id: string;
+  images: string[];
+  referenceCode: string;
+  referenceNumber: number;
+  styleId: string;
+  supportId: string;
+  title: string;
+  width: number;
 };
 
 type ArtworksProps = {

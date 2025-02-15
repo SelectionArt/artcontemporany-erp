@@ -35,6 +35,7 @@ const ArtworksHook = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [previews, setPreviews] = useState<string[]>([]);
   const [selectedRow, setSelectedRow] = useState<Artwork | null>(null);
   const [selectedRows, setSelectedRows] = useState<Artwork[]>([]);
 
@@ -93,8 +94,10 @@ const ArtworksHook = ({
     multipleSelectActionsProps,
     openAlert,
     openDialog,
+    previews,
     selectedRow,
     selectedRows,
+    setPreviews,  
   };
 };
 

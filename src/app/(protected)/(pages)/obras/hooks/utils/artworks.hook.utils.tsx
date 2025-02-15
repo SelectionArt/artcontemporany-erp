@@ -32,6 +32,20 @@ function getColumnsConfig({
       id: "selection",
     },
     {
+      accessorKey: "image",
+      cell: ({ row }) => (
+        <div className="h-16 w-16 p-2">
+          <img
+            src={row.original.images[0]}
+            alt="Imagen de la obra"
+            className="h-full w-full rounded-md border object-cover"
+          />
+        </div>
+      ),
+      header: "Imagen",
+      meta: "Imagen",
+    },
+    {
       accessorKey: "title",
       header: ({ column }) => <ColumnSorter column={column} label="Título" />,
       meta: "Título",

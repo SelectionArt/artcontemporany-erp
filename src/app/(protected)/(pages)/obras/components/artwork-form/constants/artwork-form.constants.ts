@@ -16,6 +16,24 @@ const constants = {
         id: "title-helper",
       },
     },
+    IMAGES: {
+      labelProps: {
+        htmlFor: "images",
+      },
+      labelText: "Imágenes",
+      inputProps: {
+        accept: "image/*",
+        id: "images",
+        multiple: true,
+        name: "images",
+        placeholder: "Imágenes de la obra",
+        type: "file",
+        ["aria-describedby"]: "images-helper",
+      },
+      messageProps: {
+        id: "images-helper",
+      },
+    },
     REFERENCE_NUMBER: {
       labelProps: {
         htmlFor: "referenceNumber",

@@ -23,7 +23,7 @@ const artworkSchema = z.object({
   images: z
     .array(z.instanceof(File))
     .min(1, "Por lo menos una imagen es requerida")
-    .max(5, "Máximo 5 imágenes permitidas")
+    .max(10, "Máximo 10 imágenes permitidas")
     .refine(
       (files) => files.every((file) => file.size < 5 * 1024 * 1024),
       "El tamaño máximo permitido por imagen es de 5MB",

@@ -58,7 +58,7 @@ model Artwork {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // images  Image[]
+  images  Image[]
   artist  Artist   @relation(fields: [artistId], references: [id])
   color   Color?   @relation(fields: [colorId], references: [id])
   finish  Finish?  @relation(fields: [finishId], references: [id])
@@ -67,14 +67,14 @@ model Artwork {
   support Support? @relation(fields: [supportId], references: [id])
 }
 
-// model Image {
-//   id        String   @id @default(cuid())
-//   url       String
-//   artworkId String
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-//   artwork   Artwork @relation(fields: [artworkId], references: [id])
-// }
+model Image {
+  id        String   @id @default(cuid())
+  url       String
+  artworkId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  artwork   Artwork  @relation(fields: [artworkId], references: [id])
+}
 
 model Artist {
   id        String    @id @default(cuid())

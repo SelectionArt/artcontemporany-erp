@@ -5,6 +5,7 @@ const constants = {
     finishId: "",
     formatId: "",
     height: 0,
+    images: [] as File[],
     referenceNumber: 0,
     referenceCode: "ART",
     styleId: "",

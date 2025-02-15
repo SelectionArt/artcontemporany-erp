@@ -32,8 +32,10 @@ const ArtworksContainer = ({
     multipleSelectActionsProps,
     openAlert,
     openDialog,
+    previews,
     selectedRow,
     selectedRows,
+    setPreviews,
   } = ArtworksHook({
     artists,
     colors,
@@ -68,6 +70,8 @@ const ArtworksContainer = ({
           handleSubmit={handleSubmit}
           label={selectedRow ? "Editar" : "Crear"}
           loading={loading}
+          previews={previews}
+          setPreviews={setPreviews}
           styles={styles}
           supports={supports}
         />
