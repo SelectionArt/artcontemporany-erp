@@ -21,6 +21,7 @@ const ArtworksContainer = ({
   const {
     columns,
     data,
+    existingImages,
     form,
     handleCreate,
     handleOpenChangeAlertDialog,
@@ -30,12 +31,15 @@ const ArtworksContainer = ({
     handleSubmitDeleteMultiple,
     loading,
     multipleSelectActionsProps,
+    newImages,
     openAlert,
     openDialog,
-    previews,
     selectedRow,
     selectedRows,
-    setPreviews,
+    setExistingImages,
+    setNewImages,
+    setToDelete,
+    toDelete,
   } = ArtworksHook({
     artists,
     colors,
@@ -64,16 +68,20 @@ const ArtworksContainer = ({
         <ArtworkForm
           artists={artists}
           colors={colors}
+          existingImages={existingImages}
           finishes={finishes}
           form={form}
           formats={formats}
           handleSubmit={handleSubmit}
           label={selectedRow ? "Editar" : "Crear"}
           loading={loading}
-          previews={previews}
-          setPreviews={setPreviews}
+          newImages={newImages}
+          setExistingImages={setExistingImages}
+          setNewImages={setNewImages}
+          setToDelete={setToDelete}
           styles={styles}
           supports={supports}
+          toDelete={toDelete}
         />
       </DialogWrapper>
       <AlertDialogWrapper

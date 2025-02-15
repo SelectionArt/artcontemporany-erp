@@ -73,7 +73,7 @@ model Image {
   artworkId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  artwork   Artwork  @relation(fields: [artworkId], references: [id])
+  artwork   Artwork  @relation(fields: [artworkId], references: [id], onDelete: Cascade)
 }
 
 model Artist {

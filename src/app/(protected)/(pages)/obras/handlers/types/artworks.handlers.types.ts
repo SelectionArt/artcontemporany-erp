@@ -6,14 +6,19 @@ import type { ArtworkSchema } from "../../schemas/types/artwork.schema.types";
 
 type ArtworksHandlersProps = {
   form: UseFormReturn<ArtworkSchema>;
+  newImages: File[];
   selectedRow: Artwork | null;
   selectedRows: Artwork[];
   setData: Dispatch<SetStateAction<Artwork[]>>;
+  setExistingImages: Dispatch<SetStateAction<string[]>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  setNewImages: Dispatch<SetStateAction<File[]>>;
   setOpenAlert: Dispatch<SetStateAction<boolean>>;
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
   setSelectedRow: Dispatch<SetStateAction<Artwork | null>>;
   setSelectedRows: Dispatch<SetStateAction<Artwork[]>>;
+  setToDelete: Dispatch<SetStateAction<string[]>>;
+  toDelete: string[];
 };
 
 type ArtworksHandlersReturn = {
@@ -44,7 +49,12 @@ type DeleteMultipleHandlerProps = Pick<
 
 type EditHandlerProps = Pick<
   ArtworksHandlersProps,
-  "form" | "setSelectedRow" | "setOpenDialog"
+  | "form"
+  | "setExistingImages"
+  | "setNewImages"
+  | "setSelectedRow"
+  | "setOpenDialog"
+  | "setToDelete"
 > & {
   row: Artwork;
 };
@@ -62,14 +72,18 @@ type OpenChangeAlertDialogHandlerProps = Pick<
 
 type OpenChangeDialogHandlerProps = Pick<
   ArtworksHandlersProps,
-  "form" | "selectedRow" | "setOpenDialog" | "setSelectedRow"
+  | "form"
+  | "setExistingImages"
+  | "setNewImages"
+  | "setOpenDialog"
+  | "setSelectedRow"
 > & {
   open: boolean;
 };
 
 type SubmitHandlerCreateProps = Pick<
   SubmitHandlerProps,
-  "form" | "setData" | "setLoading" | "setOpenDialog" | "values"
+  "form" | "newImages" | "setData" | "setLoading" | "setOpenDialog" | "values"
 >;
 
 type SubmitHandlerDeleteProps = Pick<
@@ -85,22 +99,26 @@ type SubmitHandlerDeleteMultipleProps = Pick<
 type SubmitHandlerEditProps = Pick<
   SubmitHandlerProps,
   | "form"
+  | "newImages"
   | "selectedRow"
   | "setData"
   | "setLoading"
   | "setOpenDialog"
   | "setSelectedRow"
+  | "toDelete"
   | "values"
 >;
 
 type SubmitHandlerProps = Pick<
   ArtworksHandlersProps,
   | "form"
+  | "newImages"
   | "selectedRow"
   | "setData"
   | "setLoading"
   | "setOpenDialog"
   | "setSelectedRow"
+  | "toDelete"
 > & {
   values: ArtworkSchema;
 };

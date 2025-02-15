@@ -1,6 +1,7 @@
 // Vendors
 import Image from "next/image";
 // Components
+import { Button } from "@/components/ui/button";
 import { ButtonLoading } from "@/components/ui/button-loading";
 import {
   Form,
@@ -20,26 +21,38 @@ import {
 } from "@/components/ui/select";
 // Constants
 import constants from "./constants/artwork-form.constants";
+// Icons
+import { X } from "lucide-react";
 // Types
 import type { ArtworkFormProps } from "./types/artwork-form.component.types";
 
 const ArtworkForm = ({
   artists,
   colors,
+  existingImages,
   finishes,
   form,
   formats,
   handleSubmit,
   label,
   loading,
-  previews,
-  setPreviews,
+  newImages,
+  setExistingImages,
+  setNewImages,
+  setToDelete,
   styles,
   supports,
+  toDelete,
 }: ArtworkFormProps) => (
   <Form {...form}>
     <form
-      onSubmit={form.handleSubmit(handleSubmit)}
+      onSubmit={(event) => {
+        event.preventDefault();
+        form.setValue("images", [...existingImages, ...newImages]);
+        form.handleSubmit((values) => {
+          handleSubmit(values);
+        })();
+      }}
       className="flex flex-col gap-6"
     >
       <div className="flex flex-col gap-4">
@@ -73,38 +86,95 @@ const ArtworkForm = ({
                 {constants.INPUT_FIELDS.IMAGES.labelText}
               </FormLabel>
               <FormControl>
-                <Input
-                  {...constants.INPUT_FIELDS.IMAGES.inputProps}
-                  disabled={loading}
-                  type="file"
-                  multiple
-                  onChange={(event) => {
-                    const filesArray = Array.from(event.target.files || []);
-                    field.onChange(filesArray);
-                    const previewsArray = filesArray.map((file) =>
-                      URL.createObjectURL(file),
-                    );
-                    setPreviews(previewsArray);
-                  }}
-                  ref={field.ref}
-                />
+                <div>
+                  <Input
+                    {...constants.INPUT_FIELDS.IMAGES.inputProps}
+                    className="hidden"
+                    disabled={loading}
+                    onChange={(event) => {
+                      const filesArray = Array.from(event.target.files || []);
+                      field.onChange(filesArray);
+                      setNewImages([...newImages, ...filesArray]);
+                    }}
+                    ref={field.ref}
+                  />
+                  <Button
+                    onClick={() => document.getElementById("images")?.click()}
+                    type="button"
+                    variant="outline"
+                    className={`w-full justify-start ${newImages.length === 0 ? "text-muted-foreground" : ""}`}
+                  >
+                    {newImages.length > 0
+                      ? `${newImages.length} ${newImages.length === 1 ? "imagen" : "imágenes"} seleccionadas`
+                      : "Seleccionar imágenes"}
+                  </Button>
+                </div>
               </FormControl>
               <FormMessage {...constants.INPUT_FIELDS.IMAGES.messageProps} />
             </FormItem>
           )}
         />
-        <div className="grid grid-cols-5 gap-4">
-          {previews.map((src, index) => (
-            <div key={index} className="relative h-24">
-              <Image
-                src={src}
-                alt={`Preview ${index}`}
-                fill={true}
-                className="rounded-md border object-cover"
-              />
+
+        {newImages.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <div className="text-sm font-medium">Nuevas imágenes</div>
+            <div className="grid grid-cols-5 gap-4">
+              {newImages.map((file, index) => {
+                const preview = URL.createObjectURL(file);
+                return (
+                  <div key={index} className="relative h-24">
+                    <Image
+                      src={preview}
+                      alt={`Preview ${index}`}
+                      fill
+                      className="rounded-md border object-cover"
+                    />
+                    <button
+                      type="button"
+                      className="absolute top-1 right-1 flex size-8 cursor-pointer items-center justify-center rounded-full bg-red-600 text-white"
+                      onClick={() => {
+                        setNewImages(newImages.filter((_, i) => i !== index));
+                      }}
+                    >
+                      <X />
+                    </button>
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </div>
+          </div>
+        )}
+
+        {existingImages.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <div className="text-sm font-medium">Imágenes existentes</div>
+            <div className="grid grid-cols-5 gap-4">
+              {existingImages.map((src, index) => (
+                <div key={index} className="relative h-24">
+                  <Image
+                    src={src}
+                    alt={`Imagen existente ${index}`}
+                    fill
+                    className="rounded-md border object-cover"
+                  />
+                  <button
+                    type="button"
+                    className="absolute top-1 right-1 flex size-8 cursor-pointer items-center justify-center rounded-full bg-red-600 text-white"
+                    onClick={() => {
+                      setToDelete([...toDelete, src]);
+                      setExistingImages(
+                        existingImages.filter((image) => image !== src),
+                      );
+                    }}
+                  >
+                    <X />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="flex gap-4">
           <FormField
             control={form.control}

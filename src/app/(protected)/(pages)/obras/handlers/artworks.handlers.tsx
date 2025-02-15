@@ -55,12 +55,18 @@ const deleteMultipleHandler = ({
 const editHandler = ({
   form,
   row,
-  setSelectedRow,
+  setExistingImages,
+  setNewImages,
   setOpenDialog,
+  setSelectedRow,
+  setToDelete,
 }: EditHandlerProps): void => {
-  form.reset(row, { keepDefaultValues: true });
-  setSelectedRow(row);
+  form.reset({ ...row, images: [] }, { keepDefaultValues: true });
+  setExistingImages(row.images ?? []);
+  setNewImages([]);
   setOpenDialog(true);
+  setSelectedRow(row);
+  setToDelete([]);
 };
 
 const openChangeAlertDialogHandler = ({
@@ -85,40 +91,45 @@ const openChangeAlertDialogHandler = ({
 const openChangeDialogHandler = ({
   form,
   open,
-  selectedRow,
+  setExistingImages,
+  setNewImages,
   setOpenDialog,
   setSelectedRow,
 }: OpenChangeDialogHandlerProps): void => {
+  form.reset();
+  setExistingImages([]);
+  setNewImages([]);
+  setSelectedRow(null);
   setOpenDialog(open);
-
-  if (!open && selectedRow) {
-    form.reset();
-    setSelectedRow(null);
-  }
 };
 
 const submitHandler = ({
   form,
+  newImages,
   selectedRow,
   setData,
   setLoading,
   setOpenDialog,
   setSelectedRow,
+  toDelete,
   values,
 }: SubmitHandlerProps): void => {
   if (selectedRow) {
     submitHandlerEdit({
-      selectedRow,
       form,
+      newImages,
+      selectedRow,
       setData,
       setLoading,
       setOpenDialog,
       setSelectedRow,
+      toDelete,
       values,
     });
   } else {
     submitHandlerCreate({
       form,
+      newImages,
       setData,
       setLoading,
       setOpenDialog,
@@ -129,6 +140,7 @@ const submitHandler = ({
 
 const submitHandlerCreate = async ({
   form,
+  newImages,
   setData,
   setLoading,
   setOpenDialog,
@@ -137,7 +149,10 @@ const submitHandlerCreate = async ({
   setLoading(true);
 
   try {
-    const { artwork, error, success } = await createArtwork({ values });
+    const { artwork, error, success } = await createArtwork({
+      newImages,
+      values,
+    });
 
     if (error) {
       toast.error(error);
@@ -160,11 +175,13 @@ const submitHandlerCreate = async ({
 
 const submitHandlerEdit = async ({
   form,
+  newImages,
   selectedRow,
   setData,
   setLoading,
   setOpenDialog,
   setSelectedRow,
+  toDelete,
   values,
 }: SubmitHandlerEditProps): Promise<void> => {
   if (!selectedRow) {
@@ -176,6 +193,8 @@ const submitHandlerEdit = async ({
   try {
     const { artwork, error, success } = await updateArtwork({
       id: selectedRow.id,
+      newImages,
+      toDelete,
       values,
     });
 
@@ -266,14 +285,19 @@ const submitHandlerDeleteMultiple = async ({
 
 const ArtworksHandlers = ({
   form,
+  newImages,
   selectedRow,
   selectedRows,
   setData,
+  setExistingImages,
   setLoading,
+  setNewImages,
   setOpenAlert,
   setOpenDialog,
   setSelectedRow,
   setSelectedRows,
+  setToDelete,
+  toDelete,
 }: ArtworksHandlersProps): ArtworksHandlersReturn => {
   return {
     handleCreate: () => createHandler({ form, setOpenDialog }),
@@ -284,8 +308,11 @@ const ArtworksHandlers = ({
       editHandler({
         form,
         row,
-        setSelectedRow,
+        setExistingImages,
+        setNewImages,
         setOpenDialog,
+        setSelectedRow,
+        setToDelete,
       }),
     handleOpenChangeAlertDialog: (open) =>
       openChangeAlertDialogHandler({
@@ -300,18 +327,21 @@ const ArtworksHandlers = ({
       openChangeDialogHandler({
         form,
         open,
-        selectedRow,
+        setExistingImages,
+        setNewImages,
         setOpenDialog,
         setSelectedRow,
       }),
     handleSubmit: (values) =>
       submitHandler({
-        selectedRow,
         form,
+        newImages,
+        selectedRow,
         setData,
         setLoading,
         setOpenDialog,
         setSelectedRow,
+        toDelete,
         values,
       }),
     handleSubmitDelete: () =>

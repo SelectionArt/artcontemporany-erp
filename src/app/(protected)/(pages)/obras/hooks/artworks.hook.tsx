@@ -32,12 +32,14 @@ const ArtworksHook = ({
   supports,
 }: ArtworksHookProps): ArtworksHookReturn => {
   const [data, setData] = useState<Artwork[]>(initialData);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [newImages, setNewImages] = useState<File[]>([]);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const [previews, setPreviews] = useState<string[]>([]);
   const [selectedRow, setSelectedRow] = useState<Artwork | null>(null);
   const [selectedRows, setSelectedRows] = useState<Artwork[]>([]);
+  const [toDelete, setToDelete] = useState<string[]>([]);
 
   const form = useForm<ArtworkSchema>({
     resolver: zodResolver(artworkSchema),
@@ -56,14 +58,19 @@ const ArtworksHook = ({
     handleSubmitDeleteMultiple,
   } = ArtworksHandlers({
     form,
+    newImages,
     selectedRow,
     selectedRows,
     setData,
+    setExistingImages,
     setLoading,
+    setNewImages,
     setOpenAlert,
     setOpenDialog,
     setSelectedRow,
     setSelectedRows,
+    setToDelete,
+    toDelete,
   });
 
   const columns = getColumnsConfig({
@@ -83,6 +90,7 @@ const ArtworksHook = ({
   return {
     columns,
     data,
+    existingImages,
     form,
     handleCreate,
     handleOpenChangeAlertDialog,
@@ -92,12 +100,15 @@ const ArtworksHook = ({
     handleSubmitDeleteMultiple,
     loading,
     multipleSelectActionsProps,
+    newImages,
     openAlert,
     openDialog,
-    previews,
     selectedRow,
     selectedRows,
-    setPreviews,  
+    setExistingImages,
+    setNewImages,
+    setToDelete,
+    toDelete,
   };
 };
 

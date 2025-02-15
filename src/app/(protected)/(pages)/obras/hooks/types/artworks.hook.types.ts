@@ -22,15 +22,19 @@ type ArtworksHookReturn = Omit<
 > & {
   columns: GetColumnsConfigReturn<Artwork>;
   data: Artwork[];
+  existingImages: string[];
   form: UseFormReturn<ArtworkSchema>;
   loading: boolean;
   multipleSelectActionsProps: GetMultipleSelectActionsReturn<Artwork>;
+  newImages: File[];
   openAlert: boolean;
   openDialog: boolean;
-  previews: string[];
   selectedRow: Artwork | null;
   selectedRows: Artwork[];
-  setPreviews: Dispatch<SetStateAction<string[]>>;
+  setExistingImages: Dispatch<SetStateAction<string[]>>;
+  setNewImages: Dispatch<SetStateAction<File[]>>;
+  setToDelete: Dispatch<SetStateAction<string[]>>;
+  toDelete: string[];
 };
 
 export type { ArtworksHookProps, ArtworksHookReturn };

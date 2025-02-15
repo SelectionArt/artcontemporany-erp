@@ -56,6 +56,7 @@ const uploadImageToCloudinary = async ({
 };
 
 const createArtwork = async ({
+  newImages,
   values,
 }: CreateArtworkProps): Promise<CreateArtworkReturn> => {
   const validatedFields = artworkSchema.safeParse(values);
@@ -66,7 +67,7 @@ const createArtwork = async ({
 
   try {
     const uploadedImages = await Promise.all(
-      validatedFields.data.images.map((image) =>
+      newImages.map((image) =>
         uploadImageToCloudinary({
           file: image,
           referenceCode: validatedFields.data.referenceCode ?? "",
@@ -75,9 +76,7 @@ const createArtwork = async ({
       ),
     );
 
-    const validImages = uploadedImages.filter(
-      (image) => image !== null,
-    ) as string[];
+    const validImages = uploadedImages.filter(Boolean) as string[];
 
     if (validImages.length === 0) {
       return {
@@ -128,9 +127,26 @@ const deleteArtwork = async ({
   id,
 }: DeleteArtworkProps): Promise<DeleteArtworkReturn> => {
   try {
+    const images = await prisma.image.findMany({
+      where: { artworkId: id },
+      select: { url: true },
+    });
+
+    const cloudinaryPublicIds = images.map((img) => {
+      const parts = img.url.split("/");
+      return parts[parts.length - 1].split(".")[0];
+    });
+
+    await Promise.all(
+      cloudinaryPublicIds.map((publicId) =>
+        cloudinary.uploader.destroy(publicId),
+      ),
+    );
+
     await prisma.artwork.delete({
       where: { id },
     });
+
     return { success: "Obra eliminada con éxito" };
   } catch (error) {
     console.error(error);
@@ -144,9 +160,26 @@ const deleteMultipleArtworks = async ({
   ids,
 }: DeleteMultipleArtworksProps): Promise<DeleteMultipleArtworksReturn> => {
   try {
+    const images = await prisma.image.findMany({
+      where: { artworkId: { in: ids } },
+      select: { url: true },
+    });
+
+    const cloudinaryPublicIds = images.map((img) => {
+      const parts = img.url.split("/");
+      return parts[parts.length - 1].split(".")[0];
+    });
+
+    await Promise.all(
+      cloudinaryPublicIds.map((publicId) =>
+        cloudinary.uploader.destroy(publicId),
+      ),
+    );
+
     await prisma.artwork.deleteMany({
       where: { id: { in: ids } },
     });
+
     return { success: "Obras eliminadas con éxito" };
   } catch (error) {
     console.error(error);
@@ -204,6 +237,8 @@ const generateUniqueReferenceNumber = async (): Promise<number> => {
 
 const updateArtwork = async ({
   id,
+  newImages,
+  toDelete,
   values,
 }: UpdateArtworkProps): Promise<UpdateArtworkReturn> => {
   const validatedFields = artworkSchema.safeParse(values);
@@ -213,6 +248,35 @@ const updateArtwork = async ({
   }
 
   try {
+    if (toDelete.length > 0) {
+      await Promise.all(
+        toDelete.map(async (imageUrl) => {
+          const publicId = imageUrl.split("/").pop()?.split(".")[0];
+          if (publicId) {
+            await cloudinary.uploader.destroy(publicId);
+          }
+        }),
+      );
+
+      await prisma.image.deleteMany({
+        where: { artworkId: id, url: { in: toDelete } },
+      });
+    }
+
+    const uploadedImages = await Promise.all(
+      newImages.map((image) =>
+        uploadImageToCloudinary({
+          file: image,
+          referenceCode: validatedFields.data.referenceCode ?? "",
+          referenceNumber: validatedFields.data.referenceNumber,
+        }),
+      ),
+    );
+
+    const validImages = uploadedImages.filter(
+      (image) => image !== null,
+    ) as string[];
+
     const updatedArtwork = await prisma.artwork.update({
       where: { id },
       data: {
@@ -227,6 +291,9 @@ const updateArtwork = async ({
         supportId: validatedFields.data.supportId || null,
         title: validatedFields.data.title || null,
         width: validatedFields.data.width,
+        images: {
+          create: validImages.map((image) => ({ url: image })),
+        },
       },
       include: { images: true },
     });

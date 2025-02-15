@@ -3,6 +3,7 @@ import type { Artwork } from "../../types/artworks.container.types";
 import type { ArtworkSchema } from "../../schemas/types/artwork.schema.types";
 
 type CreateArtworkProps = {
+  newImages: File[];
   values: ArtworkSchema;
 };
 
@@ -34,6 +35,8 @@ type FetchArtworksReturn = Artwork[];
 
 type UpdateArtworkProps = {
   id: string;
+  newImages: File[];
+  toDelete: string[];
   values: ArtworkSchema;
 };
 

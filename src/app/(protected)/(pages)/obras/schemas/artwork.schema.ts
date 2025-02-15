@@ -21,17 +21,22 @@ const artworkSchema = z.object({
     .number({ required_error: "El alto es requerido" })
     .positive("El alto debe ser un número positivo"),
   images: z
-    .array(z.instanceof(File))
+    .array(z.union([z.instanceof(File), z.string()]))
     .min(1, "Por lo menos una imagen es requerida")
     .max(10, "Máximo 10 imágenes permitidas")
     .refine(
-      (files) => files.every((file) => file.size < 5 * 1024 * 1024),
+      (files) =>
+        files.every(
+          (file) => typeof file === "string" || file.size < 5 * 1024 * 1024,
+        ),
       "El tamaño máximo permitido por imagen es de 5MB",
     )
     .refine(
       (files) =>
-        files.every((file) =>
-          ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+        files.every(
+          (file) =>
+            typeof file === "string" ||
+            ["image/jpeg", "image/png", "image/webp"].includes(file.type),
         ),
       "Solo se permiten imágenes en formato JPEG, PNG o WEBP",
     ),
