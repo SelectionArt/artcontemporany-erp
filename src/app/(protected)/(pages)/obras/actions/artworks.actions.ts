@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 // Schemas
 import { artworkSchema } from "../schemas/artwork.schema";
 // Types
-import type { Prisma } from "@prisma/client";
 import type {
   CreateArtworkProps,
   CreateArtworkReturn,
@@ -42,7 +41,19 @@ const createArtwork = async ({
       },
     });
 
-    return { success: "Obra creada con éxito", artwork: newArtwork };
+    return {
+      success: "Obra creada con éxito",
+      artwork: {
+        ...newArtwork,
+        title: newArtwork.title ?? "",
+        referenceCode: newArtwork.referenceCode ?? "",
+        colorId: newArtwork.colorId ?? "",
+        finishId: newArtwork.finishId ?? "",
+        formatId: newArtwork.formatId ?? "",
+        styleId: newArtwork.styleId ?? "",
+        supportId: newArtwork.supportId ?? "",
+      },
+    };
   } catch (error) {
     console.error(error);
     return {
@@ -155,7 +166,16 @@ const updateArtwork = async ({
 
     return {
       success: "Obra actualizada con éxito",
-      artwork: updatedArtwork,
+      artwork: {
+        ...updatedArtwork,
+        title: updatedArtwork.title ?? "",
+        referenceCode: updatedArtwork.referenceCode ?? "",
+        colorId: updatedArtwork.colorId ?? "",
+        finishId: updatedArtwork.finishId ?? "",
+        formatId: updatedArtwork.formatId ?? "",
+        styleId: updatedArtwork.styleId ?? "",
+        supportId: updatedArtwork.supportId ?? "",
+      },
     };
   } catch (error) {
     console.error(error);
