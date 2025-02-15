@@ -13,8 +13,8 @@ import { ArtworksContainer } from "./artworks.container";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Obras",
-  description: "Página de obras",
+  title: "Gestión de obras",
+  description: "Página de gestión de obras",
 };
 
 const ArtworksPage = async () => {
@@ -28,6 +28,7 @@ const ArtworksPage = async () => {
       fetchStyles(),
       fetchSupports(),
     ]);
+
   return (
     <ArtworksContainer
       artists={artists}

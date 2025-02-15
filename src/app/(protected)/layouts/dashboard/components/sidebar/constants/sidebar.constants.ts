@@ -3,9 +3,10 @@ import {
   ChartCandlestick,
   ChartLine,
   Home,
-  Image,
-  Settings2,
+  Images,
+  ImagePlus,
   Settings,
+  Settings2,
 } from "lucide-react";
 
 const ITEMS = {
@@ -16,9 +17,14 @@ const ITEMS = {
       icon: Home,
     },
     {
-      title: "Obras",
+      title: "Gestión obras",
       url: "/obras",
-      icon: Image,
+      icon: ImagePlus,
+    },
+    {
+      title: "Galería obras",
+      url: "/galeria",
+      icon: Images,
     },
     {
       title: "Parametros obras",
