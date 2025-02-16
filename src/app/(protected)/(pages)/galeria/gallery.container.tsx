@@ -1,9 +1,7 @@
 "use client";
-
-// Vendors
-import Image from "next/image";
 // Components
-import { GalleryFilter } from "./components/filter/filter.component";
+import { Artwork } from "./components/artwork/artwork.component";
+import { Filter } from "./components/filter/filter.component";
 // Hooks
 import { GalleryHook } from "./hooks/gallery.hook";
 // Types
@@ -21,7 +19,7 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
 
       <div className="flex flex-wrap gap-2">
         {filterConfig.map(({ key, title, options, mapOptions }) => (
-          <GalleryFilter
+          <Filter
             key={key}
             title={title}
             options={mapOptions(options)}
@@ -36,20 +34,7 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
       {filteredArtworks.length > 0 ? (
         <div className="grid auto-rows-auto grid-cols-[repeat(auto-fill,minmax(224px,1fr))] gap-4">
           {filteredArtworks.map((artwork) => (
-            <div key={artwork.id} className="bg">
-              <div className="relative h-48">
-                <Image
-                  src={artwork.images[0]?.url}
-                  alt={artwork.title}
-                  fill
-                  className="w-full rounded-md object-cover"
-                />
-              </div>
-              <h3 className="mt-2 text-lg font-semibold">{artwork.title}</h3>
-              <p className="text-muted-foreground text-sm">
-                {artwork.artist?.name}
-              </p>
-            </div>
+            <Artwork key={artwork.id} artwork={artwork} />
           ))}
         </div>
       ) : (

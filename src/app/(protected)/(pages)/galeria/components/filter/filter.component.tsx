@@ -1,7 +1,4 @@
-import * as React from "react";
-import { Check, PlusCircle } from "lucide-react";
-
-import { cn } from "@/lib/utils";
+// Components
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -17,78 +14,58 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+// Icons
+import { Check, PlusCircle } from "lucide-react";
+// Libs
+import { cn } from "@/lib/utils";
+// Types
+import { FilterProps } from "./types/filter.component.types";
 
-interface GalleryFilterProps {
-  title: string;
-  options: {
-    label: string;
-    value: string;
-    icon?: React.ComponentType<{ className?: string }>;
-  }[];
-  selectedValues: Set<string>;
-  onFilterChange: (selected: Set<string>) => void;
-}
-
-export function GalleryFilter({
+const Filter = ({
   title,
   options,
   selectedValues,
   onFilterChange,
-}: GalleryFilterProps) {
+}: FilterProps) => {
+  
+  const toggleSelection = (value: string) => {
+    const newSelected = new Set(selectedValues);
+    newSelected.has(value) ? newSelected.delete(value) : newSelected.add(value);
+    onFilterChange(newSelected);
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex h-8 items-center gap-2 border-dashed"
+        >
           <PlusCircle />
           {title}
           {selectedValues.size > 0 && (
-            <>
-              <span className="bg-primary text-primary-foreground mx-2 flex h-4 w-4 items-center justify-center rounded text-xs">
-                {selectedValues.size}
-              </span>
-            </>
+            <span className="bg-primary text-primary-foreground flex h-4 w-4 items-center justify-center rounded text-xs">
+              {selectedValues.size}
+            </span>
           )}
         </Button>
       </PopoverTrigger>
+
       <PopoverContent className="w-[200px] p-0" align="start">
         <Command>
           <CommandInput placeholder={`Filtrar ${title}`} />
           <CommandList>
             <CommandEmpty>No se encontraron resultados.</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => {
-                const isSelected = selectedValues.has(option.value);
-
-                return (
-                  <CommandItem
-                    key={option.value}
-                    onSelect={() => {
-                      const newSelected = new Set(selectedValues);
-                      if (isSelected) {
-                        newSelected.delete(option.value);
-                      } else {
-                        newSelected.add(option.value);
-                      }
-                      onFilterChange(newSelected);
-                    }}
-                  >
-                    <div
-                      className={cn(
-                        "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
-                        isSelected
-                          ? "bg-primary"
-                          : "opacity-50 [&_svg]:invisible",
-                      )}
-                    >
-                      <Check className="text-primary-foreground" />
-                    </div>
-                    {option.icon && (
-                      <option.icon className="text-muted-foreground mr-2 h-4 w-4" />
-                    )}
-                    <span>{option.label}</span>
-                  </CommandItem>
-                );
-              })}
+              {options.map((option) => (
+                <FilterOption
+                  key={option.value}
+                  option={option}
+                  isSelected={selectedValues.has(option.value)}
+                  toggleSelection={toggleSelection}
+                />
+              ))}
             </CommandGroup>
             {selectedValues.size > 0 && (
               <>
@@ -108,4 +85,40 @@ export function GalleryFilter({
       </PopoverContent>
     </Popover>
   );
-}
+};
+
+const FilterOption = ({
+  option,
+  isSelected,
+  toggleSelection,
+}: {
+  option: {
+    value: string;
+    label: string;
+    icon?: React.ComponentType<{ className?: string }>;
+  };
+  isSelected: boolean;
+  toggleSelection: (value: string) => void;
+}) => {
+  return (
+    <CommandItem
+      key={option.value}
+      onSelect={() => toggleSelection(option.value)}
+    >
+      <div
+        className={cn(
+          "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
+          isSelected ? "bg-primary" : "opacity-50 [&_svg]:invisible",
+        )}
+      >
+        <Check className="text-primary-foreground" />
+      </div>
+      {option.icon && (
+        <option.icon className="text-muted-foreground mr-2 h-4 w-4" />
+      )}
+      <span>{option.label}</span>
+    </CommandItem>
+  );
+};
+
+export { Filter };
