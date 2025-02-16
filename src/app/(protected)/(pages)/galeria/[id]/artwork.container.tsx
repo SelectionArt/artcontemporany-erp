@@ -93,7 +93,7 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
       <Card className="max-w-auto p-0">
         <CardContent>
           <div className="flex flex-col gap-1">
-            <h1 className="text-3xl font-semibold">
+            <h1 className="text-2xl font-semibold">
               {artwork.title || "Untitled"}
             </h1>
             <p className="text-muted-foreground text-lg">
@@ -104,7 +104,7 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
           <Separator className="my-4" />
 
           <div className="flex flex-col gap-4">
-            <h2 className="text-lg font-semibold">Detalles</h2>
+            <h2 className="text-base font-semibold">Detalles</h2>
             <div className="grid grid-cols-2 gap-2">
               <div>Número de referncia:</div>
               <div>{artwork.referenceNumber}</div>
@@ -173,7 +173,7 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
             <Separator className="my-2" />
 
             <div>
-              <h2 className="mb-2 text-lg font-semibold">Fechas</h2>
+              <h2 className="mb-2 font-semibold">Fechas</h2>
               <div className="grid grid-cols-2 gap-2">
                 <div>Creado el:</div>
                 <div>
