@@ -32,6 +32,11 @@ const generateMetadata = async ({
 
 const ArtworkPage = async ({ params }: ArtworkPageProps) => {
   const { id } = await params;
+  console.log("🔍 ID recibido en servidor:", id);
+  if (!id) {
+    console.error("🚨 Error: params.id es undefined");
+    return <div className="p-4 text-center">Error cargando la obra.</div>;
+  }
   const artwork = await fetchArtwork({ id });
 
   if (!artwork) {
