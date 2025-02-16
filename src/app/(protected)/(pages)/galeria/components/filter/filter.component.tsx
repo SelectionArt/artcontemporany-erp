@@ -27,7 +27,6 @@ const Filter = ({
   selectedValues,
   onFilterChange,
 }: FilterProps) => {
-  
   const toggleSelection = (value: string) => {
     const newSelected = new Set(selectedValues);
     newSelected.has(value) ? newSelected.delete(value) : newSelected.add(value);
@@ -68,17 +67,15 @@ const Filter = ({
               ))}
             </CommandGroup>
             {selectedValues.size > 0 && (
-              <>
+              <CommandGroup>
                 <CommandSeparator />
-                <CommandGroup>
-                  <CommandItem
-                    onSelect={() => onFilterChange(new Set())}
-                    className="justify-center text-center"
-                  >
-                    Limpiar filtros
-                  </CommandItem>
-                </CommandGroup>
-              </>
+                <CommandItem
+                  onSelect={() => onFilterChange(new Set())}
+                  className="justify-center text-center"
+                >
+                  Limpiar filtros
+                </CommandItem>
+              </CommandGroup>
             )}
           </CommandList>
         </Command>
