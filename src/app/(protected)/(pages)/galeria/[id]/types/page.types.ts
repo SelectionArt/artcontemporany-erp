@@ -2,7 +2,9 @@
 import type { Metadata } from "next";
 
 type ArtworkPageProps = {
-  params: { id: string };
+  params: Promise<{
+    id: string;
+  }>;
 };
 
 type GenerateMetadataProps = {

@@ -71,15 +71,17 @@ const Filter = ({
               ))}
             </CommandGroup>
             {selectedValues.size > 0 && (
-              <CommandGroup>
+              <>
                 <CommandSeparator />
-                <CommandItem
-                  onSelect={() => onFilterChange(new Set())}
-                  className="justify-center text-center"
-                >
-                  Limpiar filtros
-                </CommandItem>
-              </CommandGroup>
+                <CommandGroup>
+                  <CommandItem
+                    onSelect={() => onFilterChange(new Set())}
+                    className="justify-center text-center"
+                  >
+                    Limpiar filtros
+                  </CommandItem>
+                </CommandGroup>
+              </>
             )}
           </CommandList>
         </Command>
