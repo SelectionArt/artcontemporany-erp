@@ -18,7 +18,7 @@ type FetchGalleryReturn = {
     height: number;
     createdAt: Date;
     updatedAt: Date;
-    artist: Artist | null;
+    artist: Artist;
     color: Color | null;
     finish: Finish | null;
     format: Format | null;
