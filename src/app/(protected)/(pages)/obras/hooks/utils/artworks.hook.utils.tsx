@@ -6,7 +6,7 @@ import { SelectAllCheckbox } from "@/components/data-table/components/select-all
 import { SelectRowCheckbox } from "@/components/data-table/components/select-row-checkbox/select-row-checkbox.component";
 import { ColumnSorter } from "@/components/data-table/components/column-sorter/column-sorter.component";
 // Icons
-import { Ellipsis, SquarePen, Trash2 } from "lucide-react";
+import { Ellipsis, Eye, SquarePen, Trash2 } from "lucide-react";
 // Types
 import type { Artwork } from "../../types/artworks.container.types";
 import type {
@@ -23,6 +23,7 @@ function getColumnsConfig({
   formats,
   handleDelete,
   handleEdit,
+  handleNavigate,
   styles,
   supports,
 }: GetColumnsConfigProps<Artwork>): GetColumnsConfigReturn<Artwork> {
@@ -142,6 +143,7 @@ function getColumnsConfig({
           actions={[
             { icon: SquarePen, label: "Editar", onClick: handleEdit },
             { icon: Trash2, label: "Eliminar", onClick: handleDelete },
+            { icon: Eye, label: "Ver obra", onClick: handleNavigate },
           ]}
         />
       ),

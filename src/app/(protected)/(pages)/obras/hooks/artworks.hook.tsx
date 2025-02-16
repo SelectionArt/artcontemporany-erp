@@ -1,6 +1,7 @@
 "use client";
 // Vendors
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 // Constants
@@ -46,11 +47,14 @@ const ArtworksHook = ({
     defaultValues: constants.DEFAULT_FORM_VALUES,
   });
 
+  const router = useRouter();
+
   const {
     handleCreate,
     handleDelete,
     handleDeleteMultiple,
     handleEdit,
+    handleNavigate,
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
     handleSubmit,
@@ -59,6 +63,7 @@ const ArtworksHook = ({
   } = ArtworksHandlers({
     form,
     newImages,
+    router,
     selectedRow,
     selectedRows,
     setData,
@@ -80,6 +85,7 @@ const ArtworksHook = ({
     formats,
     handleDelete,
     handleEdit,
+    handleNavigate,
     styles,
     supports,
   });

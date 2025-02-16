@@ -16,6 +16,7 @@ import type {
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
   EditHandlerProps,
+  NavigateHandlerProps,
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
   SubmitHandlerCreateProps,
@@ -68,6 +69,13 @@ const editHandler = ({
   setSelectedRow(row);
   setToDelete([]);
 };
+
+const navigateHandler = ({
+  row,
+  router,
+}: NavigateHandlerProps): void => {
+  router.push(`/obras/${row.id}`);
+}
 
 const openChangeAlertDialogHandler = ({
   open,
@@ -286,6 +294,7 @@ const submitHandlerDeleteMultiple = async ({
 const ArtworksHandlers = ({
   form,
   newImages,
+  router,
   selectedRow,
   selectedRows,
   setData,
@@ -314,6 +323,7 @@ const ArtworksHandlers = ({
         setSelectedRow,
         setToDelete,
       }),
+    handleNavigate: (row) => navigateHandler({ row, router }),
     handleOpenChangeAlertDialog: (open) =>
       openChangeAlertDialogHandler({
         open,

@@ -18,6 +18,7 @@ type ArtworksHookReturn = Omit<
   | "handleDeleteMultiple"
   | "handleEdit"
   | "handleFetch"
+  | "handleNavigate"
   | "handleResetForm"
 > & {
   columns: GetColumnsConfigReturn<Artwork>;

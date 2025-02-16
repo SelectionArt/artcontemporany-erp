@@ -1,12 +1,14 @@
 // Types
-import type { Dispatch, SetStateAction } from "react";
-import type { UseFormReturn } from "react-hook-form";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import type { Artwork } from "../../types/artworks.container.types";
 import type { ArtworkSchema } from "../../schemas/types/artwork.schema.types";
+import type { Dispatch, SetStateAction } from "react";
+import type { UseFormReturn } from "react-hook-form";
 
 type ArtworksHandlersProps = {
   form: UseFormReturn<ArtworkSchema>;
   newImages: File[];
+  router: AppRouterInstance;
   selectedRow: Artwork | null;
   selectedRows: Artwork[];
   setData: Dispatch<SetStateAction<Artwork[]>>;
@@ -26,6 +28,7 @@ type ArtworksHandlersReturn = {
   handleDelete: (row: Artwork) => void;
   handleDeleteMultiple: (rows: Artwork[]) => void;
   handleEdit: (row: Artwork) => void;
+  handleNavigate: (row: Artwork) => void;
   handleOpenChangeAlertDialog: (open: boolean) => void;
   handleOpenChangeDialog: (open: boolean) => void;
   handleSubmit: (values: ArtworkSchema) => void;
@@ -56,6 +59,10 @@ type EditHandlerProps = Pick<
   | "setOpenDialog"
   | "setToDelete"
 > & {
+  row: Artwork;
+};
+
+type NavigateHandlerProps = Pick<ArtworksHandlersProps, "router"> & {
   row: Artwork;
 };
 
@@ -130,6 +137,7 @@ export type {
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
   EditHandlerProps,
+  NavigateHandlerProps,
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
   SubmitHandlerCreateProps,
