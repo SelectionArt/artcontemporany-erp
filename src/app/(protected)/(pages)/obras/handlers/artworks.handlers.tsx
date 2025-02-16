@@ -70,12 +70,9 @@ const editHandler = ({
   setToDelete([]);
 };
 
-const navigateHandler = ({
-  row,
-  router,
-}: NavigateHandlerProps): void => {
-  router.push(`/obras/${row.id}`);
-}
+const navigateHandler = ({ row, router }: NavigateHandlerProps): void => {
+  router.push(`/galeria/${row.id}`);
+};
 
 const openChangeAlertDialogHandler = ({
   open,
