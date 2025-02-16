@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 // Actions
 import { fetchArtwork } from "./actions/artwork.actions";
 // Components
