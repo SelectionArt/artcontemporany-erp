@@ -5,7 +5,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../../../../ui/select";
+} from "@/components/ui/select";
 // Constants
 import constants from "./constants/rows-per-page.constants";
 // Hooks

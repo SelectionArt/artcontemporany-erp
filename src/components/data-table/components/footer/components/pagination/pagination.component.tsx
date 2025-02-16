@@ -1,5 +1,5 @@
 // Components
-import { Button } from "../../../../../ui/button";
+import { Button } from "@/components/ui/button";
 // Constants
 import constants from "./constants/pagination.constants";
 // Hooks

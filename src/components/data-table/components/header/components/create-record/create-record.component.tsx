@@ -1,11 +1,11 @@
 // Components
-import { Button } from "../../../../../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../../../../../ui/tooltip";
+} from "@/components/ui/tooltip";
 // Constants
 import constants from "./constants/create-record.constants";
 // Icons

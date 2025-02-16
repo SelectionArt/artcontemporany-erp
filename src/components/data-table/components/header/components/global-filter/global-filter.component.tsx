@@ -1,5 +1,5 @@
 // Components
-import { Input } from "../../../../../ui/input";
+import { Input } from "@/components/ui/input";
 // Constants
 import constants from "./constants/global-filter.constants";
 // Hooks

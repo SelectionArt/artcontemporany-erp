@@ -5,7 +5,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "../ui/dialog";
+} from "@/components/ui/dialog";
 // Types
 import { DialogWrapperProps } from "./types/dialog-wrapper.component.types";
 

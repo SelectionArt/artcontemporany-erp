@@ -8,13 +8,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../../ui/table";
+} from "@/components/ui/table";
 // Types
 import { BodyProps } from "./types/body.component.types";
 
 function Body<TData, TValue>({ columns, table }: BodyProps<TData, TValue>) {
   return (
-    <Table className="rounded-md border grow">
+    <Table className="grow rounded-md border">
       <TableHeader>
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>

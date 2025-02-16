@@ -1,5 +1,5 @@
 // Components
-import { Checkbox } from "../../../ui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 // Types
 import type { SelectAllCheckboxProps } from "./types/select-all-checkbox.component.types";
 

@@ -1,5 +1,5 @@
 // Components
-import { Button } from "../../../../../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -7,13 +7,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../../../../ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../../../../../ui/tooltip";
+} from "@/components/ui/tooltip";
 // Constants
 import constants from "./constants/columns-visibility.constants";
 // Hooks

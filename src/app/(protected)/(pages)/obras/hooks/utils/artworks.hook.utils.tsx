@@ -34,7 +34,6 @@ function getColumnsConfig({
       id: "selection",
     },
     {
-      accessorKey: "image",
       cell: ({ row }) => (
         <div className="relative m-2 size-16">
           <Image
@@ -54,17 +53,17 @@ function getColumnsConfig({
       meta: "Título",
     },
     {
-      accessorKey: "artistId",
-      cell: ({ row }) =>
-        artists.find((artist) => artist.id === row.original.artistId)?.name,
+      accessorFn: (row) =>
+        artists.find((artist) => artist.id === row.artistId)?.name || "",
       header: ({ column }) => <ColumnSorter column={column} label="Artista" />,
+      id: "artistId",
       meta: "Artista",
     },
     {
-      accessorKey: "supportId",
       cell: ({ row }) =>
         supports.find((support) => support.id === row.original.supportId)?.name,
       header: ({ column }) => <ColumnSorter column={column} label="Soporte" />,
+      id: "supportId",
       meta: "Soporte",
     },
     {
@@ -78,20 +77,19 @@ function getColumnsConfig({
       meta: "Alto",
     },
     {
-      accessorKey: "reference",
-      cell: ({ row }) => {
-        const { referenceNumber, referenceCode } = row.original;
-        return referenceCode
-          ? `${referenceNumber}-${referenceCode}`
-          : referenceNumber;
-      },
+      accessorFn: (row) =>
+        row.referenceCode
+          ? `${row.referenceNumber}-${row.referenceCode}`
+          : row.referenceNumber,
       header: ({ column }) => (
         <ColumnSorter column={column} label="Referencia" />
       ),
+      id: "referenceNumber",
       meta: "Referencia",
     },
     {
-      accessorKey: "colorId",
+      accessorFn: (row) =>
+        colors.find((color) => color.id === row.colorId)?.name || "",
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
@@ -109,31 +107,30 @@ function getColumnsConfig({
           </div>
         );
       },
+      id: "colorId",
       header: ({ column }) => <ColumnSorter column={column} label="Color" />,
       meta: "Color",
     },
     {
-      accessorKey: "styleId",
-      cell: ({ row }) =>
-        styles.find((style) => style.id === row.original.styleId)?.name,
-      header: ({ column }) => <ColumnSorter column={column} label="Estilo" />,
+      accessorFn: (row) =>
+        styles.find((style) => style.id === row.styleId)?.name || "",
+      id: "styleId",
       meta: "Estilo",
     },
     {
-      accessorKey: "finishId",
-      cell: ({ row }) =>
-        finishes.find((finish) => finish.id === row.original.finishId)?.name,
+      accessorFn: (row) =>
+        finishes.find((finish) => finish.id === row.finishId)?.name || "",
       header: ({ column }) => <ColumnSorter column={column} label="Acabado" />,
+      id: "finishId",
       meta: "Acabado",
     },
     {
-      accessorKey: "formatId",
-      cell: ({ row }) =>
-        formats.find((format) => format.id === row.original.formatId)?.name,
+      accessorFn: (row) =>
+        formats.find((format) => format.id === row.formatId)?.name || "",
       header: ({ column }) => <ColumnSorter column={column} label="Formato" />,
+      id: "formatId",
       meta: "Formato",
     },
-
     {
       cell: ({ row }) => (
         <RowActions
