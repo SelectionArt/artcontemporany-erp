@@ -29,7 +29,11 @@ const Filter = ({
 }: FilterProps) => {
   const toggleSelection = (value: string) => {
     const newSelected = new Set(selectedValues);
-    newSelected.has(value) ? newSelected.delete(value) : newSelected.add(value);
+    if (newSelected.has(value)) {
+      newSelected.delete(value);
+    } else {
+      newSelected.add(value);
+    }
     onFilterChange(newSelected);
   };
 
