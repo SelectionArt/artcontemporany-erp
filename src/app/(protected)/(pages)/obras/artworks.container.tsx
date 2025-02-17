@@ -34,7 +34,6 @@ const ArtworksContainer = ({ artworks, filters }: ArtworksProps) => {
     toDelete,
   } = ArtworksHook({
     artworks,
-    filters,
   });
 
   return (

@@ -23,10 +23,7 @@ import {
   getMultipleSelectActionsProps,
 } from "./utils/artworks.hook.utils";
 
-const ArtworksHook = ({
-  artworks,
-  filters,
-}: ArtworksHookProps): ArtworksHookReturn => {
+const ArtworksHook = ({ artworks }: ArtworksHookProps): ArtworksHookReturn => {
   const [data, setData] = useState<Artwork[]>(artworks);
   const [existingImages, setExistingImages] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -74,7 +71,6 @@ const ArtworksHook = ({
   });
 
   const columns = getColumnsConfig({
-    filters,
     handleDelete,
     handleEdit,
     handleNavigate,

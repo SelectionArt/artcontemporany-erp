@@ -23,7 +23,6 @@ import { Separator } from "@/components/ui/separator";
 // Icons
 import {
   PaintbrushIcon as PaintBrush,
-  Palette,
   Square,
   SquareStack,
   Type,

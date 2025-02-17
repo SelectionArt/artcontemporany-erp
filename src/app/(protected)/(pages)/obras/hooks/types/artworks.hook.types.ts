@@ -10,7 +10,7 @@ import type {
   GetMultipleSelectActionsReturn,
 } from "../utils/types/artworks.hook.utils.types";
 
-type ArtworksHookProps = ArtworksProps;
+type ArtworksHookProps = Pick<ArtworksProps, "artworks">;
 
 type ArtworksHookReturn = Omit<
   ArtworksHandlersReturn,

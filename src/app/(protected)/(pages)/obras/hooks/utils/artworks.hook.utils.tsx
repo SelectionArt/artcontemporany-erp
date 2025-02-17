@@ -1,5 +1,6 @@
 // Vendors
 import Image from "next/image";
+import Link from "next/link";
 // Components
 import { RowActions } from "@/components/data-table/components/row-actions/row-actions.component";
 import { SelectAllCheckbox } from "@/components/data-table/components/select-all-checkbox/select-all-checkbox.component";
@@ -17,7 +18,6 @@ import type {
 } from "./types/artworks.hook.utils.types";
 
 function getColumnsConfig({
-  filters,
   handleDelete,
   handleEdit,
   handleNavigate,
@@ -31,14 +31,16 @@ function getColumnsConfig({
     },
     {
       cell: ({ row }) => (
-        <div className="relative m-2 size-16">
-          <Image
-            src={row.original.images[0].url}
-            alt="Imagen de la obra"
-            fill={true}
-            className="rounded-md border object-cover"
-          />
-        </div>
+        <Link href={`/galeria/${row.original.id}`}>
+          <div className="relative m-2 size-16">
+            <Image
+              src={row.original.images[0].url}
+              alt="Imagen de la obra"
+              fill={true}
+              className="rounded-md border object-cover"
+            />
+          </div>
+        </Link>
       ),
       header: "Imagen",
       meta: "Imagen",
