@@ -112,9 +112,9 @@ function getColumnsConfig({
     },
     {
       accessorFn: (row) => row.finish?.name || "",
-      header: ({ column }) => <ColumnSorter column={column} label="Acabado" />,
+      header: ({ column }) => <ColumnSorter column={column} label="Técnica" />,
       id: "finish",
-      meta: "Acabado",
+      meta: "Técnica",
     },
     {
       accessorFn: (row) => row.format?.name || "",

@@ -2,6 +2,7 @@
 import {
   ChartCandlestick,
   ChartLine,
+  Frame,
   Home,
   Images,
   ImagePlus,
@@ -33,8 +34,8 @@ const ITEMS = {
       isActive: false,
       items: [
         {
-          title: "Acabados",
-          url: "/obras/acabados",
+          title: "Técnicas",
+          url: "/obras/tecnicas",
         },
         {
           title: "Artistas",
@@ -55,6 +56,27 @@ const ITEMS = {
         {
           title: "Soportes",
           url: "/obras/soportes",
+        },
+      ],
+    },
+    {
+      title: "Gestión molduras",
+      url: "/obras",
+      icon: Frame,
+    },
+    {
+      title: "Parámetros molduras",
+      url: "#",
+      icon: Settings2,
+      isActive: false,
+      items: [
+        {
+          title: "Materiales",
+          url: "/molduras/materiales",
+        },
+        {
+          title: "Fabricantes",
+          url: "/molduras/fabricantes",
         },
       ],
     },
