@@ -28,13 +28,13 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
     <div className="flex w-full flex-col gap-4 overflow-auto p-4">
       <h1 className="text-2xl font-semibold">Galería de obras</h1>
 
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-4">
         <Input
           type="text"
           placeholder="Buscar obras..."
           value={searchTerm}
           onChange={handleSearchChange}
-          className="flex-1"
+          className="min-w-48 flex-1"
         />
 
         <div className="flex gap-2">
