@@ -1,11 +1,5 @@
 // Actions
-import { fetchArtists } from "./(pages)/artistas/actions/artists.actions";
-import { fetchArtworks } from "./actions/artworks.actions";
-import { fetchColors } from "./(pages)/colores/actions/colors.actions";
-import { fetchFinishes } from "./(pages)/acabados/actions/finishes.actions";
-import { fetchFormats } from "./(pages)/formatos/actions/formats.actions";
-import { fetchStyles } from "./(pages)/estilos/actions/styles.actions";
-import { fetchSupports } from "./(pages)/soportes/actions/supports.actions";
+import { fetchArtworks, fetchFilters } from "./actions/artworks.actions";
 
 // Components
 import { ArtworksContainer } from "./artworks.container";
@@ -18,28 +12,11 @@ export const metadata: Metadata = {
 };
 
 const ArtworksPage = async () => {
-  const [artists, artworks, colors, finishes, formats, styles, supports] =
-    await Promise.all([
-      fetchArtists(),
-      fetchArtworks(),
-      fetchColors(),
-      fetchFinishes(),
-      fetchFormats(),
-      fetchStyles(),
-      fetchSupports(),
-    ]);
-
-  return (
-    <ArtworksContainer
-      artists={artists}
-      colors={colors}
-      finishes={finishes}
-      formats={formats}
-      initialData={artworks}
-      styles={styles}
-      supports={supports}
-    />
-  );
+  const [artworks, filters] = await Promise.all([
+    fetchArtworks(),
+    fetchFilters(),
+  ]);
+  return <ArtworksContainer artworks={artworks} filters={filters} />;
 };
 
 export default ArtworksPage;

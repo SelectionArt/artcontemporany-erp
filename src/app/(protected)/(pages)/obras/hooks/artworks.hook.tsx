@@ -24,15 +24,10 @@ import {
 } from "./utils/artworks.hook.utils";
 
 const ArtworksHook = ({
-  artists,
-  colors,
-  finishes,
-  formats,
-  initialData,
-  styles,
-  supports,
+  artworks,
+  filters,
 }: ArtworksHookProps): ArtworksHookReturn => {
-  const [data, setData] = useState<Artwork[]>(initialData);
+  const [data, setData] = useState<Artwork[]>(artworks);
   const [existingImages, setExistingImages] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [newImages, setNewImages] = useState<File[]>([]);
@@ -79,15 +74,10 @@ const ArtworksHook = ({
   });
 
   const columns = getColumnsConfig({
-    artists,
-    colors,
-    finishes,
-    formats,
+    filters,
     handleDelete,
     handleEdit,
     handleNavigate,
-    styles,
-    supports,
   });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,

@@ -62,8 +62,18 @@ const editHandler = ({
   setSelectedRow,
   setToDelete,
 }: EditHandlerProps): void => {
-  form.reset({ ...row, images: [] }, { keepDefaultValues: true });
-  setExistingImages(row.images ?? []);
+  const transformedRow = {
+    ...row,
+    artistId: row.artist.id,
+    colors: row.colors.map((color) => color.id),
+    finishId: row.finish?.id || "",
+    formatId: row.format?.id || "",
+    styleId: row.style?.id || "",
+    supportId: row.support?.id || "",
+    images: [],
+  };
+  form.reset(transformedRow, { keepDefaultValues: true });
+  setExistingImages(row.images.map((image) => image.url) || []);
   setNewImages([]);
   setOpenDialog(true);
   setSelectedRow(row);

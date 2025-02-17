@@ -1,23 +1,15 @@
 "use client";
 // Components
-import { AlertDialogWrapper } from "../../../../components/alert-dialog-wrapper/alert-dialog-wrapper.component";
+import { AlertDialogWrapper } from "@/components/alert-dialog-wrapper/alert-dialog-wrapper.component";
 import { ArtworkForm } from "./components/artwork-form/artwork-form.component";
 import { DataTable } from "@/components/data-table/data-table.component";
-import { DialogWrapper } from "../../../../components/dialog-wrapper/dialog-wrapper.component";
+import { DialogWrapper } from "@/components/dialog-wrapper/dialog-wrapper.component";
 // Hooks
 import { ArtworksHook } from "./hooks/artworks.hook";
 // Types
 import type { ArtworksProps } from "./types/artworks.container.types";
 
-const ArtworksContainer = ({
-  artists,
-  colors,
-  finishes,
-  formats,
-  initialData,
-  styles,
-  supports,
-}: ArtworksProps) => {
+const ArtworksContainer = ({ artworks, filters }: ArtworksProps) => {
   const {
     columns,
     data,
@@ -41,13 +33,8 @@ const ArtworksContainer = ({
     setToDelete,
     toDelete,
   } = ArtworksHook({
-    artists,
-    colors,
-    finishes,
-    formats,
-    initialData,
-    styles,
-    supports,
+    artworks,
+    filters,
   });
 
   return (
@@ -66,12 +53,9 @@ const ArtworksContainer = ({
         title={`${selectedRow ? "Editar" : "Crear"} obra`}
       >
         <ArtworkForm
-          artists={artists}
-          colors={colors}
           existingImages={existingImages}
-          finishes={finishes}
+          filters={filters}
           form={form}
-          formats={formats}
           handleSubmit={handleSubmit}
           label={selectedRow ? "Editar" : "Crear"}
           loading={loading}
@@ -79,8 +63,6 @@ const ArtworksContainer = ({
           setExistingImages={setExistingImages}
           setNewImages={setNewImages}
           setToDelete={setToDelete}
-          styles={styles}
-          supports={supports}
           toDelete={toDelete}
         />
       </DialogWrapper>

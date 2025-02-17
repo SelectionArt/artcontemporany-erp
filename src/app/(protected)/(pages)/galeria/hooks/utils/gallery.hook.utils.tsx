@@ -23,7 +23,7 @@ const getFiltersConfig = ({
   {
     key: "colors",
     title: "Colores",
-    artworkKey: "color",
+    artworkKey: "colors",
     options: gallery.filters.colors,
     mapOptions: (options) =>
       options.map((option) => ({
@@ -96,7 +96,17 @@ const getFilteredArtworks = ({
       const activeFilters = filters[key];
       if (activeFilters.size === 0) return true;
       const artworkValue = artwork[artworkKey];
-      return artworkValue?.id ? activeFilters.has(artworkValue.id) : false;
+      if (key === "colors") {
+        return artwork.colors.some((color) => activeFilters.has(color.id));
+      }
+      if (
+        artworkValue &&
+        typeof artworkValue === "object" &&
+        "id" in artworkValue
+      ) {
+        return activeFilters.has(artworkValue.id);
+      }
+      return false;
     });
 
     const lowerSearchTerm = searchTerm.toLowerCase();
@@ -107,7 +117,7 @@ const getFilteredArtworks = ({
           artwork.referenceNumber?.toString(),
           artwork.referenceCode,
           artwork.artist?.name,
-          artwork.color?.name,
+          artwork.colors.map((color) => color.name).join(" "),
           artwork.finish?.name,
           artwork.format?.name,
           artwork.style?.name,

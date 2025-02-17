@@ -1,7 +1,7 @@
 const constants = {
   DEFAULT_FORM_VALUES: {
     artistId: "",
-    colorId: "",
+    colors: [] as string[],
     finishId: "",
     formatId: "",
     height: 0,

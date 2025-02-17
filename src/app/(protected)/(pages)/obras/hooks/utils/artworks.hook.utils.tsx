@@ -17,15 +17,10 @@ import type {
 } from "./types/artworks.hook.utils.types";
 
 function getColumnsConfig({
-  artists,
-  colors,
-  finishes,
-  formats,
+  filters,
   handleDelete,
   handleEdit,
   handleNavigate,
-  styles,
-  supports,
 }: GetColumnsConfigProps<Artwork>): GetColumnsConfigReturn<Artwork> {
   return [
     {
@@ -38,7 +33,7 @@ function getColumnsConfig({
       cell: ({ row }) => (
         <div className="relative m-2 size-16">
           <Image
-            src={row.original.images[0]}
+            src={row.original.images[0].url}
             alt="Imagen de la obra"
             fill={true}
             className="rounded-md border object-cover"
@@ -54,17 +49,15 @@ function getColumnsConfig({
       meta: "Título",
     },
     {
-      accessorFn: (row) =>
-        artists.find((artist) => artist.id === row.artistId)?.name || "",
+      accessorFn: (row) => row.artist.name,
       header: ({ column }) => <ColumnSorter column={column} label="Artista" />,
-      id: "artistId",
+      id: "artist",
       meta: "Artista",
     },
     {
-      cell: ({ row }) =>
-        supports.find((support) => support.id === row.original.supportId)?.name,
+      accessorFn: (row) => row.support?.name || "",
       header: ({ column }) => <ColumnSorter column={column} label="Soporte" />,
-      id: "supportId",
+      id: "support",
       meta: "Soporte",
     },
     {
@@ -89,47 +82,42 @@ function getColumnsConfig({
       meta: "Referencia",
     },
     {
-      accessorFn: (row) =>
-        colors.find((color) => color.id === row.colorId)?.name || "",
+      accessorFn: (row) => row.colors.map((color) => color.name).join(", "),
       cell: ({ row }) => {
         return (
-          <div className="flex items-center gap-2">
-            <div
-              className="h-6 w-6 rounded-full"
-              style={{
-                backgroundColor: colors.find(
-                  (color) => color.id === row.original.colorId,
-                )?.hex,
-              }}
-            />
-            <span>
-              {colors.find((color) => color.id === row.original.colorId)?.name}
-            </span>
+          <div className="flex flex-wrap items-center gap-1">
+            {row.original.colors.map((color) => (
+              <div key={color.id} className="flex items-center gap-1">
+                <div
+                  className="h-4 w-4 rounded-full"
+                  style={{ backgroundColor: color.hex }}
+                />
+                <span>{color.name}</span>
+              </div>
+            ))}
           </div>
         );
       },
-      id: "colorId",
       header: ({ column }) => <ColumnSorter column={column} label="Color" />,
+      id: "colors",
       meta: "Color",
     },
     {
-      accessorFn: (row) =>
-        styles.find((style) => style.id === row.styleId)?.name || "",
-      id: "styleId",
+      accessorFn: (row) => row.style?.name || "",
+      header: ({ column }) => <ColumnSorter column={column} label="Estilo" />,
+      id: "style",
       meta: "Estilo",
     },
     {
-      accessorFn: (row) =>
-        finishes.find((finish) => finish.id === row.finishId)?.name || "",
+      accessorFn: (row) => row.finish?.name || "",
       header: ({ column }) => <ColumnSorter column={column} label="Acabado" />,
-      id: "finishId",
+      id: "finish",
       meta: "Acabado",
     },
     {
-      accessorFn: (row) =>
-        formats.find((format) => format.id === row.formatId)?.name || "",
+      accessorFn: (row) => row.format?.name || "",
       header: ({ column }) => <ColumnSorter column={column} label="Formato" />,
-      id: "formatId",
+      id: "format",
       meta: "Formato",
     },
     {

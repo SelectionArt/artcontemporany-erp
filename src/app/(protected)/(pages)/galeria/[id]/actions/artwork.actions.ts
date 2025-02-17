@@ -15,7 +15,11 @@ const fetchArtwork = async ({
       where: { id },
       include: {
         artist: true,
-        color: true,
+        colors: {
+          include: {
+            color: true,
+          },
+        },
         finish: true,
         format: true,
         style: true,
@@ -29,21 +33,27 @@ const fetchArtwork = async ({
     }
 
     return {
-      id: artwork.id,
-      title: artwork.title ?? "",
-      referenceNumber: artwork.referenceNumber,
-      referenceCode: artwork.referenceCode ?? "",
-      width: artwork.width,
-      height: artwork.height,
-      createdAt: artwork.createdAt,
-      updatedAt: artwork.updatedAt,
       artist: artwork.artist,
-      color: artwork.color,
+      colors: artwork.colors.map(({ color }) => ({
+        id: color.id,
+        name: color.name,
+        createdAt: color.createdAt,
+        updatedAt: color.updatedAt,
+        hex: color.hex,
+      })),
+      createdAt: artwork.createdAt,
       finish: artwork.finish,
       format: artwork.format,
+      height: artwork.height,
+      id: artwork.id,
+      images: artwork.images,
+      referenceCode: artwork.referenceCode ?? "",
+      referenceNumber: artwork.referenceNumber,
       style: artwork.style,
       support: artwork.support,
-      images: artwork.images,
+      title: artwork.title ?? "",
+      updatedAt: artwork.updatedAt,
+      width: artwork.width,
     };
   } catch (error) {
     console.error(error);

@@ -87,32 +87,57 @@ const createArtwork = async ({
     const newArtwork = await prisma.artwork.create({
       data: {
         ...validatedFields.data,
-        colorId: validatedFields.data.colorId || null,
+        colors: {
+          create: validatedFields.data.colors.map((colorId) => ({
+            colorId,
+          })),
+        },
         finishId: validatedFields.data.finishId || null,
         formatId: validatedFields.data.formatId || null,
+        images: {
+          create: validImages.map((image) => ({ url: image })),
+        },
         referenceCode: validatedFields.data.referenceCode || null,
         styleId: validatedFields.data.styleId || null,
         supportId: validatedFields.data.supportId || null,
         title: validatedFields.data.title || null,
-        images: {
-          create: validImages.map((image) => ({ url: image })),
-        },
       },
-      include: { images: true },
+      include: {
+        artist: true,
+        colors: { include: { color: true } },
+        finish: true,
+        format: true,
+        images: true,
+        style: true,
+        support: true,
+      },
     });
 
     return {
       success: "Obra creada con éxito",
       artwork: {
         ...newArtwork,
-        title: newArtwork.title ?? "",
+        artist: newArtwork.artist,
+        colors: newArtwork.colors.map(({ color }) => ({
+          id: color.id,
+          name: color.name,
+          createdAt: color.createdAt,
+          updatedAt: color.updatedAt,
+          hex: color.hex,
+        })),
+        finish: newArtwork.finish,
+        format: newArtwork.format,
+        images: newArtwork.images.map((image) => ({
+          id: image.id,
+          url: image.url,
+          createdAt: image.createdAt,
+          updatedAt: image.updatedAt,
+          artworkId: image.artworkId,
+        })),
         referenceCode: newArtwork.referenceCode ?? "",
-        colorId: newArtwork.colorId ?? "",
-        finishId: newArtwork.finishId ?? "",
-        formatId: newArtwork.formatId ?? "",
-        images: newArtwork.images.map((image) => image.url),
-        styleId: newArtwork.styleId ?? "",
-        supportId: newArtwork.supportId ?? "",
+        style: newArtwork.style,
+        support: newArtwork.support,
+        title: newArtwork.title ?? "",
       },
     };
   } catch (error) {
@@ -194,26 +219,73 @@ const fetchArtworks = async (): Promise<FetchArtworksReturn> => {
     const artworks = await prisma.artwork.findMany({
       orderBy: { createdAt: "desc" },
       include: {
+        artist: true,
+        colors: {
+          include: {
+            color: true,
+          },
+        },
+        finish: true,
+        format: true,
+        style: true,
+        support: true,
         images: true,
       },
     });
 
-    const transformedArtworks = artworks.map((artwork) => ({
-      ...artwork,
-      colorId: artwork.colorId ?? "",
-      finishId: artwork.finishId ?? "",
-      formatId: artwork.formatId ?? "",
-      images: artwork.images.map((image) => image.url),
+    return artworks.map((artwork) => ({
+      artist: artwork.artist,
+      colors: artwork.colors.map((color) => color.color),
+      createdAt: artwork.createdAt,
+      finish: artwork.finish,
+      format: artwork.format,
+      height: artwork.height,
+      id: artwork.id,
+      images: artwork.images,
       referenceCode: artwork.referenceCode ?? "",
-      styleId: artwork.styleId ?? "",
-      supportId: artwork.supportId ?? "",
+      referenceNumber: artwork.referenceNumber,
+      style: artwork.style,
+      support: artwork.support,
       title: artwork.title ?? "",
+      updatedAt: artwork.updatedAt,
+      width: artwork.width,
     }));
-
-    return transformedArtworks;
   } catch (error) {
     console.error(error);
     return [];
+  }
+};
+
+const fetchFilters = async () => {
+  try {
+    const [artists, colors, finishes, formats, styles, supports] =
+      await Promise.all([
+        prisma.artist.findMany(),
+        prisma.color.findMany(),
+        prisma.finish.findMany(),
+        prisma.format.findMany(),
+        prisma.style.findMany(),
+        prisma.support.findMany(),
+      ]);
+
+    return {
+      artists,
+      colors,
+      finishes,
+      formats,
+      styles,
+      supports,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      artists: [],
+      colors: [],
+      finishes: [],
+      formats: [],
+      styles: [],
+      supports: [],
+    };
   }
 };
 
@@ -273,43 +345,70 @@ const updateArtwork = async ({
       ),
     );
 
-    const validImages = uploadedImages.filter(
-      (image) => image !== null,
-    ) as string[];
+    const validImages = uploadedImages.filter(Boolean) as string[];
+
+    await prisma.artworkColor.deleteMany({
+      where: { artworkId: id },
+    });
 
     const updatedArtwork = await prisma.artwork.update({
       where: { id },
       data: {
         artistId: validatedFields.data.artistId,
-        colorId: validatedFields.data.colorId || null,
+        colors: {
+          create: validatedFields.data.colors.map((colorId) => ({
+            color: { connect: { id: colorId } },
+          })),
+        },
         finishId: validatedFields.data.finishId || null,
         formatId: validatedFields.data.formatId || null,
         height: validatedFields.data.height,
-        referenceNumber: validatedFields.data.referenceNumber,
+        images: {
+          create: validImages.map((image) => ({ url: image })),
+        },
         referenceCode: validatedFields.data.referenceCode || null,
+        referenceNumber: validatedFields.data.referenceNumber,
         styleId: validatedFields.data.styleId || null,
         supportId: validatedFields.data.supportId || null,
         title: validatedFields.data.title || null,
         width: validatedFields.data.width,
-        images: {
-          create: validImages.map((image) => ({ url: image })),
-        },
       },
-      include: { images: true },
+      include: {
+        artist: true,
+        colors: { include: { color: true } },
+        finish: true,
+        format: true,
+        images: true,
+        style: true,
+        support: true,
+      },
     });
 
     return {
       success: "Obra actualizada con éxito",
       artwork: {
         ...updatedArtwork,
-        title: updatedArtwork.title ?? "",
+        artist: updatedArtwork.artist,
+        colors: updatedArtwork.colors.map(({ color }) => ({
+          id: color.id,
+          name: color.name,
+          createdAt: color.createdAt,
+          updatedAt: color.updatedAt,
+          hex: color.hex,
+        })),
+        finish: updatedArtwork.finish,
+        format: updatedArtwork.format,
+        style: updatedArtwork.style,
+        support: updatedArtwork.support,
+        images: updatedArtwork.images.map((image) => ({
+          id: image.id,
+          url: image.url,
+          createdAt: image.createdAt,
+          updatedAt: image.updatedAt,
+          artworkId: image.artworkId,
+        })),
         referenceCode: updatedArtwork.referenceCode ?? "",
-        colorId: updatedArtwork.colorId ?? "",
-        finishId: updatedArtwork.finishId ?? "",
-        formatId: updatedArtwork.formatId ?? "",
-        images: updatedArtwork.images.map((image) => image.url),
-        styleId: updatedArtwork.styleId ?? "",
-        supportId: updatedArtwork.supportId ?? "",
+        title: updatedArtwork.title ?? "",
       },
     };
   } catch (error) {
@@ -325,6 +424,7 @@ export {
   deleteArtwork,
   deleteMultipleArtworks,
   fetchArtworks,
+  fetchFilters,
   generateUniqueReferenceNumber,
   updateArtwork,
 };

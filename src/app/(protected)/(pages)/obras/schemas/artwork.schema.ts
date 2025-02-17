@@ -5,10 +5,10 @@ const artworkSchema = z.object({
   artistId: z
     .string({ required_error: "El artista es requerido" })
     .min(1, "El artista es requerido"),
-  colorId: z
-    .string()
-    .optional()
-    .transform((value) => value?.trim() ?? ""),
+  colors: z
+    .array(z.string())
+    .min(1, "Por lo menos un color es requerido")
+    .max(10, "Máximo 10 imágenes permitidas"),
   finishId: z
     .string()
     .optional()

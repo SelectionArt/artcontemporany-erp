@@ -13,21 +13,21 @@ type FetchArtworkProps = {
 };
 
 type FetchArtworkReturn = {
-  id: string;
-  title: string;
-  referenceNumber: number;
-  referenceCode: string;
-  width: number;
-  height: number;
-  createdAt: Date;
-  updatedAt: Date;
   artist: Artist;
-  color: Color | null;
+  colors: Color[];
+  createdAt: Date;
   finish: Finish | null;
   format: Format | null;
+  height: number;
+  id: string;
+  images: Image[];
+  referenceCode: string;
+  referenceNumber: number;
   style: Style | null;
   support: Support | null;
-  images: Image[];
+  title: string;
+  updatedAt: Date;
+  width: number;
 };
 
 export type { FetchArtworkProps, FetchArtworkReturn };

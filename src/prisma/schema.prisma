@@ -49,7 +49,6 @@ model Artwork {
   width           Int
   height          Int
   artistId        String
-  colorId         String?
   finishId        String?
   formatId        String?
   styleId         String?
@@ -58,13 +57,24 @@ model Artwork {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  images  Image[]
+  colors ArtworkColor[]
+  images Image[]
+
   artist  Artist   @relation(fields: [artistId], references: [id])
-  color   Color?   @relation(fields: [colorId], references: [id])
   finish  Finish?  @relation(fields: [finishId], references: [id])
   format  Format?  @relation(fields: [formatId], references: [id])
   style   Style?   @relation(fields: [styleId], references: [id])
   support Support? @relation(fields: [supportId], references: [id])
+}
+
+model ArtworkColor {
+  artworkId String
+  colorId   String
+
+  artwork Artwork @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  color   Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
+
+  @@id([artworkId, colorId])
 }
 
 model Image {
@@ -93,12 +103,12 @@ model Finish {
 }
 
 model Color {
-  id        String    @id @default(cuid())
+  id        String         @id @default(cuid())
   name      String
   hex       String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  artworks  Artwork[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  artworks  ArtworkColor[]
 }
 
 model Style {

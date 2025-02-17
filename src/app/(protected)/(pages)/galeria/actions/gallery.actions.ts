@@ -12,7 +12,11 @@ const fetchGallery = async (): Promise<FetchGalleryReturn> => {
           orderBy: { createdAt: "desc" },
           include: {
             artist: true,
-            color: true,
+            colors: {
+              include: {
+                color: true,
+              },
+            },
             finish: true,
             format: true,
             style: true,
@@ -30,21 +34,21 @@ const fetchGallery = async (): Promise<FetchGalleryReturn> => {
 
     return {
       artworks: artworks.map((artwork) => ({
-        id: artwork.id,
-        title: artwork.title ?? "",
-        referenceNumber: artwork.referenceNumber,
-        referenceCode: artwork.referenceCode ?? "",
-        width: artwork.width,
-        height: artwork.height,
-        createdAt: artwork.createdAt,
-        updatedAt: artwork.updatedAt,
         artist: artwork.artist,
-        color: artwork.color,
+        colors: artwork.colors.map((color) => color.color),
+        createdAt: artwork.createdAt,
         finish: artwork.finish,
         format: artwork.format,
+        height: artwork.height,
+        id: artwork.id,
+        images: artwork.images,
+        referenceCode: artwork.referenceCode ?? "",
+        referenceNumber: artwork.referenceNumber,
         style: artwork.style,
         support: artwork.support,
-        images: artwork.images,
+        title: artwork.title ?? "",
+        updatedAt: artwork.updatedAt,
+        width: artwork.width,
       })),
       filters: {
         artists,

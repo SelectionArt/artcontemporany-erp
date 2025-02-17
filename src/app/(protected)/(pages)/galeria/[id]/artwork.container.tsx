@@ -122,52 +122,71 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
 
             <Separator className="my-2" />
 
-            <div className="flex flex-wrap gap-4">
-              {artwork.color && (
-                <Badge
-                  className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium"
-                  variant="outline"
-                >
-                  <Palette className="h-4 w-4" />
-                  {artwork.color.name}
-                </Badge>
-              )}
-              {artwork.finish && (
-                <Badge
-                  className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium"
-                  variant="outline"
-                >
-                  <PaintBrush className="h-4 w-4" />
-                  {artwork.finish.name}
-                </Badge>
-              )}
-              {artwork.format && (
-                <Badge
-                  className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium"
-                  variant="outline"
-                >
-                  <Square className="h-4 w-4" />
-                  {artwork.format.name}
-                </Badge>
-              )}
-              {artwork.style && (
-                <Badge
-                  className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium"
-                  variant="outline"
-                >
-                  <Type className="h-4 w-4" />
-                  {artwork.style.name}
-                </Badge>
-              )}
-              {artwork.support && (
-                <Badge
-                  className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium"
-                  variant="outline"
-                >
-                  <SquareStack className="h-4 w-4" />
-                  {artwork.support.name}
-                </Badge>
-              )}
+            {artwork.colors.length > 0 && (
+              <>
+                <div className="flex flex-col gap-4">
+                  <h2 className="mb-2 text-sm font-semibold">Colores</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {artwork.colors.map((color) => (
+                      <Badge
+                        key={color.id}
+                        className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium"
+                        variant="outline"
+                      >
+                        <div
+                          className="h-5 w-5 rounded-full"
+                          style={{ backgroundColor: color.hex }}
+                        />
+                        {color.name}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <Separator className="my-2" />
+              </>
+            )}
+
+            <div className="flex flex-col gap-4">
+              <h2 className="text-base font-semibold">Propiedades</h2>
+
+              <div className="flex flex-wrap gap-2">
+                {artwork.finish && (
+                  <Badge
+                    className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium"
+                    variant="outline"
+                  >
+                    <PaintBrush className="h-4 w-4" />
+                    {artwork.finish.name}
+                  </Badge>
+                )}
+                {artwork.format && (
+                  <Badge
+                    className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium"
+                    variant="outline"
+                  >
+                    <Square className="h-4 w-4" />
+                    {artwork.format.name}
+                  </Badge>
+                )}
+                {artwork.style && (
+                  <Badge
+                    className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium"
+                    variant="outline"
+                  >
+                    <Type className="h-4 w-4" />
+                    {artwork.style.name}
+                  </Badge>
+                )}
+                {artwork.support && (
+                  <Badge
+                    className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium"
+                    variant="outline"
+                  >
+                    <SquareStack className="h-4 w-4" />
+                    {artwork.support.name}
+                  </Badge>
+                )}
+              </div>
             </div>
 
             <Separator className="my-2" />

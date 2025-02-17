@@ -111,10 +111,10 @@ const constants = {
       name: "supportId",
       placeholder: "Soporte de la obra",
     },
-    COLOR: {
-      labelText: "Color",
-      name: "colorId",
-      placeholder: "Color de la obra",
+    COLORS: {
+      labelText: "Colores",
+      name: "colors",
+      placeholder: "Colores",
     },
     STYLE: {
       labelText: "Estilo",
@@ -122,9 +122,9 @@ const constants = {
       placeholder: "Estilo de la obra",
     },
     FINISH: {
-      labelText: "Acabado",
+      labelText: "Técnica",
       name: "finishId",
-      placeholder: "Acabado de la obra",
+      placeholder: "Técnica de la obra",
     },
     FORMAT: {
       labelText: "Formato",

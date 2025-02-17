@@ -3,7 +3,7 @@ import type { FetchGalleryReturn } from "../../../actions/types/gallery.actions.
 
 type ArtworkrKeys =
   | "artist"
-  | "color"
+  | "colors"
   | "finish"
   | "format"
   | "style"

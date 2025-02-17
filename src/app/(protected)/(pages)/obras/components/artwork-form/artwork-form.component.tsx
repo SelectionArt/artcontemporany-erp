@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { MultiSelect } from "@/components/ui/multiple-selector";
 import {
   Select,
   SelectContent,
@@ -27,12 +28,9 @@ import { X } from "lucide-react";
 import type { ArtworkFormProps } from "./types/artwork-form.component.types";
 
 const ArtworkForm = ({
-  artists,
-  colors,
   existingImages,
-  finishes,
+  filters,
   form,
-  formats,
   handleSubmit,
   label,
   loading,
@@ -40,8 +38,6 @@ const ArtworkForm = ({
   setExistingImages,
   setNewImages,
   setToDelete,
-  styles,
-  supports,
   toDelete,
 }: ArtworkFormProps) => (
   <Form {...form}>
@@ -227,72 +223,58 @@ const ArtworkForm = ({
             )}
           />
         </div>
-        <div className="flex gap-4">
-          <FormField
-            control={form.control}
-            name={constants.SELECT_FIELDS.ARTIST.name}
-            render={({ field }) => (
-              <FormItem className="grow basis-1/2">
-                <FormLabel>
-                  {constants.SELECT_FIELDS.ARTIST.labelText}
-                </FormLabel>
-                <Select
+
+        <FormField
+          control={form.control}
+          name={constants.SELECT_FIELDS.COLORS.name}
+          render={({ field }) => (
+            <FormItem className="grow basis-1/2">
+              <FormLabel>{constants.SELECT_FIELDS.COLORS.labelText}</FormLabel>
+              <FormControl>
+                <MultiSelect
+                  {...field}
+                  options={filters.colors.map((color) => ({
+                    label: color.name,
+                    value: color.id,
+                  }))}
                   onValueChange={field.onChange}
                   defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue
-                        placeholder={constants.SELECT_FIELDS.ARTIST.placeholder}
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {artists.map((artist) => (
-                      <SelectItem key={artist.id} value={artist.id}>
-                        {artist.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name={constants.SELECT_FIELDS.SUPPORT.name}
-            render={({ field }) => (
-              <FormItem className="grow basis-1/2">
-                <FormLabel>
-                  {constants.SELECT_FIELDS.SUPPORT.labelText}
-                </FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue
-                        placeholder={
-                          constants.SELECT_FIELDS.SUPPORT.placeholder
-                        }
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {supports.map((support) => (
-                      <SelectItem key={support.id} value={support.id}>
-                        {support.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+                  placeholder={constants.SELECT_FIELDS.COLORS.placeholder}
+                  variant="inverted"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name={constants.SELECT_FIELDS.ARTIST.name}
+          render={({ field }) => (
+            <FormItem className="grow basis-1/2">
+              <FormLabel>{constants.SELECT_FIELDS.ARTIST.labelText}</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue
+                      placeholder={constants.SELECT_FIELDS.ARTIST.placeholder}
+                    />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {filters.artists.map((artist) => (
+                    <SelectItem key={artist.id} value={artist.id}>
+                      {artist.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <div className="flex gap-4">
           <FormField
             control={form.control}
@@ -340,10 +322,12 @@ const ArtworkForm = ({
         <div className="flex gap-4">
           <FormField
             control={form.control}
-            name={constants.SELECT_FIELDS.COLOR.name}
+            name={constants.SELECT_FIELDS.SUPPORT.name}
             render={({ field }) => (
               <FormItem className="grow basis-1/2">
-                <FormLabel>{constants.SELECT_FIELDS.COLOR.labelText}</FormLabel>
+                <FormLabel>
+                  {constants.SELECT_FIELDS.SUPPORT.labelText}
+                </FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -351,20 +335,16 @@ const ArtworkForm = ({
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue
-                        placeholder={constants.SELECT_FIELDS.COLOR.placeholder}
+                        placeholder={
+                          constants.SELECT_FIELDS.SUPPORT.placeholder
+                        }
                       />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {colors.map((color) => (
-                      <SelectItem key={color.id} value={color.id}>
-                        <div className="flex items-center gap-2">
-                          <div
-                            className="h-4 w-4 rounded-full"
-                            style={{ backgroundColor: color.hex }}
-                          />
-                          <span>{color.name}</span>
-                        </div>
+                    {filters.supports.map((support) => (
+                      <SelectItem key={support.id} value={support.id}>
+                        {support.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -391,7 +371,7 @@ const ArtworkForm = ({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {styles.map((style) => (
+                    {filters.styles.map((style) => (
                       <SelectItem key={style.id} value={style.id}>
                         {style.name}
                       </SelectItem>
@@ -424,7 +404,7 @@ const ArtworkForm = ({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {finishes.map((finish) => (
+                    {filters.finishes.map((finish) => (
                       <SelectItem key={finish.id} value={finish.id}>
                         {finish.name}
                       </SelectItem>
@@ -455,7 +435,7 @@ const ArtworkForm = ({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {formats.map((format) => (
+                    {filters.formats.map((format) => (
                       <SelectItem key={format.id} value={format.id}>
                         {format.name}
                       </SelectItem>

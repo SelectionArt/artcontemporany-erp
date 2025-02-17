@@ -1,6 +1,15 @@
 // Types
 import type { Artwork } from "../../types/artworks.container.types";
 import type { ArtworkSchema } from "../../schemas/types/artwork.schema.types";
+import {
+  Artist,
+  Color,
+  Finish,
+  Format,
+  Image,
+  Style,
+  Support,
+} from "@prisma/client";
 
 type CreateArtworkProps = {
   newImages: File[];
@@ -31,7 +40,32 @@ type DeleteMultipleArtworksReturn = {
   error?: string;
 };
 
-type FetchArtworksReturn = Artwork[];
+type FetchArtworksReturn = {
+  artist: Artist;
+  colors: Color[];
+  createdAt: Date;
+  finish: Finish | null;
+  format: Format | null;
+  height: number;
+  id: string;
+  images: Image[];
+  referenceCode: string;
+  referenceNumber: number;
+  style: Style | null;
+  support: Support | null;
+  title: string;
+  updatedAt: Date;
+  width: number;
+}[];
+
+type FetchFiltersReturn = {
+  artists: Artist[];
+  colors: Color[];
+  finishes: Finish[];
+  formats: Format[];
+  styles: Style[];
+  supports: Support[];
+};
 
 type UpdateArtworkProps = {
   id: string;
@@ -54,6 +88,7 @@ export type {
   DeleteMultipleArtworksProps,
   DeleteMultipleArtworksReturn,
   FetchArtworksReturn,
+  FetchFiltersReturn,
   UpdateArtworkProps,
   UpdateArtworkReturn,
 };
