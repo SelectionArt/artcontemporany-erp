@@ -135,6 +135,13 @@ model Support {
   artworks  Artwork[]
 }
 
+model Frame {
+  id        String    @id @default(cuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
 model Manufacturer {
   id        String   @id @default(cuid())
   name      String
