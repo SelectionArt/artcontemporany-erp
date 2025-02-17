@@ -3,7 +3,6 @@ import type {
   Color,
   Finish,
   Format,
-  Image,
   Style,
   Support,
 } from "@prisma/client";
