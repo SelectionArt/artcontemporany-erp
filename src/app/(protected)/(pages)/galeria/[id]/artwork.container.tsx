@@ -106,7 +106,7 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
           <div className="flex flex-col gap-4">
             <h2 className="text-base font-semibold">Detalles</h2>
             <div className="grid grid-cols-2 gap-2">
-              <div>Número de referncia:</div>
+              <div>Número de referencia:</div>
               <div>{artwork.referenceNumber}</div>
               {artwork.referenceCode && (
                 <>

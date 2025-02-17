@@ -27,7 +27,7 @@ const ITEMS = {
       icon: Images,
     },
     {
-      title: "Parametros obras",
+      title: "Parámetros obras",
       url: "#",
       icon: Settings2,
       isActive: false,
