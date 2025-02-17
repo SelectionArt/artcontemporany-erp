@@ -35,6 +35,9 @@ type GetFilteredArtworksProps = {
   gallery: FetchGalleryReturn;
   filterConfig: GetFiltersConfigReturn[];
   filters: Record<string, Set<string>>;
+  height: string;
+  searchTerm: string;
+  width: string;
 };
 
 type GetFilteredArtworksReturn = FetchGalleryReturn["artworks"];

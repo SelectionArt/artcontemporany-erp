@@ -23,21 +23,43 @@ const GalleryHook = ({ gallery }: GalleryHookProps): GalleryHookReturn => {
     styles: new Set(),
     supports: new Set(),
   });
+  const [height, setHeight] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [width, setWidth] = useState<string>("");
 
   const filterConfig = getFiltersConfig({ gallery });
   const filteredArtworks = getFilteredArtworks({
-    gallery,
     filterConfig,
     filters,
+    gallery,
+    height,
+    searchTerm,
+    width,
   });
 
-  const { handleFilterChange } = GalleryHandlers({ setFilters });
+  const {
+    handleFilterChange,
+    handleHeightChange,
+    handleSearchChange,
+    handleWidthChange,
+  } = GalleryHandlers({
+    setFilters,
+    setHeight,
+    setSearchTerm,
+    setWidth,
+  });
 
   return {
     filterConfig,
     filteredArtworks,
     filters,
     handleFilterChange,
+    handleHeightChange,
+    handleSearchChange,
+    handleWidthChange,
+    height,
+    searchTerm,
+    width,
   };
 };
 

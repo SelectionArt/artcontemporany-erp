@@ -14,6 +14,9 @@ type GalleryHookReturn = GalleryHandlersReturn & {
   filterConfig: GetFiltersConfigReturn[];
   filteredArtworks: GetFilteredArtworksReturn;
   filters: Record<string, Set<string>>;
+  height: string;
+  searchTerm: string;
+  width: string;
 };
 
 export type { GalleryHookProps, GalleryHookReturn };
