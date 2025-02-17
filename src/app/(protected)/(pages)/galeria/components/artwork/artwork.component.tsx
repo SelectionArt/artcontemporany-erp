@@ -12,7 +12,7 @@ const Artwork = ({ artwork }: ArtworkProps) => {
           src={artwork.images[0]?.url}
           alt={artwork.title}
           fill
-          className="w-full rounded-t-lg object-cover"
+          className="w-full rounded-t-lg object-contain"
         />
       </div>
       <div className="flex flex-1 flex-col px-4 py-3">
