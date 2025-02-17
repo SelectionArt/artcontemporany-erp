@@ -134,3 +134,10 @@ model Support {
   updatedAt DateTime  @updatedAt
   artworks  Artwork[]
 }
+
+model Manufacturer {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
