@@ -1,15 +1,15 @@
 "use client";
 // Components
 import { AlertDialogWrapper } from "@/components/alert-dialog-wrapper/alert-dialog-wrapper.component";
-import { MaterialForm } from "./components/material-form/material-form.component";
+import { ClientForm } from "./components/client-form/client-form.component";
 import { DataTable } from "@/components/data-table/data-table.component";
 import { DialogWrapper } from "@/components/dialog-wrapper/dialog-wrapper.component";
 // Hooks
-import { MaterialsHook } from "./hooks/materials.hook";
+import { ClientsHook } from "./hooks/clients.hook";
 // Types
-import type { MaterialsProps } from "./types/materials.container.types";
+import type { ClientsProps } from "./types/clients.container.types";
 
-const MaterialsContainer = ({ initialData }: MaterialsProps) => {
+const ClientsContainer = ({ initialData }: ClientsProps) => {
   const {
     columns,
     data,
@@ -26,7 +26,7 @@ const MaterialsContainer = ({ initialData }: MaterialsProps) => {
     openDialog,
     selectedRow,
     selectedRows,
-  } = MaterialsHook({ initialData });
+  } = ClientsHook({ initialData });
 
   return (
     <div className="flex w-full grow p-4">
@@ -38,12 +38,12 @@ const MaterialsContainer = ({ initialData }: MaterialsProps) => {
         onCreateRecord={handleCreate}
       />
       <DialogWrapper
-        description={`Rellena los campos para ${selectedRow ? "editar" : "crear"} un material.`}
+        description={`Rellena los campos para ${selectedRow ? "editar" : "crear"} un cliente.`}
         onOpenChange={handleOpenChangeDialog}
         open={openDialog}
-        title={`${selectedRow ? "Editar" : "Crear"} material`}
+        title={`${selectedRow ? "Editar" : "Crear"} cliente`}
       >
-        <MaterialForm
+        <ClientForm
           form={form}
           handleSubmit={handleSubmit}
           label={selectedRow ? "Editar" : "Crear"}
@@ -62,15 +62,15 @@ const MaterialsContainer = ({ initialData }: MaterialsProps) => {
         }}
         description={`¿Estás seguro de que quieres eliminar ${
           selectedRows.length > 1
-            ? "los materiales seleccionados"
-            : "el material seleccionado"
+            ? "los clientes seleccionados"
+            : "el cliente seleccionado"
         }?`}
         open={openAlert}
         onOpenChange={handleOpenChangeAlertDialog}
-        title={`Eliminar ${selectedRows.length > 1 ? "materiales" : "material"}`}
+        title={`Eliminar ${selectedRows.length > 1 ? "clientes" : "cliente"}`}
       />
     </div>
   );
 };
 
-export { MaterialsContainer };
+export { ClientsContainer };

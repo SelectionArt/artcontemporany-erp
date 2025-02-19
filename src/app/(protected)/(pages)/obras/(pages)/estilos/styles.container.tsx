@@ -1,9 +1,9 @@
 "use client";
 // Components
-import { AlertDialogWrapper } from "../../../../../../components/alert-dialog-wrapper/alert-dialog-wrapper.component";
+import { AlertDialogWrapper } from "@/components/alert-dialog-wrapper/alert-dialog-wrapper.component";
 import { StyleForm } from "./components/style-form/style-form.component";
 import { DataTable } from "@/components/data-table/data-table.component";
-import { DialogWrapper } from "../../../../../../components/dialog-wrapper/dialog-wrapper.component";
+import { DialogWrapper } from "@/components/dialog-wrapper/dialog-wrapper.component";
 // Hooks
 import { StylesHook } from "./hooks/styles.hook";
 // Types
@@ -29,7 +29,7 @@ const StylesContainer = ({ initialData }: StylesProps) => {
   } = StylesHook({ initialData });
 
   return (
-    <div className="flex grow p-4">
+    <div className="flex w-full grow p-4">
       <DataTable
         columns={columns}
         data={data}

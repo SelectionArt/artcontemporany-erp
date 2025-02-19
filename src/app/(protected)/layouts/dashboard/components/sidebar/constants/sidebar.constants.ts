@@ -86,6 +86,10 @@ const ITEMS = {
       icon: ChartLine,
       items: [
         {
+          title: "Clientes",
+          url: "/administracion/clientes",
+        },
+        {
           title: "Presupuestos",
           url: "/administracion/presupuestos",
         },

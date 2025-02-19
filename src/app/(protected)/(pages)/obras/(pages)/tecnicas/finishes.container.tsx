@@ -1,9 +1,9 @@
 "use client";
 // Components
-import { AlertDialogWrapper } from "../../../../../../components/alert-dialog-wrapper/alert-dialog-wrapper.component";
+import { AlertDialogWrapper } from "@/components/alert-dialog-wrapper/alert-dialog-wrapper.component";
 import { FinishForm } from "./components/finish-form/finish-form.component";
 import { DataTable } from "@/components/data-table/data-table.component";
-import { DialogWrapper } from "../../../../../../components/dialog-wrapper/dialog-wrapper.component";
+import { DialogWrapper } from "@/components/dialog-wrapper/dialog-wrapper.component";
 // Hooks
 import { FinishesHook } from "./hooks/finishes.hook";
 // Types
@@ -29,7 +29,7 @@ const FinishesContainer = ({ initialData }: FinishesProps) => {
   } = FinishesHook({ initialData });
 
   return (
-    <div className="flex grow p-4">
+    <div className="flex w-full grow p-4">
       <DataTable
         columns={columns}
         data={data}
