@@ -6,7 +6,7 @@ import {
   Color,
   Finish,
   Format,
-  Image,
+  ArtworkImage,
   Style,
   Support,
 } from "@prisma/client";
@@ -48,7 +48,7 @@ type FetchArtworksReturn = {
   format: Format | null;
   height: number;
   id: string;
-  images: Image[];
+  images: ArtworkImage[];
   referenceCode: string;
   referenceNumber: number;
   style: Style | null;

@@ -5,7 +5,6 @@ import {
   createFrame,
   deleteFrame,
   deleteMultipleFrames,
-  generateUniqueReferenceNumber,
   updateFrame,
 } from "../actions/frames.actions";
 // Types
@@ -27,12 +26,15 @@ import type {
 } from "./types/frames.handlers.types";
 
 const createHandler = async ({
-  form,
+  setExistingImages,
+  setNewImages,
   setOpenDialog,
+  setToDelete,
 }: CreateHandlerProps): Promise<void> => {
-  const randomReferenceNumber = await generateUniqueReferenceNumber();
-  form.setValue("referenceNumber", randomReferenceNumber);
+  setExistingImages([]);
+  setNewImages([]);
   setOpenDialog(true);
+  setToDelete([]);
 };
 
 const deleteHandler = ({
@@ -64,13 +66,13 @@ const editHandler = ({
 }: EditHandlerProps): void => {
   const transformedRow = {
     ...row,
-    artistId: row.artist.id,
-    colors: row.colors.map((color) => color.id),
-    finishId: row.finish?.id || "",
-    formatId: row.format?.id || "",
-    styleId: row.style?.id || "",
-    supportId: row.support?.id || "",
+    description: row.description || "",
+    galce: row.galce || 0,
+    height: row.height || 0,
     images: [],
+    manufacturerId: row.manufacturer?.id || "",
+    materialId: row.material?.id || "",
+    width: row.width || 0,
   };
   form.reset(transformedRow, { keepDefaultValues: true });
   setExistingImages(row.images.map((image) => image.url) || []);
@@ -320,7 +322,13 @@ const FramesHandlers = ({
   toDelete,
 }: FramesHandlersProps): FramesHandlersReturn => {
   return {
-    handleCreate: () => createHandler({ form, setOpenDialog }),
+    handleCreate: () =>
+      createHandler({
+        setExistingImages,
+        setNewImages,
+        setOpenDialog,
+        setToDelete,
+      }),
     handleDelete: (row) => deleteHandler({ row, setSelectedRow, setOpenAlert }),
     handleDeleteMultiple: (rows) =>
       deleteMultipleHandler({ rows, setSelectedRows, setOpenAlert }),

@@ -1,16 +1,13 @@
 const constants = {
   DEFAULT_FORM_VALUES: {
-    artistId: "",
-    colors: [] as string[],
-    finishId: "",
-    formatId: "",
+    description: "",
+    galce: 0,
     height: 0,
     images: [] as File[],
-    referenceNumber: 0,
-    referenceCode: "ART",
-    styleId: "",
-    supportId: "",
-    title: "",
+    manufacturerId: "",
+    materialId: "",
+    name: "",
+    reference: "",
     width: 0,
   },
 } as const;

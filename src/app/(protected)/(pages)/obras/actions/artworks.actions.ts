@@ -1,7 +1,7 @@
 "use server";
 // Libs
 import { prisma } from "@/lib/prisma";
-import { cloudinary } from "@/lib/cloudinary";
+import { filterValidImages, uploadImage, deleteImage } from "@/lib/cloudinary";
 // Schemas
 import { artworkSchema } from "../schemas/artwork.schema";
 // Types
@@ -17,44 +17,6 @@ import type {
   UpdateArtworkReturn,
 } from "./types/artworks.actions.types";
 
-type UploadImageToCloudinaryProps = {
-  file: File;
-  referenceCode: string;
-  referenceNumber: number;
-};
-
-const uploadImageToCloudinary = async ({
-  file,
-  referenceCode,
-  referenceNumber,
-}: UploadImageToCloudinaryProps): Promise<string | null> => {
-  try {
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
-
-    return new Promise((resolve, reject) => {
-      const reference = referenceCode
-        ? `${referenceCode}-${referenceNumber}`
-        : referenceNumber.toString();
-      const uploadStream = cloudinary.uploader.upload_stream(
-        { tags: [reference] },
-        (error, result) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(result?.secure_url || null);
-          }
-        },
-      );
-
-      uploadStream.end(buffer);
-    });
-  } catch (error) {
-    console.error("Error en la subida de imagen:", error);
-    return null;
-  }
-};
-
 const createArtwork = async ({
   newImages,
   values,
@@ -66,17 +28,29 @@ const createArtwork = async ({
   }
 
   try {
+    const existingArtwork = await prisma.artwork.findUnique({
+      where: { referenceNumber: validatedFields.data.referenceNumber },
+    });
+
+    if (existingArtwork) {
+      return { error: "Ya existe una obra con este número de referencia" };
+    }
+
+    const reference = validatedFields.data.referenceCode
+      ? `${validatedFields.data.referenceNumber}-${validatedFields.data.referenceCode}`
+      : `${validatedFields.data.referenceNumber}`;
+
     const uploadedImages = await Promise.all(
       newImages.map((image) =>
-        uploadImageToCloudinary({
+        uploadImage({
           file: image,
-          referenceCode: validatedFields.data.referenceCode ?? "",
-          referenceNumber: validatedFields.data.referenceNumber,
+          folder: "artworks",
+          reference,
         }),
       ),
     );
 
-    const validImages = uploadedImages.filter(Boolean) as string[];
+    const validImages = filterValidImages(uploadedImages);
 
     if (validImages.length === 0) {
       return {
@@ -84,62 +58,73 @@ const createArtwork = async ({
       };
     }
 
-    const newArtwork = await prisma.artwork.create({
-      data: {
-        ...validatedFields.data,
-        colors: {
-          create: validatedFields.data.colors.map((colorId) => ({
-            colorId,
-          })),
+    try {
+      const newArtwork = await prisma.artwork.create({
+        data: {
+          ...validatedFields.data,
+          colors: {
+            create: validatedFields.data.colors.map((colorId) => ({
+              colorId,
+            })),
+          },
+          finishId: validatedFields.data.finishId || null,
+          formatId: validatedFields.data.formatId || null,
+          images: {
+            create: validImages,
+          },
+          referenceCode: validatedFields.data.referenceCode || null,
+          styleId: validatedFields.data.styleId || null,
+          supportId: validatedFields.data.supportId || null,
+          title: validatedFields.data.title || null,
         },
-        finishId: validatedFields.data.finishId || null,
-        formatId: validatedFields.data.formatId || null,
-        images: {
-          create: validImages.map((image) => ({ url: image })),
+        include: {
+          artist: true,
+          colors: { include: { color: true } },
+          finish: true,
+          format: true,
+          images: true,
+          style: true,
+          support: true,
         },
-        referenceCode: validatedFields.data.referenceCode || null,
-        styleId: validatedFields.data.styleId || null,
-        supportId: validatedFields.data.supportId || null,
-        title: validatedFields.data.title || null,
-      },
-      include: {
-        artist: true,
-        colors: { include: { color: true } },
-        finish: true,
-        format: true,
-        images: true,
-        style: true,
-        support: true,
-      },
-    });
+      });
 
-    return {
-      success: "Obra creada con éxito",
-      artwork: {
-        ...newArtwork,
-        artist: newArtwork.artist,
-        colors: newArtwork.colors.map(({ color }) => ({
-          id: color.id,
-          name: color.name,
-          createdAt: color.createdAt,
-          updatedAt: color.updatedAt,
-          hex: color.hex,
-        })),
-        finish: newArtwork.finish,
-        format: newArtwork.format,
-        images: newArtwork.images.map((image) => ({
-          id: image.id,
-          url: image.url,
-          createdAt: image.createdAt,
-          updatedAt: image.updatedAt,
-          artworkId: image.artworkId,
-        })),
-        referenceCode: newArtwork.referenceCode ?? "",
-        style: newArtwork.style,
-        support: newArtwork.support,
-        title: newArtwork.title ?? "",
-      },
-    };
+      return {
+        success: "Obra creada con éxito",
+        artwork: {
+          ...newArtwork,
+          artist: newArtwork.artist,
+          colors: newArtwork.colors.map(({ color }) => ({
+            id: color.id,
+            name: color.name,
+            createdAt: color.createdAt,
+            updatedAt: color.updatedAt,
+            hex: color.hex,
+          })),
+          finish: newArtwork.finish,
+          format: newArtwork.format,
+          images: newArtwork.images.map((image) => ({
+            id: image.id,
+            url: image.url,
+            publicId: image.publicId,
+            createdAt: image.createdAt,
+            updatedAt: image.updatedAt,
+            artworkId: image.artworkId,
+          })),
+          referenceCode: newArtwork.referenceCode ?? "",
+          style: newArtwork.style,
+          support: newArtwork.support,
+          title: newArtwork.title ?? "",
+        },
+      };
+    } catch (error) {
+      console.error(error);
+
+      await Promise.all(validImages.map((img) => deleteImage(img.publicId)));
+
+      return {
+        error: "Error al crear la moldura. Por favor, inténtalo de nuevo",
+      };
+    }
   } catch (error) {
     console.error(error);
     return {
@@ -152,25 +137,14 @@ const deleteArtwork = async ({
   id,
 }: DeleteArtworkProps): Promise<DeleteArtworkReturn> => {
   try {
-    const images = await prisma.image.findMany({
+    const images = await prisma.artworkImage.findMany({
       where: { artworkId: id },
-      select: { url: true },
+      select: { publicId: true },
     });
 
-    const cloudinaryPublicIds = images.map((img) => {
-      const parts = img.url.split("/");
-      return parts[parts.length - 1].split(".")[0];
-    });
+    await Promise.all(images.map((img) => deleteImage(img.publicId)));
 
-    await Promise.all(
-      cloudinaryPublicIds.map((publicId) =>
-        cloudinary.uploader.destroy(publicId),
-      ),
-    );
-
-    await prisma.artwork.delete({
-      where: { id },
-    });
+    await prisma.artwork.delete({ where: { id } });
 
     return { success: "Obra eliminada con éxito" };
   } catch (error) {
@@ -185,25 +159,14 @@ const deleteMultipleArtworks = async ({
   ids,
 }: DeleteMultipleArtworksProps): Promise<DeleteMultipleArtworksReturn> => {
   try {
-    const images = await prisma.image.findMany({
+    const images = await prisma.artworkImage.findMany({
       where: { artworkId: { in: ids } },
-      select: { url: true },
+      select: { publicId: true },
     });
 
-    const cloudinaryPublicIds = images.map((img) => {
-      const parts = img.url.split("/");
-      return parts[parts.length - 1].split(".")[0];
-    });
+    await Promise.all(images.map((img) => deleteImage(img.publicId)));
 
-    await Promise.all(
-      cloudinaryPublicIds.map((publicId) =>
-        cloudinary.uploader.destroy(publicId),
-      ),
-    );
-
-    await prisma.artwork.deleteMany({
-      where: { id: { in: ids } },
-    });
+    await prisma.artwork.deleteMany({ where: { id: { in: ids } } });
 
     return { success: "Obras eliminadas con éxito" };
   } catch (error) {
@@ -320,32 +283,56 @@ const updateArtwork = async ({
   }
 
   try {
-    if (toDelete.length > 0) {
-      await Promise.all(
-        toDelete.map(async (imageUrl) => {
-          const publicId = imageUrl.split("/").pop()?.split(".")[0];
-          if (publicId) {
-            await cloudinary.uploader.destroy(publicId);
-          }
-        }),
-      );
+    const existingArtwork = await prisma.artwork.findUnique({
+      where: { id },
+    });
 
-      await prisma.image.deleteMany({
-        where: { artworkId: id, url: { in: toDelete } },
+    if (!existingArtwork) {
+      return { error: "La obra que intentas actualizar no existe" };
+    }
+
+    if (
+      validatedFields.data.referenceNumber !== existingArtwork.referenceNumber
+    ) {
+      const referenceExists = await prisma.artwork.findUnique({
+        where: { referenceNumber: validatedFields.data.referenceNumber },
+      });
+
+      if (referenceExists) {
+        return { error: "Ya existe una obra con este número de referencia" };
+      }
+    }
+
+    if (toDelete.length > 0) {
+      const imagesToDelete = await prisma.frameImage.findMany({
+        where: { frameId: id, url: { in: toDelete } },
+        select: { publicId: true },
+      });
+
+      const cloudinaryPublicIds = imagesToDelete.map((img) => img.publicId);
+
+      await Promise.all(cloudinaryPublicIds.map(deleteImage));
+
+      await prisma.frameImage.deleteMany({
+        where: { frameId: id, url: { in: toDelete } },
       });
     }
 
+    const reference = validatedFields.data.referenceCode
+      ? `${validatedFields.data.referenceNumber}-${validatedFields.data.referenceCode}`
+      : `${validatedFields.data.referenceNumber}`;
+
     const uploadedImages = await Promise.all(
       newImages.map((image) =>
-        uploadImageToCloudinary({
+        uploadImage({
           file: image,
-          referenceCode: validatedFields.data.referenceCode ?? "",
-          referenceNumber: validatedFields.data.referenceNumber,
+          folder: "frames",
+          reference,
         }),
       ),
     );
 
-    const validImages = uploadedImages.filter(Boolean) as string[];
+    const validImages = filterValidImages(uploadedImages);
 
     await prisma.artworkColor.deleteMany({
       where: { artworkId: id },
@@ -364,7 +351,7 @@ const updateArtwork = async ({
         formatId: validatedFields.data.formatId || null,
         height: validatedFields.data.height,
         images: {
-          create: validImages.map((image) => ({ url: image })),
+          create: validImages,
         },
         referenceCode: validatedFields.data.referenceCode || null,
         referenceNumber: validatedFields.data.referenceNumber,
@@ -403,6 +390,7 @@ const updateArtwork = async ({
         images: updatedArtwork.images.map((image) => ({
           id: image.id,
           url: image.url,
+          publicId: image.publicId,
           createdAt: image.createdAt,
           updatedAt: image.updatedAt,
           artworkId: image.artworkId,

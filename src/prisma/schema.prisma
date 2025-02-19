@@ -80,6 +80,7 @@ model ArtworkColor {
 model ArtworkImage {
   id        String   @id @default(cuid())
   url       String
+  publicId  String
   artworkId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -140,7 +141,7 @@ model Frame {
   name           String
   description    String?
   reference      String   @unique
-  weight         Int?
+  width          Int?
   height         Int?
   galce          Int?
   manufacturerId String?
@@ -157,6 +158,7 @@ model Frame {
 model FrameImage {
   id        String   @id @default(cuid())
   url       String
+  publicId  String
   frameId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

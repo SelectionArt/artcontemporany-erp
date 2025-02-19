@@ -36,7 +36,10 @@ type FramesHandlersReturn = {
   handleSubmitDeleteMultiple: () => void;
 };
 
-type CreateHandlerProps = Pick<FramesHandlersProps, "form" | "setOpenDialog">;
+type CreateHandlerProps = Pick<
+  FramesHandlersProps,
+  "setExistingImages" | "setNewImages" | "setOpenDialog" | "setToDelete"
+>;
 
 type DeleteHandlerProps = Pick<
   FramesHandlersProps,

@@ -31,7 +31,7 @@ function getColumnsConfig({
     },
     {
       cell: ({ row }) => (
-        <Link href={`/galeria/${row.original.id}`}>
+        <Link href={`/molduras/${row.original.id}`}>
           <div className="relative m-2 size-16">
             <Image
               src={row.original.images[0].url}
@@ -46,21 +46,16 @@ function getColumnsConfig({
       meta: "Imagen",
     },
     {
-      accessorKey: "title",
-      header: ({ column }) => <ColumnSorter column={column} label="Título" />,
-      meta: "Título",
+      accessorKey: "name",
+      header: ({ column }) => <ColumnSorter column={column} label="Nombre" />,
+      meta: "Nombre",
     },
     {
-      accessorFn: (row) => row.artist.name,
-      header: ({ column }) => <ColumnSorter column={column} label="Artista" />,
-      id: "artist",
-      meta: "Artista",
-    },
-    {
-      accessorFn: (row) => row.support?.name || "",
-      header: ({ column }) => <ColumnSorter column={column} label="Soporte" />,
-      id: "support",
-      meta: "Soporte",
+      accessorKey: "reference",
+      header: ({ column }) => (
+        <ColumnSorter column={column} label="Referencia" />
+      ),
+      meta: "Referencia",
     },
     {
       accessorKey: "width",
@@ -73,54 +68,30 @@ function getColumnsConfig({
       meta: "Alto",
     },
     {
-      accessorFn: (row) =>
-        row.referenceCode
-          ? `${row.referenceNumber}-${row.referenceCode}`
-          : row.referenceNumber,
+      accessorKey: "galce",
+      header: ({ column }) => <ColumnSorter column={column} label="Galce" />,
+      meta: "Galce",
+    },
+    {
+      accessorFn: (row) => row.manufacturer?.name || "",
       header: ({ column }) => (
-        <ColumnSorter column={column} label="Referencia" />
+        <ColumnSorter column={column} label="Fabricante" />
       ),
-      id: "referenceNumber",
-      meta: "Referencia",
+      id: "manufacturer",
+      meta: "Fabricante",
     },
     {
-      accessorFn: (row) => row.colors.map((color) => color.name).join(", "),
-      cell: ({ row }) => {
-        return (
-          <div className="flex flex-wrap items-center gap-1">
-            {row.original.colors.map((color) => (
-              <div key={color.id} className="flex items-center gap-1">
-                <div
-                  className="h-4 w-4 rounded-full"
-                  style={{ backgroundColor: color.hex }}
-                />
-                <span>{color.name}</span>
-              </div>
-            ))}
-          </div>
-        );
-      },
-      header: ({ column }) => <ColumnSorter column={column} label="Color" />,
-      id: "colors",
-      meta: "Color",
+      accessorFn: (row) => row.material?.name || "",
+      header: ({ column }) => <ColumnSorter column={column} label="Material" />,
+      id: "material",
+      meta: "Material",
     },
     {
-      accessorFn: (row) => row.style?.name || "",
-      header: ({ column }) => <ColumnSorter column={column} label="Estilo" />,
-      id: "style",
-      meta: "Estilo",
-    },
-    {
-      accessorFn: (row) => row.finish?.name || "",
-      header: ({ column }) => <ColumnSorter column={column} label="Técnica" />,
-      id: "finish",
-      meta: "Técnica",
-    },
-    {
-      accessorFn: (row) => row.format?.name || "",
-      header: ({ column }) => <ColumnSorter column={column} label="Formato" />,
-      id: "format",
-      meta: "Formato",
+      accessorKey: "description",
+      header: ({ column }) => (
+        <ColumnSorter column={column} label="Descripción" />
+      ),
+      meta: "Descripción",
     },
     {
       cell: ({ row }) => (

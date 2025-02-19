@@ -2,18 +2,33 @@ const constants = {
   INPUT_FIELDS: {
     NAME: {
       labelProps: {
-        htmlFor: "title",
+        htmlFor: "name",
       },
-      labelText: "Título",
+      labelText: "Nombre",
       inputProps: {
-        id: "title",
-        name: "title",
-        placeholder: "Título de la moldura",
+        id: "name",
+        name: "name",
+        placeholder: "Nombre de la moldura",
         type: "text",
-        ["aria-describedby"]: "ntitleame-helper",
+        ["aria-describedby"]: "name-helper",
       },
       messageProps: {
-        id: "title-helper",
+        id: "name-helper",
+      },
+    },
+    DESCRIPTION: {
+      labelProps: {
+        htmlFor: "description",
+      },
+      labelText: "Descripción",
+      inputProps: {
+        id: "description",
+        name: "description",
+        placeholder: "Descripción de la moldura",
+        ["aria-describedby"]: "description-helper",
+      },
+      messageProps: {
+        id: "description-helper",
       },
     },
     IMAGES: {
@@ -34,36 +49,36 @@ const constants = {
         id: "images-helper",
       },
     },
-    REFERENCE_NUMBER: {
+    REFERENCE: {
       labelProps: {
-        htmlFor: "referenceNumber",
+        htmlFor: "reference",
       },
-      labelText: "Número de referencia",
+      labelText: "Referencia",
       inputProps: {
-        id: "referenceNumber",
-        name: "referenceNumber",
-        placeholder: "Número de referencia",
-        type: "number",
-        ["aria-describedby"]: "referenceNumber-helper",
-      },
-      messageProps: {
-        id: "referenceNumber-helper",
-      },
-    },
-    REFERENCE_CODE: {
-      labelProps: {
-        htmlFor: "referenceCode",
-      },
-      labelText: "Código de referencia",
-      inputProps: {
-        id: "referenceCode",
-        name: "referenceCode",
+        id: "reference",
+        name: "reference",
         placeholder: "Código de referencia",
         type: "text",
-        ["aria-describedby"]: "referenceCode-helper",
+        ["aria-describedby"]: "reference-helper",
       },
       messageProps: {
-        id: "referenceCode-helper",
+        id: "reference-helper",
+      },
+    },
+    HEIGHT: {
+      labelProps: {
+        htmlFor: "height",
+      },
+      labelText: "Alto",
+      inputProps: {
+        id: "height",
+        name: "height",
+        placeholder: "Altura de la moldura",
+        type: "number",
+        ["aria-describedby"]: "height-helper",
+      },
+      messageProps: {
+        id: "height-helper",
       },
     },
     WIDTH: {
@@ -82,60 +97,41 @@ const constants = {
         id: "width-helper",
       },
     },
-    HEIGHT: {
+    GALCE: {
       labelProps: {
-        htmlFor: "height",
+        htmlFor: "galce",
       },
-      labelText: "Alto",
+      labelText: "Galce",
       inputProps: {
-        id: "height",
-        name: "height",
-        placeholder: "Alto de la moldura",
+        id: "galce",
+        name: "galce",
+        placeholder: "Galce de la moldura",
         type: "number",
-        ["aria-describedby"]: "height-helper",
+        ["aria-describedby"]: "galce-helper",
       },
       messageProps: {
-        id: "height-helper",
+        id: "galce-helper",
       },
     },
   },
 
   SELECT_FIELDS: {
-    ARTIST: {
-      labelText: "Artista",
-      name: "artistId",
-      placeholder: "Artista de la moldura",
+    MANUFACTURER: {
+      labelText: "Fabricante",
+      name: "manufacturerId",
+      placeholder: "Seleccione un fabricante",
     },
-    SUPPORT: {
-      labelText: "Soporte",
-      name: "supportId",
-      placeholder: "Soporte de la moldura",
-    },
-    COLORS: {
-      labelText: "Colores",
-      name: "colors",
-      placeholder: "Colores",
-    },
-    STYLE: {
-      labelText: "Estilo",
-      name: "styleId",
-      placeholder: "Estilo de la moldura",
-    },
-    FINISH: {
-      labelText: "Técnica",
-      name: "finishId",
-      placeholder: "Técnica de la moldura",
-    },
-    FORMAT: {
-      labelText: "Formato",
-      name: "formatId",
-      placeholder: "Formato de la moldura",
+    MATERIAL: {
+      labelText: "Material",
+      name: "materialId",
+      placeholder: "Seleccione un material",
     },
   },
+
   BUTTON_PROPS: {
     SUBMIT: {
       fullWidth: true,
-      label: "Register",
+      label: "Registrar",
       type: "submit",
     },
     SUBMIT_LABEL_CREATE: "Crear",

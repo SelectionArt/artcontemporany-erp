@@ -1,7 +1,7 @@
 // Types
 import type { Frame } from "../../types/frames.container.types";
 import type { FrameSchema } from "../../schemas/types/frame.schema.types";
-import { Manufacturer, Material } from "@prisma/client";
+import { FrameImage, Manufacturer, Material } from "@prisma/client";
 
 type CreateFrameProps = {
   newImages: File[];
@@ -37,9 +37,10 @@ type FetchFramesReturn = {
   name: string;
   description: string | null;
   reference: string;
-  weight: number | null;
+  width: number | null;
   height: number | null;
   galce: number | null;
+  images: FrameImage[];
   manufacturer: Manufacturer | null;
   material: Material | null;
   createdAt: Date;
@@ -50,7 +51,6 @@ type FetchFiltersReturn = {
   manufacturers: Manufacturer[];
   materials: Material[];
 };
-
 
 type UpdateFrameProps = {
   id: string;

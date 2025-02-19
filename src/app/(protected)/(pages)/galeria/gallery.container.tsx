@@ -77,7 +77,7 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={handleDownloadClick}>
-                  {`Descargar ${selectedArtworks.length} ${selectedArtworks.length > 1 ? "imágenes" : "imagen"}`}
+                  {`Descargar ${selectedArtworks.length > 1 ? "imágenes" : "imagen"} de ${selectedArtworks.length} obra${selectedArtworks.length > 1 ? "s" : ""} seleccionada${selectedArtworks.length > 1 ? "s" : ""}`}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

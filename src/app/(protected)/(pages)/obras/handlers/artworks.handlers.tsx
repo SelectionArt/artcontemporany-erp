@@ -28,11 +28,17 @@ import type {
 
 const createHandler = async ({
   form,
+  setExistingImages,
+  setNewImages,
   setOpenDialog,
+  setToDelete,
 }: CreateHandlerProps): Promise<void> => {
   const randomReferenceNumber = await generateUniqueReferenceNumber();
   form.setValue("referenceNumber", randomReferenceNumber);
+  setExistingImages([]);
+  setNewImages([]);
   setOpenDialog(true);
+  setToDelete([]);
 };
 
 const deleteHandler = ({
@@ -316,7 +322,14 @@ const ArtworksHandlers = ({
   toDelete,
 }: ArtworksHandlersProps): ArtworksHandlersReturn => {
   return {
-    handleCreate: () => createHandler({ form, setOpenDialog }),
+    handleCreate: () =>
+      createHandler({
+        form,
+        setExistingImages,
+        setNewImages,
+        setOpenDialog,
+        setToDelete,
+      }),
     handleDelete: (row) => deleteHandler({ row, setSelectedRow, setOpenAlert }),
     handleDeleteMultiple: (rows) =>
       deleteMultipleHandler({ rows, setSelectedRows, setOpenAlert }),

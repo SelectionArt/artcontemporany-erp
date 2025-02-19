@@ -2,34 +2,36 @@
 import * as z from "zod";
 
 const frameSchema = z.object({
-  name: z
-    .string({ required_error: "El nombre es requerido" })
-    .min(1, "El nombre es requerido"),
   description: z
     .string()
     .optional()
     .transform((value) => value?.trim() ?? ""),
-  reference: z
-    .string({ required_error: "La referencia es requerida" })
-    .min(1, "La referencia es requerida"),
-  weight: z
-    .number()
-    .optional()
-    .refine((value) => value === undefined || value > 0, {
-      message: "El peso debe ser un número positivo",
-    }),
-  height: z
-    .number()
-    .optional()
-    .refine((value) => value === undefined || value > 0, {
-      message: "La altura debe ser un número positivo",
-    }),
-  galce: z
-    .number()
-    .optional()
-    .refine((value) => value === undefined || value > 0, {
-      message: "El galce debe ser un número positivo",
-    }),
+  height: z.coerce
+    .number({ required_error: "El alto es requerido" })
+    .optional(),
+  galce: z.coerce
+    .number({ required_error: "El galce es requerido" })
+    .optional(),
+  images: z
+    .array(z.union([z.instanceof(File), z.string()]))
+    .min(1, "Por lo menos una imagen es requerida")
+    .max(10, "Máximo 10 imágenes permitidas")
+    .refine(
+      (files) =>
+        files.every(
+          (file) => typeof file === "string" || file.size < 5 * 1024 * 1024,
+        ),
+      "El tamaño máximo permitido por imagen es de 5MB",
+    )
+    .refine(
+      (files) =>
+        files.every(
+          (file) =>
+            typeof file === "string" ||
+            ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+        ),
+      "Solo se permiten imágenes en formato JPEG, PNG o WEBP",
+    ),
   manufacturerId: z
     .string()
     .optional()
@@ -38,6 +40,15 @@ const frameSchema = z.object({
     .string()
     .optional()
     .transform((value) => value?.trim() ?? ""),
+  name: z
+    .string({ required_error: "El nombre es requerido" })
+    .min(1, "El nombre es requerido"),
+  reference: z
+    .string({ required_error: "La referencia es requerida" })
+    .min(1, "La referencia es requerida"),
+  width: z.coerce
+    .number({ required_error: "El ancho es requerido" })
+    .optional(),
 });
 
 export { frameSchema };

@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 // Constants
 import constants from "./constants/frame-form.constants";
 // Icons
@@ -171,106 +172,24 @@ const FrameForm = ({
           </div>
         )}
 
-        <div className="flex gap-4">
-          <FormField
-            control={form.control}
-            name={constants.INPUT_FIELDS.REFERENCE_NUMBER.inputProps.name}
-            render={({ field }) => (
-              <FormItem className="grow basis-1/2">
-                <FormLabel
-                  {...constants.INPUT_FIELDS.REFERENCE_NUMBER.labelProps}
-                >
-                  {constants.INPUT_FIELDS.REFERENCE_NUMBER.labelText}
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    {...{
-                      ...field,
-                      ...constants.INPUT_FIELDS.REFERENCE_NUMBER.inputProps,
-                      disabled: loading,
-                    }}
-                  />
-                </FormControl>
-                <FormMessage
-                  {...constants.INPUT_FIELDS.REFERENCE_NUMBER.messageProps}
-                />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name={constants.INPUT_FIELDS.REFERENCE_CODE.inputProps.name}
-            render={({ field }) => (
-              <FormItem className="grow basis-1/2">
-                <FormLabel
-                  {...constants.INPUT_FIELDS.REFERENCE_CODE.labelProps}
-                >
-                  {constants.INPUT_FIELDS.REFERENCE_CODE.labelText}
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    {...{
-                      ...field,
-                      ...constants.INPUT_FIELDS.REFERENCE_CODE.inputProps,
-                      disabled: loading,
-                    }}
-                  />
-                </FormControl>
-                <FormMessage
-                  {...constants.INPUT_FIELDS.REFERENCE_CODE.messageProps}
-                />
-              </FormItem>
-            )}
-          />
-        </div>
-
         <FormField
           control={form.control}
-          name={constants.SELECT_FIELDS.COLORS.name}
+          name={constants.INPUT_FIELDS.REFERENCE.inputProps.name}
           render={({ field }) => (
             <FormItem className="grow basis-1/2">
-              <FormLabel>{constants.SELECT_FIELDS.COLORS.labelText}</FormLabel>
+              <FormLabel {...constants.INPUT_FIELDS.REFERENCE.labelProps}>
+                {constants.INPUT_FIELDS.REFERENCE.labelText}
+              </FormLabel>
               <FormControl>
-                <MultiSelect
-                  {...field}
-                  options={filters.colors.map((color) => ({
-                    label: color.name,
-                    value: color.id,
-                  }))}
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  placeholder={constants.SELECT_FIELDS.COLORS.placeholder}
-                  variant="inverted"
+                <Input
+                  {...{
+                    ...field,
+                    ...constants.INPUT_FIELDS.REFERENCE.inputProps,
+                    disabled: loading,
+                  }}
                 />
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name={constants.SELECT_FIELDS.ARTIST.name}
-          render={({ field }) => (
-            <FormItem className="grow basis-1/2">
-              <FormLabel>{constants.SELECT_FIELDS.ARTIST.labelText}</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={constants.SELECT_FIELDS.ARTIST.placeholder}
-                    />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {filters.artists.map((artist) => (
-                    <SelectItem key={artist.id} value={artist.id}>
-                      {artist.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
+              <FormMessage {...constants.INPUT_FIELDS.REFERENCE.messageProps} />
             </FormItem>
           )}
         />
@@ -318,15 +237,36 @@ const FrameForm = ({
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name={constants.INPUT_FIELDS.GALCE.inputProps.name}
+            render={({ field }) => (
+              <FormItem className="grow basis-1/2">
+                <FormLabel {...constants.INPUT_FIELDS.GALCE.labelProps}>
+                  {constants.INPUT_FIELDS.GALCE.labelText}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...{
+                      ...field,
+                      ...constants.INPUT_FIELDS.GALCE.inputProps,
+                      disabled: loading,
+                    }}
+                  />
+                </FormControl>
+                <FormMessage {...constants.INPUT_FIELDS.GALCE.messageProps} />
+              </FormItem>
+            )}
+          />
         </div>
         <div className="flex gap-4">
           <FormField
             control={form.control}
-            name={constants.SELECT_FIELDS.SUPPORT.name}
+            name={constants.SELECT_FIELDS.MANUFACTURER.name}
             render={({ field }) => (
               <FormItem className="grow basis-1/2">
                 <FormLabel>
-                  {constants.SELECT_FIELDS.SUPPORT.labelText}
+                  {constants.SELECT_FIELDS.MANUFACTURER.labelText}
                 </FormLabel>
                 <Select
                   onValueChange={field.onChange}
@@ -336,15 +276,15 @@ const FrameForm = ({
                     <SelectTrigger>
                       <SelectValue
                         placeholder={
-                          constants.SELECT_FIELDS.SUPPORT.placeholder
+                          constants.SELECT_FIELDS.MANUFACTURER.placeholder
                         }
                       />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {filters.supports.map((support) => (
-                      <SelectItem key={support.id} value={support.id}>
-                        {support.name}
+                    {filters.manufacturers.map((manufacturer) => (
+                      <SelectItem key={manufacturer.id} value={manufacturer.id}>
+                        {manufacturer.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -355,10 +295,12 @@ const FrameForm = ({
           />
           <FormField
             control={form.control}
-            name={constants.SELECT_FIELDS.STYLE.name}
+            name={constants.SELECT_FIELDS.MATERIAL.name}
             render={({ field }) => (
               <FormItem className="grow basis-1/2">
-                <FormLabel>{constants.SELECT_FIELDS.STYLE.labelText}</FormLabel>
+                <FormLabel>
+                  {constants.SELECT_FIELDS.MATERIAL.labelText}
+                </FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -366,14 +308,16 @@ const FrameForm = ({
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue
-                        placeholder={constants.SELECT_FIELDS.STYLE.placeholder}
+                        placeholder={
+                          constants.SELECT_FIELDS.MATERIAL.placeholder
+                        }
                       />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {filters.styles.map((style) => (
-                      <SelectItem key={style.id} value={style.id}>
-                        {style.name}
+                    {filters.materials.map((material) => (
+                      <SelectItem key={material.id} value={material.id}>
+                        {material.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -383,70 +327,29 @@ const FrameForm = ({
             )}
           />
         </div>
-        <div className="flex gap-4">
-          <FormField
-            control={form.control}
-            name={constants.SELECT_FIELDS.FINISH.name}
-            render={({ field }) => (
-              <FormItem className="grow basis-1/2">
-                <FormLabel>
-                  {constants.SELECT_FIELDS.FINISH.labelText}
-                </FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue
-                        placeholder={constants.SELECT_FIELDS.FINISH.placeholder}
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {filters.finishes.map((finish) => (
-                      <SelectItem key={finish.id} value={finish.id}>
-                        {finish.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name={constants.SELECT_FIELDS.FORMAT.name}
-            render={({ field }) => (
-              <FormItem className="grow basis-1/2">
-                <FormLabel>
-                  {constants.SELECT_FIELDS.FORMAT.labelText}
-                </FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue
-                        placeholder={constants.SELECT_FIELDS.FORMAT.placeholder}
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {filters.formats.map((format) => (
-                      <SelectItem key={format.id} value={format.id}>
-                        {format.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name={constants.INPUT_FIELDS.DESCRIPTION.inputProps.name}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel {...constants.INPUT_FIELDS.DESCRIPTION.labelProps}>
+                {constants.INPUT_FIELDS.DESCRIPTION.labelText}
+              </FormLabel>
+              <FormControl>
+                <Textarea
+                  {...{
+                    ...field,
+                    ...constants.INPUT_FIELDS.DESCRIPTION.inputProps,
+                    disabled: loading,
+                  }}
+                />
+              </FormControl>
+              <FormMessage
+                {...constants.INPUT_FIELDS.DESCRIPTION.messageProps}
+              />
+            </FormItem>
+          )}
+        />
       </div>
       <ButtonLoading
         {...{
