@@ -1,8 +1,10 @@
 // Types
 import type { Frame } from "../../types/frames.container.types";
 import type { FrameSchema } from "../../schemas/types/frame.schema.types";
+import { Manufacturer, Material } from "@prisma/client";
 
 type CreateFrameProps = {
+  newImages: File[];
   values: FrameSchema;
 };
 
@@ -30,10 +32,30 @@ type DeleteMultipleFramesReturn = {
   error?: string;
 };
 
-type FetchFramesReturn = Frame[];
+type FetchFramesReturn = {
+  id: string;
+  name: string;
+  description: string | null;
+  reference: string;
+  weight: number | null;
+  height: number | null;
+  galce: number | null;
+  manufacturer: Manufacturer | null;
+  material: Material | null;
+  createdAt: Date;
+  updatedAt: Date;
+}[];
+
+type FetchFiltersReturn = {
+  manufacturers: Manufacturer[];
+  materials: Material[];
+};
+
 
 type UpdateFrameProps = {
   id: string;
+  newImages: File[];
+  toDelete: string[];
   values: FrameSchema;
 };
 
@@ -51,6 +73,7 @@ export type {
   DeleteMultipleFramesProps,
   DeleteMultipleFramesReturn,
   FetchFramesReturn,
+  FetchFiltersReturn,
   UpdateFrameProps,
   UpdateFrameReturn,
 };

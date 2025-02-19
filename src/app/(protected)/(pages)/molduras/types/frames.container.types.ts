@@ -1,9 +1,15 @@
-import { Frame as PrismaFrame } from "@prisma/client";
+import type {
+  FetchFiltersReturn,
+  FetchFramesReturn,
+} from "../actions/types/frames.actions.types";
 
-type Frame = Omit<PrismaFrame, "createdAt" | "updatedAt" | "artworks">;
+type Filters = FetchFiltersReturn;
+
+type Frame = FetchFramesReturn[number];
 
 type FramesProps = {
-  initialData: Frame[];
+  frames: Frame[];
+  filters: Filters;
 };
 
 export type { Frame, FramesProps };

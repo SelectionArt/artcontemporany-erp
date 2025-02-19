@@ -1,19 +1,26 @@
 // Types
-import type { Dispatch, SetStateAction } from "react";
-import type { UseFormReturn } from "react-hook-form";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import type { Frame } from "../../types/frames.container.types";
 import type { FrameSchema } from "../../schemas/types/frame.schema.types";
+import type { Dispatch, SetStateAction } from "react";
+import type { UseFormReturn } from "react-hook-form";
 
 type FramesHandlersProps = {
   form: UseFormReturn<FrameSchema>;
+  newImages: File[];
+  router: AppRouterInstance;
   selectedRow: Frame | null;
   selectedRows: Frame[];
   setData: Dispatch<SetStateAction<Frame[]>>;
+  setExistingImages: Dispatch<SetStateAction<string[]>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  setNewImages: Dispatch<SetStateAction<File[]>>;
   setOpenAlert: Dispatch<SetStateAction<boolean>>;
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
   setSelectedRow: Dispatch<SetStateAction<Frame | null>>;
   setSelectedRows: Dispatch<SetStateAction<Frame[]>>;
+  setToDelete: Dispatch<SetStateAction<string[]>>;
+  toDelete: string[];
 };
 
 type FramesHandlersReturn = {
@@ -21,6 +28,7 @@ type FramesHandlersReturn = {
   handleDelete: (row: Frame) => void;
   handleDeleteMultiple: (rows: Frame[]) => void;
   handleEdit: (row: Frame) => void;
+  handleNavigate: (row: Frame) => void;
   handleOpenChangeAlertDialog: (open: boolean) => void;
   handleOpenChangeDialog: (open: boolean) => void;
   handleSubmit: (values: FrameSchema) => void;
@@ -28,7 +36,7 @@ type FramesHandlersReturn = {
   handleSubmitDeleteMultiple: () => void;
 };
 
-type CreateHandlerProps = Pick<FramesHandlersProps, "setOpenDialog">;
+type CreateHandlerProps = Pick<FramesHandlersProps, "form" | "setOpenDialog">;
 
 type DeleteHandlerProps = Pick<
   FramesHandlersProps,
@@ -44,8 +52,17 @@ type DeleteMultipleHandlerProps = Pick<
 
 type EditHandlerProps = Pick<
   FramesHandlersProps,
-  "form" | "setSelectedRow" | "setOpenDialog"
+  | "form"
+  | "setExistingImages"
+  | "setNewImages"
+  | "setSelectedRow"
+  | "setOpenDialog"
+  | "setToDelete"
 > & {
+  row: Frame;
+};
+
+type NavigateHandlerProps = Pick<FramesHandlersProps, "router"> & {
   row: Frame;
 };
 
@@ -62,14 +79,18 @@ type OpenChangeAlertDialogHandlerProps = Pick<
 
 type OpenChangeDialogHandlerProps = Pick<
   FramesHandlersProps,
-  "form" | "selectedRow" | "setOpenDialog" | "setSelectedRow"
+  | "form"
+  | "setExistingImages"
+  | "setNewImages"
+  | "setOpenDialog"
+  | "setSelectedRow"
 > & {
   open: boolean;
 };
 
 type SubmitHandlerCreateProps = Pick<
   SubmitHandlerProps,
-  "form" | "setData" | "setLoading" | "setOpenDialog" | "values"
+  "form" | "newImages" | "setData" | "setLoading" | "setOpenDialog" | "values"
 >;
 
 type SubmitHandlerDeleteProps = Pick<
@@ -85,22 +106,26 @@ type SubmitHandlerDeleteMultipleProps = Pick<
 type SubmitHandlerEditProps = Pick<
   SubmitHandlerProps,
   | "form"
+  | "newImages"
   | "selectedRow"
   | "setData"
   | "setLoading"
   | "setOpenDialog"
   | "setSelectedRow"
+  | "toDelete"
   | "values"
 >;
 
 type SubmitHandlerProps = Pick<
   FramesHandlersProps,
   | "form"
+  | "newImages"
   | "selectedRow"
   | "setData"
   | "setLoading"
   | "setOpenDialog"
   | "setSelectedRow"
+  | "toDelete"
 > & {
   values: FrameSchema;
 };
@@ -112,6 +137,7 @@ export type {
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
   EditHandlerProps,
+  NavigateHandlerProps,
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
   SubmitHandlerCreateProps,

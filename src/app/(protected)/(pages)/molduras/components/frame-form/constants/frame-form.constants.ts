@@ -1,20 +1,135 @@
 const constants = {
-  FIELD_PROPS: {
+  INPUT_FIELDS: {
     NAME: {
       labelProps: {
-        htmlFor: "name",
+        htmlFor: "title",
       },
-      labelText: "Nombre",
+      labelText: "Título",
       inputProps: {
-        id: "name",
-        name: "name",
-        placeholder: "Nombre de la moldura",
+        id: "title",
+        name: "title",
+        placeholder: "Título de la moldura",
         type: "text",
-        ["aria-describedby"]: "name-helper",
+        ["aria-describedby"]: "ntitleame-helper",
       },
       messageProps: {
-        id: "name-helper",
+        id: "title-helper",
       },
+    },
+    IMAGES: {
+      labelProps: {
+        htmlFor: "images",
+      },
+      labelText: "Imágenes",
+      inputProps: {
+        accept: "image/*",
+        id: "images",
+        multiple: true,
+        name: "images",
+        placeholder: "Imágenes de la moldura",
+        type: "file",
+        ["aria-describedby"]: "images-helper",
+      },
+      messageProps: {
+        id: "images-helper",
+      },
+    },
+    REFERENCE_NUMBER: {
+      labelProps: {
+        htmlFor: "referenceNumber",
+      },
+      labelText: "Número de referencia",
+      inputProps: {
+        id: "referenceNumber",
+        name: "referenceNumber",
+        placeholder: "Número de referencia",
+        type: "number",
+        ["aria-describedby"]: "referenceNumber-helper",
+      },
+      messageProps: {
+        id: "referenceNumber-helper",
+      },
+    },
+    REFERENCE_CODE: {
+      labelProps: {
+        htmlFor: "referenceCode",
+      },
+      labelText: "Código de referencia",
+      inputProps: {
+        id: "referenceCode",
+        name: "referenceCode",
+        placeholder: "Código de referencia",
+        type: "text",
+        ["aria-describedby"]: "referenceCode-helper",
+      },
+      messageProps: {
+        id: "referenceCode-helper",
+      },
+    },
+    WIDTH: {
+      labelProps: {
+        htmlFor: "width",
+      },
+      labelText: "Ancho",
+      inputProps: {
+        id: "width",
+        name: "width",
+        placeholder: "Ancho de la moldura",
+        type: "number",
+        ["aria-describedby"]: "width-helper",
+      },
+      messageProps: {
+        id: "width-helper",
+      },
+    },
+    HEIGHT: {
+      labelProps: {
+        htmlFor: "height",
+      },
+      labelText: "Alto",
+      inputProps: {
+        id: "height",
+        name: "height",
+        placeholder: "Alto de la moldura",
+        type: "number",
+        ["aria-describedby"]: "height-helper",
+      },
+      messageProps: {
+        id: "height-helper",
+      },
+    },
+  },
+
+  SELECT_FIELDS: {
+    ARTIST: {
+      labelText: "Artista",
+      name: "artistId",
+      placeholder: "Artista de la moldura",
+    },
+    SUPPORT: {
+      labelText: "Soporte",
+      name: "supportId",
+      placeholder: "Soporte de la moldura",
+    },
+    COLORS: {
+      labelText: "Colores",
+      name: "colors",
+      placeholder: "Colores",
+    },
+    STYLE: {
+      labelText: "Estilo",
+      name: "styleId",
+      placeholder: "Estilo de la moldura",
+    },
+    FINISH: {
+      labelText: "Técnica",
+      name: "finishId",
+      placeholder: "Técnica de la moldura",
+    },
+    FORMAT: {
+      labelText: "Formato",
+      name: "formatId",
+      placeholder: "Formato de la moldura",
     },
   },
   BUTTON_PROPS: {

@@ -58,7 +58,7 @@ model Artwork {
   updatedAt DateTime @updatedAt
 
   colors ArtworkColor[]
-  images Image[]
+  images ArtworkImage[]
 
   artist  Artist   @relation(fields: [artistId], references: [id])
   finish  Finish?  @relation(fields: [finishId], references: [id])
@@ -77,7 +77,7 @@ model ArtworkColor {
   @@id([artworkId, colorId])
 }
 
-model Image {
+model ArtworkImage {
   id        String   @id @default(cuid())
   url       String
   artworkId String
@@ -136,10 +136,31 @@ model Support {
 }
 
 model Frame {
-  id        String    @id @default(cuid())
-  name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id             String   @id @default(cuid())
+  name           String
+  description    String?
+  reference      String   @unique
+  weight         Int?
+  height         Int?
+  galce          Int?
+  manufacturerId String?
+  materialId     String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  images FrameImage[]
+
+  manufacturer Manufacturer? @relation(fields: [manufacturerId], references: [id])
+  material     Material?     @relation(fields: [materialId], references: [id])
+}
+
+model FrameImage {
+  id        String   @id @default(cuid())
+  url       String
+  frameId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  frame     Frame    @relation(fields: [frameId], references: [id], onDelete: Cascade)
 }
 
 model Manufacturer {
@@ -147,6 +168,7 @@ model Manufacturer {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Frame     Frame[]
 }
 
 model Material {
@@ -154,4 +176,5 @@ model Material {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Frame     Frame[]
 }

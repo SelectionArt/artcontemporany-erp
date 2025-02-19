@@ -5,6 +5,7 @@ import {
   createFrame,
   deleteFrame,
   deleteMultipleFrames,
+  generateUniqueReferenceNumber,
   updateFrame,
 } from "../actions/frames.actions";
 // Types
@@ -15,6 +16,7 @@ import type {
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
   EditHandlerProps,
+  NavigateHandlerProps,
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
   SubmitHandlerCreateProps,
@@ -24,7 +26,12 @@ import type {
   SubmitHandlerProps,
 } from "./types/frames.handlers.types";
 
-const createHandler = ({ setOpenDialog }: CreateHandlerProps): void => {
+const createHandler = async ({
+  form,
+  setOpenDialog,
+}: CreateHandlerProps): Promise<void> => {
+  const randomReferenceNumber = await generateUniqueReferenceNumber();
+  form.setValue("referenceNumber", randomReferenceNumber);
   setOpenDialog(true);
 };
 
@@ -49,12 +56,32 @@ const deleteMultipleHandler = ({
 const editHandler = ({
   form,
   row,
-  setSelectedRow,
+  setExistingImages,
+  setNewImages,
   setOpenDialog,
+  setSelectedRow,
+  setToDelete,
 }: EditHandlerProps): void => {
-  form.reset(row, { keepDefaultValues: true });
-  setSelectedRow(row);
+  const transformedRow = {
+    ...row,
+    artistId: row.artist.id,
+    colors: row.colors.map((color) => color.id),
+    finishId: row.finish?.id || "",
+    formatId: row.format?.id || "",
+    styleId: row.style?.id || "",
+    supportId: row.support?.id || "",
+    images: [],
+  };
+  form.reset(transformedRow, { keepDefaultValues: true });
+  setExistingImages(row.images.map((image) => image.url) || []);
+  setNewImages([]);
   setOpenDialog(true);
+  setSelectedRow(row);
+  setToDelete([]);
+};
+
+const navigateHandler = ({ row, router }: NavigateHandlerProps): void => {
+  router.push(`/galeria/${row.id}`);
 };
 
 const openChangeAlertDialogHandler = ({
@@ -79,40 +106,45 @@ const openChangeAlertDialogHandler = ({
 const openChangeDialogHandler = ({
   form,
   open,
-  selectedRow,
+  setExistingImages,
+  setNewImages,
   setOpenDialog,
   setSelectedRow,
 }: OpenChangeDialogHandlerProps): void => {
+  form.reset();
+  setExistingImages([]);
+  setNewImages([]);
+  setSelectedRow(null);
   setOpenDialog(open);
-
-  if (!open && selectedRow) {
-    form.reset();
-    setSelectedRow(null);
-  }
 };
 
 const submitHandler = ({
   form,
+  newImages,
   selectedRow,
   setData,
   setLoading,
   setOpenDialog,
   setSelectedRow,
+  toDelete,
   values,
 }: SubmitHandlerProps): void => {
   if (selectedRow) {
     submitHandlerEdit({
-      selectedRow,
       form,
+      newImages,
+      selectedRow,
       setData,
       setLoading,
       setOpenDialog,
       setSelectedRow,
+      toDelete,
       values,
     });
   } else {
     submitHandlerCreate({
       form,
+      newImages,
       setData,
       setLoading,
       setOpenDialog,
@@ -123,6 +155,7 @@ const submitHandler = ({
 
 const submitHandlerCreate = async ({
   form,
+  newImages,
   setData,
   setLoading,
   setOpenDialog,
@@ -131,7 +164,10 @@ const submitHandlerCreate = async ({
   setLoading(true);
 
   try {
-    const { frame, error, success } = await createFrame({ values });
+    const { frame, error, success } = await createFrame({
+      newImages,
+      values,
+    });
 
     if (error) {
       toast.error(error);
@@ -139,9 +175,7 @@ const submitHandlerCreate = async ({
     }
 
     if (success && frame) {
-      setData((prev) =>
-        [...prev, frame].sort((a, b) => a.name.localeCompare(b.name)),
-      );
+      setData((prev) => [...prev, frame]);
       form.reset();
       setOpenDialog(false);
       toast.success(success);
@@ -156,11 +190,13 @@ const submitHandlerCreate = async ({
 
 const submitHandlerEdit = async ({
   form,
+  newImages,
   selectedRow,
   setData,
   setLoading,
   setOpenDialog,
   setSelectedRow,
+  toDelete,
   values,
 }: SubmitHandlerEditProps): Promise<void> => {
   if (!selectedRow) {
@@ -172,6 +208,8 @@ const submitHandlerEdit = async ({
   try {
     const { frame, error, success } = await updateFrame({
       id: selectedRow.id,
+      newImages,
+      toDelete,
       values,
     });
 
@@ -182,9 +220,7 @@ const submitHandlerEdit = async ({
 
     if (success && frame) {
       setData((prev) =>
-        prev
-          .map((item) => (item.id === frame.id ? frame : item))
-          .sort((a, b) => a.name.localeCompare(b.name)),
+        prev.map((item) => (item.id === frame.id ? frame : item)),
       );
       form.reset();
       setOpenDialog(false);
@@ -268,17 +304,23 @@ const submitHandlerDeleteMultiple = async ({
 
 const FramesHandlers = ({
   form,
+  newImages,
+  router,
   selectedRow,
   selectedRows,
   setData,
+  setExistingImages,
   setLoading,
+  setNewImages,
   setOpenAlert,
   setOpenDialog,
   setSelectedRow,
   setSelectedRows,
+  setToDelete,
+  toDelete,
 }: FramesHandlersProps): FramesHandlersReturn => {
   return {
-    handleCreate: () => createHandler({ setOpenDialog }),
+    handleCreate: () => createHandler({ form, setOpenDialog }),
     handleDelete: (row) => deleteHandler({ row, setSelectedRow, setOpenAlert }),
     handleDeleteMultiple: (rows) =>
       deleteMultipleHandler({ rows, setSelectedRows, setOpenAlert }),
@@ -286,9 +328,13 @@ const FramesHandlers = ({
       editHandler({
         form,
         row,
-        setSelectedRow,
+        setExistingImages,
+        setNewImages,
         setOpenDialog,
+        setSelectedRow,
+        setToDelete,
       }),
+    handleNavigate: (row) => navigateHandler({ row, router }),
     handleOpenChangeAlertDialog: (open) =>
       openChangeAlertDialogHandler({
         open,
@@ -302,18 +348,21 @@ const FramesHandlers = ({
       openChangeDialogHandler({
         form,
         open,
-        selectedRow,
+        setExistingImages,
+        setNewImages,
         setOpenDialog,
         setSelectedRow,
       }),
     handleSubmit: (values) =>
       submitHandler({
         form,
+        newImages,
         selectedRow,
         setData,
         setLoading,
         setOpenDialog,
         setSelectedRow,
+        toDelete,
         values,
       }),
     handleSubmitDelete: () =>

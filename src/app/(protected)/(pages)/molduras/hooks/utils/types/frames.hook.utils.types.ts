@@ -5,6 +5,7 @@ import type { MultipleSelectActionsProps } from "@/components/data-table/compone
 type GetColumnsConfigProps<TData> = {
   handleDelete: (row: TData) => void;
   handleEdit: (row: TData) => void;
+  handleNavigate: (row: TData) => void;
 };
 
 type GetColumnsConfigReturn<TData> = ColumnDef<TData>[];

@@ -1,25 +1,15 @@
 import type {
-  Artist,
-  Color,
-  Finish,
-  Format,
-  Style,
-  Support,
-} from "@prisma/client";
-import type { FetchArtworksReturn } from "../actions/types/artworks.actions.types";
+  FetchArtworksReturn,
+  FetchFiltersReturn,
+} from "../actions/types/artworks.actions.types";
 
-type Artwork = FetchArtworksReturn[0];
+type Artwork = FetchArtworksReturn[number];
+
+type Filters = FetchFiltersReturn;
 
 type ArtworksProps = {
   artworks: Artwork[];
-  filters: {
-    artists: Artist[];
-    colors: Color[];
-    finishes: Finish[];
-    formats: Format[];
-    styles: Style[];
-    supports: Support[];
-  };
+  filters: Filters;
 };
 
 export type { Artwork, ArtworksProps };

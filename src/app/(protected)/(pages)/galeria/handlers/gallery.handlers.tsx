@@ -16,8 +16,6 @@ import type {
 const downloadClickHandler = async ({
   selectedArtworks,
 }: DownloadClickHandlerProps): Promise<void> => {
-  console.log("Download click", selectedArtworks);
-
   const zip = new JSZip();
 
   const downloadPromises = selectedArtworks.flatMap((artwork) =>

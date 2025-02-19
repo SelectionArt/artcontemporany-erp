@@ -1,6 +1,7 @@
 "use client";
 // Vendors
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 // Constants
@@ -22,24 +23,30 @@ import {
   getMultipleSelectActionsProps,
 } from "./utils/frames.hook.utils";
 
-const FramesHook = ({ initialData }: FramesHookProps): FramesHookReturn => {
-  const [data, setData] = useState<Frame[]>(initialData);
+const FramesHook = ({ frames }: FramesHookProps): FramesHookReturn => {
+  const [data, setData] = useState<Frame[]>(frames);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [newImages, setNewImages] = useState<File[]>([]);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<Frame | null>(null);
   const [selectedRows, setSelectedRows] = useState<Frame[]>([]);
+  const [toDelete, setToDelete] = useState<string[]>([]);
 
   const form = useForm<FrameSchema>({
     resolver: zodResolver(frameSchema),
     defaultValues: constants.DEFAULT_FORM_VALUES,
   });
 
+  const router = useRouter();
+
   const {
     handleCreate,
     handleDelete,
     handleDeleteMultiple,
     handleEdit,
+    handleNavigate,
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
     handleSubmit,
@@ -47,17 +54,27 @@ const FramesHook = ({ initialData }: FramesHookProps): FramesHookReturn => {
     handleSubmitDeleteMultiple,
   } = FramesHandlers({
     form,
+    newImages,
+    router,
     selectedRow,
     selectedRows,
     setData,
+    setExistingImages,
     setLoading,
+    setNewImages,
     setOpenAlert,
     setOpenDialog,
     setSelectedRow,
     setSelectedRows,
+    setToDelete,
+    toDelete,
   });
 
-  const columns = getColumnsConfig({ handleDelete, handleEdit });
+  const columns = getColumnsConfig({
+    handleDelete,
+    handleEdit,
+    handleNavigate,
+  });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,
   });
@@ -65,6 +82,7 @@ const FramesHook = ({ initialData }: FramesHookProps): FramesHookReturn => {
   return {
     columns,
     data,
+    existingImages,
     form,
     handleCreate,
     handleOpenChangeAlertDialog,
@@ -74,10 +92,15 @@ const FramesHook = ({ initialData }: FramesHookProps): FramesHookReturn => {
     handleSubmitDeleteMultiple,
     loading,
     multipleSelectActionsProps,
+    newImages,
     openAlert,
     openDialog,
     selectedRow,
     selectedRows,
+    setExistingImages,
+    setNewImages,
+    setToDelete,
+    toDelete,
   };
 };
 

@@ -2,7 +2,7 @@ import { Manufacturer as PrismaManufacturer } from "@prisma/client";
 
 type Manufacturer = Omit<
   PrismaManufacturer,
-  "createdAt" | "updatedAt" | "artworks"
+  "createdAt" | "updatedAt" | "frames"
 >;
 
 type ManufacturersProps = {

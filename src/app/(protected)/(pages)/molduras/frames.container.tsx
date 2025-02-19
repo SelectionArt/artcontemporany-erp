@@ -9,10 +9,11 @@ import { FramesHook } from "./hooks/frames.hook";
 // Types
 import type { FramesProps } from "./types/frames.container.types";
 
-const FramesContainer = ({ initialData }: FramesProps) => {
+const FramesContainer = ({ frames, filters }: FramesProps) => {
   const {
     columns,
     data,
+    existingImages,
     form,
     handleCreate,
     handleOpenChangeAlertDialog,
@@ -22,14 +23,21 @@ const FramesContainer = ({ initialData }: FramesProps) => {
     handleSubmitDeleteMultiple,
     loading,
     multipleSelectActionsProps,
+    newImages,
     openAlert,
     openDialog,
     selectedRow,
     selectedRows,
-  } = FramesHook({ initialData });
+    setExistingImages,
+    setNewImages,
+    setToDelete,
+    toDelete,
+  } = FramesHook({
+    frames,
+  });
 
   return (
-    <div className="flex grow p-4">
+    <div className="flex w-full grow p-4">
       <DataTable
         columns={columns}
         data={data}
@@ -38,16 +46,23 @@ const FramesContainer = ({ initialData }: FramesProps) => {
         onCreateRecord={handleCreate}
       />
       <DialogWrapper
-        description={`Rellena los campos para ${selectedRow ? "editar" : "crear"} un moldura.`}
+        description={`Rellena los campos para ${selectedRow ? "editar" : "crear"} una moldura.`}
         onOpenChange={handleOpenChangeDialog}
         open={openDialog}
         title={`${selectedRow ? "Editar" : "Crear"} moldura`}
       >
         <FrameForm
+          existingImages={existingImages}
+          filters={filters}
           form={form}
           handleSubmit={handleSubmit}
           label={selectedRow ? "Editar" : "Crear"}
           loading={loading}
+          newImages={newImages}
+          setExistingImages={setExistingImages}
+          setNewImages={setNewImages}
+          setToDelete={setToDelete}
+          toDelete={toDelete}
         />
       </DialogWrapper>
       <AlertDialogWrapper
@@ -62,8 +77,8 @@ const FramesContainer = ({ initialData }: FramesProps) => {
         }}
         description={`¿Estás seguro de que quieres eliminar ${
           selectedRows.length > 1
-            ? "las molduras seleccionados"
-            : "la moldura seleccionado"
+            ? "las molduras seleccionadas"
+            : "la moldura seleccionada"
         }?`}
         open={openAlert}
         onOpenChange={handleOpenChangeAlertDialog}
