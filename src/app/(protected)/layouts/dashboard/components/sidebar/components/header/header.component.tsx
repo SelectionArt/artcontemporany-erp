@@ -11,7 +11,7 @@ const Header = () => {
       </div>
       <div className="grid flex-1 text-left text-sm leading-tight">
         <span className="truncate font-semibold">Art Contemporany</span>
-        <span className="truncate text-xs">Administrator</span>
+        <span className="truncate text-xs">Administrador</span>
       </div>
     </div>
   );

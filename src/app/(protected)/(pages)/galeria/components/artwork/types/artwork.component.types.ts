@@ -1,8 +1,15 @@
 // Types
-import type { FetchGalleryReturn } from "../../../actions/types/gallery.actions.types";
+import type { Artwork } from "../../../types/gallery.container.types";
 
 type ArtworkProps = {
-  artwork: FetchGalleryReturn["artworks"][number];
+  artwork: Artwork;
+  onSelect: ({
+    artwork,
+    checked,
+  }: {
+    artwork: Artwork;
+    checked: string | boolean;
+  }) => void;
 };
 
 export type { ArtworkProps };

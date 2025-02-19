@@ -8,6 +8,7 @@ import type {
   GalleryHookProps,
   GalleryHookReturn,
 } from "./types/gallery.hook.types";
+import type { Artworks } from "../types/gallery.container.types";
 // Utils
 import {
   getFiltersConfig,
@@ -25,6 +26,7 @@ const GalleryHook = ({ gallery }: GalleryHookProps): GalleryHookReturn => {
   });
   const [height, setHeight] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedArtworks, setSelectedArtworks] = useState<Artworks>([]);
   const [width, setWidth] = useState<string>("");
 
   const filterConfig = getFiltersConfig({ gallery });
@@ -38,14 +40,18 @@ const GalleryHook = ({ gallery }: GalleryHookProps): GalleryHookReturn => {
   });
 
   const {
+    handleArtworkSelect,
+    handleDownloadClick,
     handleFilterChange,
     handleHeightChange,
     handleSearchChange,
     handleWidthChange,
   } = GalleryHandlers({
+    selectedArtworks,
     setFilters,
     setHeight,
     setSearchTerm,
+    setSelectedArtworks,
     setWidth,
   });
 
@@ -53,12 +59,15 @@ const GalleryHook = ({ gallery }: GalleryHookProps): GalleryHookReturn => {
     filterConfig,
     filteredArtworks,
     filters,
+    handleDownloadClick,
+    handleArtworkSelect,
     handleFilterChange,
     handleHeightChange,
     handleSearchChange,
     handleWidthChange,
     height,
     searchTerm,
+    selectedArtworks,
     width,
   };
 };

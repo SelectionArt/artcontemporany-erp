@@ -3,23 +3,27 @@ import Image from "next/image";
 import Link from "next/link";
 // Components
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 // Types
 import type { ArtworkProps } from "./types/artwork.component.types";
 
-const Artwork = ({ artwork }: ArtworkProps) => {
+const Artwork = ({ artwork, onSelect }: ArtworkProps) => {
   return (
-    <Link
-      className="flex flex-col rounded-lg border"
-      href={`/galeria/${artwork.id}`}
-    >
-      <div className="relative h-60">
+    <div className="relative flex flex-col rounded-lg border">
+      <div className="bg-background absolute top-2 right-2 z-50 flex size-12 items-center justify-center rounded-full">
+        <Checkbox
+          onCheckedChange={(checked) => onSelect({ artwork, checked })}
+          className="h-6 w-6"
+        />
+      </div>
+      <Link className="relative h-60" href={`/galeria/${artwork.id}`}>
         <Image
           src={artwork.images[0]?.url}
           alt={artwork.title}
           fill
           className="w-full rounded-t-lg object-contain"
         />
-      </div>
+      </Link>
       <div className="flex flex-1 flex-col gap-2 px-4 py-3">
         <div className="flex justify-between gap-2">
           <h3 className="text-lg font-semibold">{artwork.title}</h3>
@@ -40,7 +44,7 @@ const Artwork = ({ artwork }: ArtworkProps) => {
           </Badge>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

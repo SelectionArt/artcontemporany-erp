@@ -16,6 +16,7 @@ type GalleryHookReturn = GalleryHandlersReturn & {
   filters: Record<string, Set<string>>;
   height: string;
   searchTerm: string;
+  selectedArtworks: FetchGalleryReturn["artworks"];
   width: string;
 };
 

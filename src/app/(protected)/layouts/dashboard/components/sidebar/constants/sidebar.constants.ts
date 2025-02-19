@@ -61,7 +61,7 @@ const ITEMS = {
     },
     {
       title: "Gestión molduras",
-      url: "/obras",
+      url: "/molduras",
       icon: Frame,
     },
     {

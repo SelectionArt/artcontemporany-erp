@@ -44,7 +44,7 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
               <div className="relative h-60 sm:h-72 md:h-80 lg:h-96">
                 <Image
                   alt={artwork.title}
-                  className="rounded-lg object-cover"
+                  className="rounded-lg object-contain"
                   fill={true}
                   priority={true}
                   sizes="300px"
