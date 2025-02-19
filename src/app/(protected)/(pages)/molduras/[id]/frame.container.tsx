@@ -5,7 +5,6 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { es } from "date-fns/locale/es";
 // Components
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -20,13 +19,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-// Icons
-import {
-  PaintbrushIcon as PaintBrush,
-  Square,
-  SquareStack,
-  Type,
-} from "lucide-react";
 // Types
 import type { FrameProps } from "./types/frame.container.types";
 
