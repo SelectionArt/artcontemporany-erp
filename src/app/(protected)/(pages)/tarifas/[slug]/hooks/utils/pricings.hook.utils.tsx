@@ -4,12 +4,14 @@ import { SelectAllCheckbox } from "@/components/data-table/components/select-all
 import { SelectRowCheckbox } from "@/components/data-table/components/select-row-checkbox/select-row-checkbox.component";
 import { ColumnSorter } from "@/components/data-table/components/column-sorter/column-sorter.component";
 // Icons
-import { Ellipsis, SquarePen, Trash2 } from "lucide-react";
+import { Ellipsis, SquarePen, Trash2, TrendingUp, Upload } from "lucide-react";
 // Types
 import type { Pricing } from "../../types/pricings.container.types";
 import type {
   GetColumnsConfigProps,
   GetColumnsConfigReturn,
+  GetHeaderActionsProps,
+  GetHeaderActionsReturn,
   GetMultipleSelectActionsProps,
   GetMultipleSelectActionsReturn,
 } from "./types/pricings.hook.utils.types";
@@ -66,7 +68,20 @@ function getColumnsConfig({
   ];
 }
 
+function getHeaderActionsProps<TData>({
+  handleUploadPricingsExcel,
+}: GetHeaderActionsProps): GetHeaderActionsReturn<TData> {
+  return [
+    {
+      icon: Upload,
+      label: "Subir tarifas",
+      onClick: handleUploadPricingsExcel,
+    },
+  ];
+}
+
 function getMultipleSelectActionsProps<TData>({
+  handleApplyIncrement,
   handleDeleteMultiple,
 }: GetMultipleSelectActionsProps<TData>): GetMultipleSelectActionsReturn<TData> {
   return {
@@ -76,6 +91,11 @@ function getMultipleSelectActionsProps<TData>({
     },
     actions: [
       {
+        icon: TrendingUp,
+        label: "Aplicar incremento",
+        onClick: handleApplyIncrement,
+      },
+      {
         icon: Trash2,
         label: "Eliminar seleccionados",
         onClick: handleDeleteMultiple,
@@ -84,4 +104,8 @@ function getMultipleSelectActionsProps<TData>({
   };
 }
 
-export { getColumnsConfig, getMultipleSelectActionsProps };
+export {
+  getColumnsConfig,
+  getHeaderActionsProps,
+  getMultipleSelectActionsProps,
+};

@@ -1,6 +1,10 @@
 // Vendors
 import * as z from "zod";
 // Schemas
-import { pricingSchema } from "../pricing.schema";
+import { incrementSchema, pricingSchema } from "../pricing.schema";
 
-export type PricingSchema = z.infer<typeof pricingSchema>;
+type IncrementSchema = z.infer<typeof incrementSchema>;
+
+type PricingSchema = z.infer<typeof pricingSchema>;
+
+export type { IncrementSchema, PricingSchema };

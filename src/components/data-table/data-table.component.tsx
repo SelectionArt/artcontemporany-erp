@@ -11,6 +11,7 @@ import type { DataTableProps } from "./types/data-table.component.types";
 function DataTable<TData>({
   columns,
   data,
+  headerActions,
   initialColumnVisibility,
   multipleSelectActionsProps,
   onCreateRecord,
@@ -25,6 +26,7 @@ function DataTable<TData>({
     <div className="flex h-full w-full grow flex-col gap-4">
       <Header
         {...{
+          actions: headerActions,
           globalFilter,
           onCreateRecord,
           setGlobalFilter,

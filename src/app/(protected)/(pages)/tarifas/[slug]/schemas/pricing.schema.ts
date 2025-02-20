@@ -1,6 +1,11 @@
 // Vendors
 import * as z from "zod";
 
+const incrementSchema = z.object({
+  fixedIncrement: z.coerce.number().optional(),
+  porcentualIncrement: z.coerce.number().optional(),
+});
+
 const pricingSchema = z.object({
   height: z.coerce
     .number({ required_error: "El alto es requerido" })
@@ -13,4 +18,4 @@ const pricingSchema = z.object({
     .positive("El precio debe ser un número positivo"),
 });
 
-export { pricingSchema };
+export { incrementSchema, pricingSchema };

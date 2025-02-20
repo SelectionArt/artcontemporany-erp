@@ -2,34 +2,51 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import type { Pricing } from "../../types/pricings.container.types";
-import type { PricingSchema } from "../../schemas/types/pricing.schema.types";
+import type {
+  IncrementSchema,
+  PricingSchema,
+} from "../../schemas/types/pricing.schema.types";
 
 type PricingsHandlersProps = {
-  form: UseFormReturn<PricingSchema>;
+  incrementForm: UseFormReturn<IncrementSchema>;
+  pricingForm: UseFormReturn<PricingSchema>;
   params: { slug: string };
   selectedRow: Pricing | null;
   selectedRows: Pricing[];
   setData: Dispatch<SetStateAction<Pricing[]>>;
-  setLoading: Dispatch<SetStateAction<boolean>>;
+  setLoadingPricing: Dispatch<SetStateAction<boolean>>;
+  setLoadingIncrement: Dispatch<SetStateAction<boolean>>;
   setOpenAlert: Dispatch<SetStateAction<boolean>>;
-  setOpenDialog: Dispatch<SetStateAction<boolean>>;
+  setOpenIncrementDialog: Dispatch<SetStateAction<boolean>>;
+  setOpenPricingDialog: Dispatch<SetStateAction<boolean>>;
   setSelectedRow: Dispatch<SetStateAction<Pricing | null>>;
   setSelectedRows: Dispatch<SetStateAction<Pricing[]>>;
 };
 
 type PricingsHandlersReturn = {
+  handleApplyIncrement: (rows: Pricing[]) => void;
   handleCreate: () => void;
   handleDelete: (row: Pricing) => void;
   handleDeleteMultiple: (rows: Pricing[]) => void;
   handleEdit: (row: Pricing) => void;
   handleOpenChangeAlertDialog: (open: boolean) => void;
-  handleOpenChangeDialog: (open: boolean) => void;
-  handleSubmit: (values: PricingSchema) => void;
+  handleOpenChangeIncrementDialog: (open: boolean) => void;
+  handleOpenChangePricingDialog: (open: boolean) => void;
   handleSubmitDelete: () => void;
   handleSubmitDeleteMultiple: () => void;
+  handleSubmitIncrement: (values: IncrementSchema) => void;
+  handleSubmitPricing: (values: PricingSchema) => void;
+  handleUploadPricingsExcel: () => void;
 };
 
-type CreateHandlerProps = Pick<PricingsHandlersProps, "setOpenDialog">;
+type ApplyIncrementHandlerProps = Pick<
+  PricingsHandlersProps,
+  "setSelectedRows" | "setOpenIncrementDialog"
+> & {
+  rows: Pricing[];
+};
+
+type CreateHandlerProps = Pick<PricingsHandlersProps, "setOpenPricingDialog">;
 
 type DeleteHandlerProps = Pick<
   PricingsHandlersProps,
@@ -45,7 +62,7 @@ type DeleteMultipleHandlerProps = Pick<
 
 type EditHandlerProps = Pick<
   PricingsHandlersProps,
-  "form" | "setSelectedRow" | "setOpenDialog"
+  "pricingForm" | "setSelectedRow" | "setOpenPricingDialog"
 > & {
   row: Pricing;
 };
@@ -61,69 +78,94 @@ type OpenChangeAlertDialogHandlerProps = Pick<
   open: boolean;
 };
 
+type OpenChangeIncrementDialogHandlerProps = Pick<
+  PricingsHandlersProps,
+  "setOpenIncrementDialog" | "incrementForm"
+> & {
+  open: boolean;
+};
+
 type OpenChangeDialogHandlerProps = Pick<
   PricingsHandlersProps,
-  "form" | "selectedRow" | "setOpenDialog" | "setSelectedRow"
+  "pricingForm" | "selectedRow" | "setOpenPricingDialog" | "setSelectedRow"
 > & {
   open: boolean;
 };
 
 type SubmitHandlerCreateProps = Pick<
   SubmitHandlerProps,
-  | "form"
+  | "pricingForm"
   | "params"
   | "setData"
-  | "setLoading"
-  | "setOpenDialog"
+  | "setLoadingPricing"
+  | "setOpenPricingDialog"
   | "values"
 >;
 
 type SubmitHandlerDeleteProps = Pick<
   PricingsHandlersProps,
-  "selectedRow" | "setData" | "setLoading"
+  "selectedRow" | "setData" | "setLoadingPricing"
 >;
 
 type SubmitHandlerDeleteMultipleProps = Pick<
   PricingsHandlersProps,
-  "selectedRows" | "setData" | "setLoading" | "setSelectedRows"
+  "selectedRows" | "setData" | "setLoadingPricing" | "setSelectedRows"
 >;
 
 type SubmitHandlerEditProps = Pick<
   SubmitHandlerProps,
-  | "form"
+  | "pricingForm"
   | "selectedRow"
   | "setData"
-  | "setLoading"
-  | "setOpenDialog"
+  | "setLoadingPricing"
+  | "setOpenPricingDialog"
   | "setSelectedRow"
   | "values"
 >;
 
 type SubmitHandlerProps = Pick<
   PricingsHandlersProps,
-  | "form"
+  | "pricingForm"
   | "params"
   | "selectedRow"
   | "setData"
-  | "setLoading"
-  | "setOpenDialog"
+  | "setLoadingPricing"
+  | "setOpenPricingDialog"
   | "setSelectedRow"
 > & {
   values: PricingSchema;
 };
 
-export type {
+type SubmitHandlerIncrementProps = Pick<
   PricingsHandlersProps,
-  PricingsHandlersReturn,
+  | "incrementForm"
+  | "selectedRows"
+  | "setData"
+  | "setLoadingIncrement"
+  | "setOpenIncrementDialog"
+  | "setSelectedRows"
+> & {
+  values: IncrementSchema;
+};
+
+type UploadPricingsExcelHandlerProps = Pick<PricingsHandlersProps, "params">;
+
+export type {
+  ApplyIncrementHandlerProps,
   CreateHandlerProps,
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
   EditHandlerProps,
   OpenChangeAlertDialogHandlerProps,
+  OpenChangeIncrementDialogHandlerProps,
   OpenChangeDialogHandlerProps,
+  PricingsHandlersProps,
+  PricingsHandlersReturn,
   SubmitHandlerCreateProps,
   SubmitHandlerDeleteMultipleProps,
   SubmitHandlerDeleteProps,
   SubmitHandlerEditProps,
+  SubmitHandlerIncrementProps,
   SubmitHandlerProps,
+  UploadPricingsExcelHandlerProps,
 };

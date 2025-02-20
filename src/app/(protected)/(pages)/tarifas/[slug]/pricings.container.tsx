@@ -2,6 +2,7 @@
 // Components
 import { AlertDialogWrapper } from "@/components/alert-dialog-wrapper/alert-dialog-wrapper.component";
 import { PricingForm } from "./components/pricing-form/pricing-form.component";
+import { IncrementForm } from "./components/increment-form/increment-form.component";
 import { DataTable } from "@/components/data-table/data-table.component";
 import { DialogWrapper } from "@/components/dialog-wrapper/dialog-wrapper.component";
 // Hooks
@@ -13,17 +14,23 @@ const PricingsContainer = ({ initialData }: PricingsProps) => {
   const {
     columns,
     data,
-    form,
     handleCreate,
     handleOpenChangeAlertDialog,
-    handleOpenChangeDialog,
-    handleSubmit,
+    handleOpenChangeIncrementDialog,
+    handleOpenChangePricingDialog,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
-    loading,
+    handleSubmitIncrement,
+    handleSubmitPricing,
+    headerActionsProps,
+    incrementForm,
+    loadingIncrement,
+    loadingPricing,
     multipleSelectActionsProps,
     openAlert,
-    openDialog,
+    openIncrementDialog,
+    openPricingDialog,
+    pricingForm,
     selectedRow,
     selectedRows,
   } = PricingsHook({ initialData });
@@ -33,21 +40,35 @@ const PricingsContainer = ({ initialData }: PricingsProps) => {
       <DataTable
         columns={columns}
         data={data}
+        headerActions={headerActionsProps}
         initialColumnVisibility={{}}
         multipleSelectActionsProps={multipleSelectActionsProps}
         onCreateRecord={handleCreate}
       />
       <DialogWrapper
         description={`Rellena los campos para ${selectedRow ? "editar" : "crear"} una tarifa.`}
-        onOpenChange={handleOpenChangeDialog}
-        open={openDialog}
+        onOpenChange={handleOpenChangePricingDialog}
+        open={openPricingDialog}
         title={`${selectedRow ? "Editar" : "Crear"} tarifa`}
       >
         <PricingForm
-          form={form}
-          handleSubmit={handleSubmit}
+          form={pricingForm}
+          handleSubmit={handleSubmitPricing}
           label={selectedRow ? "Editar" : "Crear"}
-          loading={loading}
+          loading={loadingPricing}
+        />
+      </DialogWrapper>
+      <DialogWrapper
+        description="Rellena los campos para aplicar un incremento fijo y/o porcentual a las tarifas seleccionadas."
+        onOpenChange={handleOpenChangeIncrementDialog}
+        open={openIncrementDialog}
+        title="Icrementar tarifas"
+      >
+        <IncrementForm
+          form={incrementForm}
+          handleSubmit={handleSubmitIncrement}
+          label="Incrementar"
+          loading={loadingIncrement}
         />
       </DialogWrapper>
       <AlertDialogWrapper

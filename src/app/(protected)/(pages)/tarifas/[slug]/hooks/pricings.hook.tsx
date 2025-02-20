@@ -9,10 +9,13 @@ import constants from "../constants/pricings.constants";
 // Handlers
 import { PricingsHandlers } from "../handlers/pricings.handlers";
 // Schemas
-import { pricingSchema } from "../schemas/pricing.schema";
+import { incrementSchema, pricingSchema } from "../schemas/pricing.schema";
 // Types
 import type { Pricing } from "../types/pricings.container.types";
-import type { PricingSchema } from "../schemas/types/pricing.schema.types";
+import type {
+  IncrementSchema,
+  PricingSchema,
+} from "../schemas/types/pricing.schema.types";
 import type {
   PricingsHookProps,
   PricingsHookReturn,
@@ -20,6 +23,7 @@ import type {
 // Utils
 import {
   getColumnsConfig,
+  getHeaderActionsProps,
   getMultipleSelectActionsProps,
 } from "./utils/pricings.hook.utils";
 
@@ -27,61 +31,86 @@ const PricingsHook = ({
   initialData,
 }: PricingsHookProps): PricingsHookReturn => {
   const [data, setData] = useState<Pricing[]>(initialData);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingIncrement, setLoadingIncrement] = useState<boolean>(false);
+  const [loadingPricing, setLoadingPricing] = useState<boolean>(false);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [openIncrementDialog, setOpenIncrementDialog] =
+    useState<boolean>(false);
+  const [openPricingDialog, setOpenPricingDialog] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<Pricing | null>(null);
   const [selectedRows, setSelectedRows] = useState<Pricing[]>([]);
 
-  const form = useForm<PricingSchema>({
+  const pricingForm = useForm<PricingSchema>({
     resolver: zodResolver(pricingSchema),
-    defaultValues: constants.DEFAULT_FORM_VALUES,
+    defaultValues: constants.DEFAULT_PRICING_FORM_VALUES,
+  });
+
+  const incrementForm = useForm<IncrementSchema>({
+    resolver: zodResolver(incrementSchema),
+    defaultValues: constants.DEFAULT_INCREMENT_FORM_VALUES,
   });
 
   const params = useParams<{ slug: string }>();
 
   const {
+    handleApplyIncrement,
     handleCreate,
     handleDelete,
     handleDeleteMultiple,
     handleEdit,
     handleOpenChangeAlertDialog,
-    handleOpenChangeDialog,
-    handleSubmit,
+    handleOpenChangeIncrementDialog,
+    handleOpenChangePricingDialog,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
+    handleSubmitIncrement,
+    handleSubmitPricing,
+    handleUploadPricingsExcel,
   } = PricingsHandlers({
-    form,
+    incrementForm,
     params,
+    pricingForm,
     selectedRow,
     selectedRows,
     setData,
-    setLoading,
+    setLoadingIncrement,
+    setLoadingPricing,
     setOpenAlert,
-    setOpenDialog,
+    setOpenIncrementDialog,
+    setOpenPricingDialog,
     setSelectedRow,
     setSelectedRows,
   });
 
   const columns = getColumnsConfig({ handleDelete, handleEdit });
+  const headerActionsProps = getHeaderActionsProps({
+    handleUploadPricingsExcel,
+  });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
+    handleApplyIncrement,
     handleDeleteMultiple,
   });
 
   return {
     columns,
     data,
-    form,
     handleCreate,
     handleOpenChangeAlertDialog,
-    handleOpenChangeDialog,
-    handleSubmit,
+    handleOpenChangeIncrementDialog,
+    handleOpenChangePricingDialog,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
-    loading,
+    handleSubmitIncrement,
+    handleSubmitPricing,
+    headerActionsProps,
+    incrementForm,
+    loadingIncrement,
+    loadingPricing,
     multipleSelectActionsProps,
     openAlert,
-    openDialog,
+    openIncrementDialog,
+    openPricingDialog,
+    pricingForm,
     selectedRow,
     selectedRows,
   };

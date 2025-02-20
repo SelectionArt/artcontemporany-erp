@@ -1,6 +1,14 @@
 // Types
-import type { PricingSchema } from "../../schemas/types/pricing.schema.types";
+import type {
+  IncrementSchema,
+  PricingSchema,
+} from "../../schemas/types/pricing.schema.types";
 import { Pricing, Section } from "@prisma/client";
+
+type ApplyIncrementProps = {
+  ids: string[];
+  values: IncrementSchema;
+};
 
 type CreatePricingProps = {
   slug: string;
@@ -54,7 +62,18 @@ type UpdatePricingReturn = {
   success?: string;
 };
 
+type UploadExcelProps = {
+  slug: string;
+  file: File;
+};
+
+type UploadExcelReturn = {
+  success?: string;
+  error?: string;
+};
+
 export type {
+  ApplyIncrementProps,
   CreatePricingProps,
   CreatePricingReturn,
   DeletePricingProps,
@@ -67,4 +86,6 @@ export type {
   FetchSectionReturn,
   UpdatePricingProps,
   UpdatePricingReturn,
+  UploadExcelProps,
+  UploadExcelReturn,
 };

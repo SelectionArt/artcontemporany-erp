@@ -2,30 +2,45 @@
 import { toast } from "sonner";
 // Actions
 import {
+  applyIncrement,
   createPricing,
   deletePricing,
   deleteMultiplePricings,
   updatePricing,
+  uploadExcel,
 } from "../actions/pricings.actions";
 // Types
 import type {
-  PricingsHandlersProps,
-  PricingsHandlersReturn,
+  ApplyIncrementHandlerProps,
   CreateHandlerProps,
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
   EditHandlerProps,
   OpenChangeAlertDialogHandlerProps,
+  OpenChangeIncrementDialogHandlerProps,
   OpenChangeDialogHandlerProps,
+  PricingsHandlersProps,
+  PricingsHandlersReturn,
   SubmitHandlerCreateProps,
   SubmitHandlerDeleteMultipleProps,
   SubmitHandlerDeleteProps,
   SubmitHandlerEditProps,
+  SubmitHandlerIncrementProps,
   SubmitHandlerProps,
+  UploadPricingsExcelHandlerProps,
 } from "./types/pricings.handlers.types";
 
-const createHandler = ({ setOpenDialog }: CreateHandlerProps): void => {
-  setOpenDialog(true);
+const applyIncrementHandler = async ({
+  rows,
+  setSelectedRows,
+  setOpenIncrementDialog,
+}: ApplyIncrementHandlerProps): Promise<void> => {
+  setSelectedRows(rows);
+  setOpenIncrementDialog(true);
+};
+
+const createHandler = ({ setOpenPricingDialog }: CreateHandlerProps): void => {
+  setOpenPricingDialog(true);
 };
 
 const deleteHandler = ({
@@ -47,14 +62,14 @@ const deleteMultipleHandler = ({
 };
 
 const editHandler = ({
-  form,
+  pricingForm,
   row,
   setSelectedRow,
-  setOpenDialog,
+  setOpenPricingDialog,
 }: EditHandlerProps): void => {
-  form.reset(row, { keepDefaultValues: true });
+  pricingForm.reset(row, { keepDefaultValues: true });
   setSelectedRow(row);
-  setOpenDialog(true);
+  setOpenPricingDialog(true);
 };
 
 const openChangeAlertDialogHandler = ({
@@ -76,62 +91,74 @@ const openChangeAlertDialogHandler = ({
   }
 };
 
-const openChangeDialogHandler = ({
-  form,
+const openChangeIncrementDialogHandler = ({
+  incrementForm,
+  open,
+  setOpenIncrementDialog,
+}: OpenChangeIncrementDialogHandlerProps): void => {
+  setOpenIncrementDialog(open);
+
+  if (!open) {
+    incrementForm.reset();
+  }
+};
+
+const openChangePricingDialogHandler = ({
+  pricingForm,
   open,
   selectedRow,
-  setOpenDialog,
+  setOpenPricingDialog,
   setSelectedRow,
 }: OpenChangeDialogHandlerProps): void => {
-  setOpenDialog(open);
+  setOpenPricingDialog(open);
 
   if (!open && selectedRow) {
-    form.reset();
+    pricingForm.reset();
     setSelectedRow(null);
   }
 };
 
-const submitHandler = ({
-  form,
+const submitPricingHandler = ({
+  pricingForm,
   params,
   selectedRow,
   setData,
-  setLoading,
-  setOpenDialog,
+  setLoadingPricing,
+  setOpenPricingDialog,
   setSelectedRow,
   values,
 }: SubmitHandlerProps): void => {
   if (selectedRow) {
     submitHandlerEdit({
       selectedRow,
-      form,
+      pricingForm,
       setData,
-      setLoading,
-      setOpenDialog,
+      setLoadingPricing,
+      setOpenPricingDialog,
       setSelectedRow,
       values,
     });
   } else {
     submitHandlerCreate({
-      form,
+      pricingForm,
       params,
       setData,
-      setLoading,
-      setOpenDialog,
+      setLoadingPricing,
+      setOpenPricingDialog,
       values,
     });
   }
 };
 
 const submitHandlerCreate = async ({
-  form,
+  pricingForm,
   params,
   setData,
-  setLoading,
-  setOpenDialog,
+  setLoadingPricing,
+  setOpenPricingDialog,
   values,
 }: SubmitHandlerCreateProps): Promise<void> => {
-  setLoading(true);
+  setLoadingPricing(true);
 
   try {
     const { pricing, error, success } = await createPricing({
@@ -146,24 +173,24 @@ const submitHandlerCreate = async ({
 
     if (success && pricing) {
       setData((prev) => [...prev, pricing].sort((a, b) => a.price - b.price));
-      form.reset();
-      setOpenDialog(false);
+      pricingForm.reset();
+      setOpenPricingDialog(false);
       toast.success(success);
     }
   } catch (error) {
     console.error(error);
     toast.error("Error al crear la tarifa. Por favor, inténtalo de nuevo");
   } finally {
-    setLoading(false);
+    setLoadingPricing(false);
   }
 };
 
 const submitHandlerEdit = async ({
-  form,
+  pricingForm,
   selectedRow,
   setData,
-  setLoading,
-  setOpenDialog,
+  setLoadingPricing,
+  setOpenPricingDialog,
   setSelectedRow,
   values,
 }: SubmitHandlerEditProps): Promise<void> => {
@@ -171,7 +198,7 @@ const submitHandlerEdit = async ({
     return;
   }
 
-  setLoading(true);
+  setLoadingPricing(true);
 
   try {
     const { pricing, error, success } = await updatePricing({
@@ -190,8 +217,8 @@ const submitHandlerEdit = async ({
           .map((item) => (item.id === pricing.id ? pricing : item))
           .sort((a, b) => a.price - b.price),
       );
-      form.reset();
-      setOpenDialog(false);
+      pricingForm.reset();
+      setOpenPricingDialog(false);
       setSelectedRow(null);
       toast.success(success);
     }
@@ -199,20 +226,20 @@ const submitHandlerEdit = async ({
     console.error(error);
     toast.error("Error al actualizar la tarifa. Por favor, inténtalo de nuevo");
   } finally {
-    setLoading(false);
+    setLoadingPricing(false);
   }
 };
 
 const submitHandlerDelete = async ({
   selectedRow,
   setData,
-  setLoading,
+  setLoadingPricing,
 }: SubmitHandlerDeleteProps): Promise<void> => {
   if (!selectedRow) {
     return;
   }
 
-  setLoading(true);
+  setLoadingPricing(true);
 
   try {
     const { success, error } = await deletePricing({ id: selectedRow.id });
@@ -230,17 +257,17 @@ const submitHandlerDelete = async ({
     console.error(error);
     toast.error("Error al eliminar la tarifa. Por favor, inténtalo de nuevo");
   } finally {
-    setLoading(false);
+    setLoadingPricing(false);
   }
 };
 
 const submitHandlerDeleteMultiple = async ({
   selectedRows,
   setData,
-  setLoading,
+  setLoadingPricing,
   setSelectedRows,
 }: SubmitHandlerDeleteMultipleProps): Promise<void> => {
-  setLoading(true);
+  setLoadingPricing(true);
   try {
     const { success, error } = await deleteMultiplePricings({
       ids: selectedRows.map((row) => row.id),
@@ -262,33 +289,114 @@ const submitHandlerDeleteMultiple = async ({
     console.error(error);
     toast.error("Error al eliminar los tarifas. Por favor, inténtalo de nuevo");
   } finally {
-    setLoading(false);
+    setLoadingPricing(false);
   }
 };
 
+const submitIncrementHandler = async ({
+  incrementForm,
+  selectedRows,
+  setData,
+  setLoadingIncrement,
+  setOpenIncrementDialog,
+  setSelectedRows,
+  values,
+}: SubmitHandlerIncrementProps): Promise<void> => {
+  setLoadingIncrement(true);
+
+  try {
+    const { pricings, success, error } = await applyIncrement({
+      ids: selectedRows.map((row) => row.id),
+      values,
+    });
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    if (success) {
+      setData((prev) =>
+        prev.map((item) => {
+          const updatedItem = pricings.find((row) => row.id === item.id);
+          return updatedItem ? updatedItem : item;
+        }),
+      );
+
+      toast.success(success);
+      incrementForm.reset();
+      setOpenIncrementDialog(false);
+      setSelectedRows([]);
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error(
+      "Error al aplicar el incremento. Por favor, inténtalo de nuevo",
+    );
+  } finally {
+    setLoadingIncrement(false);
+  }
+};
+
+const uploadPricingsExcelHandler = async ({
+  params,
+}: UploadPricingsExcelHandlerProps): Promise<void> => {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".xlsx, .xls";
+  input.style.display = "none";
+  input.addEventListener("change", async (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    if (!target.files || target.files.length === 0) return;
+
+    const file = target.files[0];
+
+    const { success, error } = await uploadExcel({ slug: params.slug, file });
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    if (success) {
+      toast.success(success);
+    }
+  });
+
+  document.body.appendChild(input);
+  input.click();
+
+  setTimeout(() => document.body.removeChild(input), 0);
+};
+
 const PricingsHandlers = ({
-  form,
+  incrementForm,
+  pricingForm,
   params,
   selectedRow,
   selectedRows,
   setData,
-  setLoading,
+  setLoadingIncrement,
+  setLoadingPricing,
   setOpenAlert,
-  setOpenDialog,
+  setOpenIncrementDialog,
+  setOpenPricingDialog,
   setSelectedRow,
   setSelectedRows,
 }: PricingsHandlersProps): PricingsHandlersReturn => {
   return {
-    handleCreate: () => createHandler({ setOpenDialog }),
+    handleApplyIncrement: (rows) =>
+      applyIncrementHandler({ rows, setSelectedRows, setOpenIncrementDialog }),
+    handleCreate: () => createHandler({ setOpenPricingDialog }),
     handleDelete: (row) => deleteHandler({ row, setSelectedRow, setOpenAlert }),
     handleDeleteMultiple: (rows) =>
       deleteMultipleHandler({ rows, setSelectedRows, setOpenAlert }),
     handleEdit: (row) =>
       editHandler({
-        form,
+        pricingForm,
         row,
         setSelectedRow,
-        setOpenDialog,
+        setOpenPricingDialog,
       }),
     handleOpenChangeAlertDialog: (open) =>
       openChangeAlertDialogHandler({
@@ -299,34 +407,51 @@ const PricingsHandlers = ({
         setSelectedRows,
         setOpenAlert,
       }),
-    handleOpenChangeDialog: (open) =>
-      openChangeDialogHandler({
-        form,
+    handleOpenChangeIncrementDialog: (open) =>
+      openChangeIncrementDialogHandler({
+        incrementForm,
+        open,
+        setOpenIncrementDialog,
+      }),
+    handleOpenChangePricingDialog: (open) =>
+      openChangePricingDialogHandler({
+        pricingForm,
         open,
         selectedRow,
-        setOpenDialog,
+        setOpenPricingDialog,
         setSelectedRow,
       }),
-    handleSubmit: (values) =>
-      submitHandler({
-        form,
+    handleSubmitPricing: (values) =>
+      submitPricingHandler({
+        pricingForm,
         params,
         selectedRow,
         setData,
-        setLoading,
-        setOpenDialog,
+        setLoadingPricing,
+        setOpenPricingDialog,
         setSelectedRow,
         values,
       }),
     handleSubmitDelete: () =>
-      submitHandlerDelete({ selectedRow, setData, setLoading }),
+      submitHandlerDelete({ selectedRow, setData, setLoadingPricing }),
     handleSubmitDeleteMultiple: () =>
       submitHandlerDeleteMultiple({
         selectedRows,
         setData,
-        setLoading,
+        setLoadingPricing,
         setSelectedRows,
       }),
+    handleSubmitIncrement: (values) =>
+      submitIncrementHandler({
+        incrementForm,
+        selectedRows,
+        setData,
+        setLoadingIncrement,
+        setOpenIncrementDialog,
+        setSelectedRows,
+        values,
+      }),
+    handleUploadPricingsExcel: () => uploadPricingsExcelHandler({ params }),
   };
 };
 
