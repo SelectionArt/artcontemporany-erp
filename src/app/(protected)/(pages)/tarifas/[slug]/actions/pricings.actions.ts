@@ -189,6 +189,8 @@ const updatePricing = async ({
   }
 };
 
+type ExcelRow = (string | number | null)[];
+
 const uploadExcel = async ({
   file,
   slug,
@@ -209,7 +211,9 @@ const uploadExcel = async ({
     const sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
 
-    const rows: any[][] = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    const rows: ExcelRow[][] = XLSX.utils.sheet_to_json(worksheet, {
+      header: 1,
+    });
 
     if (rows.length < 2) {
       return { error: "El archivo Excel no tiene datos válidos." };
