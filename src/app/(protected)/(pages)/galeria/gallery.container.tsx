@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useRef } from "react";
 // Components
 import { Artwork } from "./components/artwork/artwork.component";
 import { Button } from "@/components/ui/button";
