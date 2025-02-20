@@ -11,7 +11,6 @@ import type {
   GalleryHookReturn,
 } from "./types/gallery.hook.types";
 import type { Artworks } from "../types/gallery.container.types";
-import { handlers } from "@/auth";
 // Utils
 import {
   getFiltersConfig,
