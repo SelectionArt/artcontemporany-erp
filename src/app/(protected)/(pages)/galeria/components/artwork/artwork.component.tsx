@@ -18,10 +18,13 @@ const Artwork = ({ artwork, onSelect }: ArtworkProps) => {
       </div>
       <Link className="relative h-60" href={`/galeria/${artwork.id}`}>
         <Image
-          src={artwork.images[0]?.url}
           alt={artwork.title}
-          fill
           className="w-full rounded-t-lg object-contain"
+          fill
+          sizes="288px"
+          loading="lazy"
+          priority={false}
+          src={artwork.images[0]?.url}
         />
       </Link>
       <div className="flex flex-1 flex-col gap-2 px-4 py-3">

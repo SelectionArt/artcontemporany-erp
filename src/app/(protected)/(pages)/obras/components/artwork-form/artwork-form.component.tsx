@@ -248,32 +248,60 @@ const ArtworkForm = ({
           )}
         />
 
-        <FormField
-          control={form.control}
-          name={constants.SELECT_FIELDS.ARTIST.name}
-          render={({ field }) => (
-            <FormItem className="grow basis-1/2">
-              <FormLabel>{constants.SELECT_FIELDS.ARTIST.labelText}</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+        <div className="flex gap-4">
+          <FormField
+            control={form.control}
+            name={constants.SELECT_FIELDS.ARTIST.name}
+            render={({ field }) => (
+              <FormItem className="grow basis-1/2">
+                <FormLabel>
+                  {constants.SELECT_FIELDS.ARTIST.labelText}
+                </FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder={constants.SELECT_FIELDS.ARTIST.placeholder}
+                      />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {filters.artists.map((artist) => (
+                      <SelectItem key={artist.id} value={artist.id}>
+                        {artist.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={constants.INPUT_FIELDS.TAG.inputProps.name}
+            render={({ field }) => (
+              <FormItem className="grow basis-1/2">
+                <FormLabel {...constants.INPUT_FIELDS.TAG.labelProps}>
+                  {constants.INPUT_FIELDS.TAG.labelText}
+                </FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={constants.SELECT_FIELDS.ARTIST.placeholder}
-                    />
-                  </SelectTrigger>
+                  <Input
+                    {...{
+                      ...field,
+                      ...constants.INPUT_FIELDS.TAG.inputProps,
+                      disabled: loading,
+                    }}
+                  />
                 </FormControl>
-                <SelectContent>
-                  {filters.artists.map((artist) => (
-                    <SelectItem key={artist.id} value={artist.id}>
-                      {artist.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage {...constants.INPUT_FIELDS.TAG.messageProps} />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <div className="flex gap-4">
           <FormField

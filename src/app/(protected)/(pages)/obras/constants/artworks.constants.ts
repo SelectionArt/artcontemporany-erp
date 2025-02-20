@@ -10,6 +10,7 @@ const constants = {
     referenceCode: "ART",
     styleId: "",
     supportId: "",
+    tag: "",
     title: "",
     width: 0,
   },

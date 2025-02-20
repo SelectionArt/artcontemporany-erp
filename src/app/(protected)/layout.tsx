@@ -1,4 +1,7 @@
+// Vendors
 import { auth } from "@/auth";
+// Actions
+import { fetchSections } from "./layouts/dashboard/actions/dashboard.actions";
 // Layout
 import { DashboardLayout } from "./layouts/dashboard/dashboard.layout";
 // Providers
@@ -12,9 +15,12 @@ async function ProtectedLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+  const pricingSections = await fetchSections();
   return (
     <SidebarProvider defaultOpen={true}>
-      <DashboardLayout session={session}>{children}</DashboardLayout>
+      <DashboardLayout session={session} pricingSections={pricingSections}>
+        {children}
+      </DashboardLayout>
     </SidebarProvider>
   );
 }

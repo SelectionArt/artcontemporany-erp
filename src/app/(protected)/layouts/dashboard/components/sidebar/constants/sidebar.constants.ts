@@ -109,20 +109,8 @@ const ITEMS = {
       icon: ChartCandlestick,
       items: [
         {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
+          title: "Secciones",
+          url: "/tarifas/secciones",
         },
       ],
     },

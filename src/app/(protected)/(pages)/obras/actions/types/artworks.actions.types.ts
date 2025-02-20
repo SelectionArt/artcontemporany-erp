@@ -53,6 +53,7 @@ type FetchArtworksReturn = {
   referenceNumber: number;
   style: Style | null;
   support: Support | null;
+  tag: string;
   title: string;
   updatedAt: Date;
   width: number;

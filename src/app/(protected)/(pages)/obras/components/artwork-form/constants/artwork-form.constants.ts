@@ -98,6 +98,22 @@ const constants = {
         id: "height-helper",
       },
     },
+    TAG: {
+      labelProps: {
+        htmlFor: "tag",
+      },
+      labelText: "Etiqueta",
+      inputProps: {
+        id: "tag",
+        name: "tag",
+        placeholder: "Etiqueta de la obra",
+        type: "text",
+        ["aria-describedby"]: "tag-helper",
+      },
+      messageProps: {
+        id: "tag-helper",
+      },
+    },
   },
 
   SELECT_FIELDS: {

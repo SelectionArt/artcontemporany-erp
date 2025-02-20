@@ -75,6 +75,7 @@ const createArtwork = async ({
           referenceCode: validatedFields.data.referenceCode || null,
           styleId: validatedFields.data.styleId || null,
           supportId: validatedFields.data.supportId || null,
+          tag: validatedFields.data.tag || null,
           title: validatedFields.data.title || null,
         },
         include: {
@@ -113,6 +114,7 @@ const createArtwork = async ({
           referenceCode: newArtwork.referenceCode ?? "",
           style: newArtwork.style,
           support: newArtwork.support,
+          tag: newArtwork.tag ?? "",
           title: newArtwork.title ?? "",
         },
       };
@@ -209,6 +211,7 @@ const fetchArtworks = async (): Promise<FetchArtworksReturn> => {
       referenceNumber: artwork.referenceNumber,
       style: artwork.style,
       support: artwork.support,
+      tag: artwork.tag ?? "",
       title: artwork.title ?? "",
       updatedAt: artwork.updatedAt,
       width: artwork.width,
@@ -357,6 +360,7 @@ const updateArtwork = async ({
         referenceNumber: validatedFields.data.referenceNumber,
         styleId: validatedFields.data.styleId || null,
         supportId: validatedFields.data.supportId || null,
+        tag: validatedFields.data.tag || null,
         title: validatedFields.data.title || null,
         width: validatedFields.data.width,
       },
@@ -396,6 +400,7 @@ const updateArtwork = async ({
           artworkId: image.artworkId,
         })),
         referenceCode: updatedArtwork.referenceCode ?? "",
+        tag: updatedArtwork.tag ?? "",
         title: updatedArtwork.title ?? "",
       },
     };

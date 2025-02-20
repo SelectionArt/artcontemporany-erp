@@ -123,6 +123,12 @@ function getColumnsConfig({
       meta: "Formato",
     },
     {
+      accessorFn: (row) => row.tag,
+      header: ({ column }) => <ColumnSorter column={column} label="Tag" />,
+      id: "tag",
+      meta: "Tag",
+    },
+    {
       cell: ({ row }) => (
         <RowActions
           row={row}

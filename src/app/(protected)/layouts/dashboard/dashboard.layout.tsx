@@ -7,10 +7,14 @@ import { UserNav } from "./components/user-nav/user-nav";
 // Types
 import { DashboardProps } from "./types/dashboard.types";
 
-const DashboardLayout = ({ children, session }: DashboardProps) => {
+const DashboardLayout = ({
+  children,
+  pricingSections,
+  session,
+}: DashboardProps) => {
   return (
     <div className="flex w-full flex-1">
-      <Sidebar />
+      <Sidebar pricingSections={pricingSections} />
 
       <div className="flex w-full flex-1 flex-col overflow-hidden">
         <header className="bg-background flex h-16 shrink-0 items-center justify-end border-b px-4">

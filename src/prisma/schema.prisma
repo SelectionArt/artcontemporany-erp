@@ -53,6 +53,7 @@ model Artwork {
   formatId        String?
   styleId         String?
   supportId       String?
+  tag             String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -193,4 +194,24 @@ model Client {
   iban        String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Pricing {
+  id        String   @id @default(cuid())
+  width     Int
+  height    Int
+  price     Float
+  sectionId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  section   Section  @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+}
+
+model Section {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Pricing   Pricing[]
 }

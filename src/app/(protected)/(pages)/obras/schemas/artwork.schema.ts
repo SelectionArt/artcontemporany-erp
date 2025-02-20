@@ -55,6 +55,10 @@ const artworkSchema = z.object({
     .string()
     .optional()
     .transform((value) => value?.trim() ?? ""),
+  tag: z
+    .string()
+    .optional()
+    .transform((value) => value?.trim() ?? ""),
   title: z
     .string()
     .optional()

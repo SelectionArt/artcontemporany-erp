@@ -7,12 +7,30 @@ import { Header } from "./components/header/header.component";
 import { Content } from "./components/content/content.component";
 // Constants
 import { ITEMS } from "./constants/sidebar.constants";
+// Types
+import type { SidebarProps } from "./types/sidebar.component.types";
 
-const Sidebar = () => {
+const Sidebar = ({ pricingSections }: SidebarProps) => {
+  const items = ITEMS.navMain.map((item) => {
+    if (item.title === "Tarifas") {
+      return {
+        ...item,
+        items: [
+          ...(item.items ?? []),
+          ...pricingSections.map((section) => ({
+            title: section.name,
+            url: `/tarifas/${section.slug}`,
+          })),
+        ],
+      };
+    }
+    return item;
+  });
+
   return (
     <SidebarComponent collapsible="icon">
       <Header />
-      <Content items={ITEMS.navMain} />
+      <Content items={items} />
       <SidebarRail />
     </SidebarComponent>
   );

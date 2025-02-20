@@ -1,0 +1,340 @@
+// Vendors
+import { toast } from "sonner";
+// Actions
+import {
+  createSection,
+  deleteSection,
+  deleteMultipleSections,
+  updateSection,
+} from "../actions/sections.actions";
+// Types
+import type {
+  SectionsHandlersProps,
+  SectionsHandlersReturn,
+  CreateHandlerProps,
+  DeleteHandlerProps,
+  DeleteMultipleHandlerProps,
+  EditHandlerProps,
+  OpenChangeAlertDialogHandlerProps,
+  OpenChangeDialogHandlerProps,
+  SubmitHandlerCreateProps,
+  SubmitHandlerDeleteMultipleProps,
+  SubmitHandlerDeleteProps,
+  SubmitHandlerEditProps,
+  SubmitHandlerProps,
+} from "./types/sections.handlers.types";
+
+const createHandler = ({ setOpenDialog }: CreateHandlerProps): void => {
+  setOpenDialog(true);
+};
+
+const deleteHandler = ({
+  row,
+  setSelectedRow,
+  setOpenAlert,
+}: DeleteHandlerProps): void => {
+  setSelectedRow(row);
+  setOpenAlert(true);
+};
+
+const deleteMultipleHandler = ({
+  rows,
+  setSelectedRows,
+  setOpenAlert,
+}: DeleteMultipleHandlerProps): void => {
+  setSelectedRows(rows);
+  setOpenAlert(true);
+};
+
+const editHandler = ({
+  form,
+  row,
+  setSelectedRow,
+  setOpenDialog,
+}: EditHandlerProps): void => {
+  form.reset(row, { keepDefaultValues: true });
+  setSelectedRow(row);
+  setOpenDialog(true);
+};
+
+const openChangeAlertDialogHandler = ({
+  open,
+  selectedRow,
+  selectedRows,
+  setOpenAlert,
+  setSelectedRow,
+  setSelectedRows,
+}: OpenChangeAlertDialogHandlerProps): void => {
+  setOpenAlert(open);
+
+  if (!open && selectedRow) {
+    setSelectedRow(null);
+  }
+
+  if (!open && selectedRows.length) {
+    setSelectedRows([]);
+  }
+};
+
+const openChangeDialogHandler = ({
+  form,
+  open,
+  selectedRow,
+  setOpenDialog,
+  setSelectedRow,
+}: OpenChangeDialogHandlerProps): void => {
+  setOpenDialog(open);
+
+  if (!open && selectedRow) {
+    form.reset();
+    setSelectedRow(null);
+  }
+};
+
+const submitHandler = ({
+  form,
+  router,
+  selectedRow,
+  setData,
+  setLoading,
+  setOpenDialog,
+  setSelectedRow,
+  values,
+}: SubmitHandlerProps): void => {
+  if (selectedRow) {
+    submitHandlerEdit({
+      selectedRow,
+      form,
+      router,
+      setData,
+      setLoading,
+      setOpenDialog,
+      setSelectedRow,
+      values,
+    });
+  } else {
+    submitHandlerCreate({
+      form,
+      router,
+      setData,
+      setLoading,
+      setOpenDialog,
+      values,
+    });
+  }
+};
+
+const submitHandlerCreate = async ({
+  form,
+  router,
+  setData,
+  setLoading,
+  setOpenDialog,
+  values,
+}: SubmitHandlerCreateProps): Promise<void> => {
+  setLoading(true);
+
+  try {
+    const { section, error, success } = await createSection({ values });
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    if (success && section) {
+      setData((prev) =>
+        [...prev, section].sort((a, b) => a.name.localeCompare(b.name)),
+      );
+      form.reset();
+      setOpenDialog(false);
+      toast.success(success);
+      router.refresh();
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error("Error al crear la sección. Por favor, inténtalo de nuevo");
+  } finally {
+    setLoading(false);
+  }
+};
+
+const submitHandlerEdit = async ({
+  form,
+  router,
+  selectedRow,
+  setData,
+  setLoading,
+  setOpenDialog,
+  setSelectedRow,
+  values,
+}: SubmitHandlerEditProps): Promise<void> => {
+  if (!selectedRow) {
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const { section, error, success } = await updateSection({
+      id: selectedRow.id,
+      values,
+    });
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    if (success && section) {
+      setData((prev) =>
+        prev
+          .map((item) => (item.id === section.id ? section : item))
+          .sort((a, b) => a.name.localeCompare(b.name)),
+      );
+      form.reset();
+      setOpenDialog(false);
+      setSelectedRow(null);
+      toast.success(success);
+      router.refresh();
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error(
+      "Error al actualizar la sección. Por favor, inténtalo de nuevo",
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
+const submitHandlerDelete = async ({
+  selectedRow,
+  setData,
+  setLoading,
+}: SubmitHandlerDeleteProps): Promise<void> => {
+  if (!selectedRow) {
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const { success, error } = await deleteSection({ id: selectedRow.id });
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    if (success) {
+      setData((prev) => prev.filter((item) => item.id !== selectedRow.id));
+      toast.success(success);
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error("Error al eliminar la sección. Por favor, inténtalo de nuevo");
+  } finally {
+    setLoading(false);
+  }
+};
+
+const submitHandlerDeleteMultiple = async ({
+  selectedRows,
+  setData,
+  setLoading,
+  setSelectedRows,
+}: SubmitHandlerDeleteMultipleProps): Promise<void> => {
+  setLoading(true);
+  try {
+    const { success, error } = await deleteMultipleSections({
+      ids: selectedRows.map((row) => row.id),
+    });
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    if (success) {
+      setData((prev) =>
+        prev.filter((item) => !selectedRows.some((row) => row.id === item.id)),
+      );
+      toast.success(success);
+      setSelectedRows([]);
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error(
+      "Error al eliminar los secciones. Por favor, inténtalo de nuevo",
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
+const SectionsHandlers = ({
+  form,
+  router,
+  selectedRow,
+  selectedRows,
+  setData,
+  setLoading,
+  setOpenAlert,
+  setOpenDialog,
+  setSelectedRow,
+  setSelectedRows,
+}: SectionsHandlersProps): SectionsHandlersReturn => {
+  return {
+    handleCreate: () => createHandler({ setOpenDialog }),
+    handleDelete: (row) => deleteHandler({ row, setSelectedRow, setOpenAlert }),
+    handleDeleteMultiple: (rows) =>
+      deleteMultipleHandler({ rows, setSelectedRows, setOpenAlert }),
+    handleEdit: (row) =>
+      editHandler({
+        form,
+        row,
+        setSelectedRow,
+        setOpenDialog,
+      }),
+    handleOpenChangeAlertDialog: (open) =>
+      openChangeAlertDialogHandler({
+        open,
+        selectedRow,
+        selectedRows,
+        setSelectedRow,
+        setSelectedRows,
+        setOpenAlert,
+      }),
+    handleOpenChangeDialog: (open) =>
+      openChangeDialogHandler({
+        form,
+        open,
+        selectedRow,
+        setOpenDialog,
+        setSelectedRow,
+      }),
+    handleSubmit: (values) =>
+      submitHandler({
+        form,
+        router,
+        selectedRow,
+        setData,
+        setLoading,
+        setOpenDialog,
+        setSelectedRow,
+        values,
+      }),
+    handleSubmitDelete: () =>
+      submitHandlerDelete({ selectedRow, setData, setLoading }),
+    handleSubmitDeleteMultiple: () =>
+      submitHandlerDeleteMultiple({
+        selectedRows,
+        setData,
+        setLoading,
+        setSelectedRows,
+      }),
+  };
+};
+
+export { SectionsHandlers };
