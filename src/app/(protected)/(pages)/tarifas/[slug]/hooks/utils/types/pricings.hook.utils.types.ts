@@ -14,7 +14,7 @@ type GetHeaderActionsProps = {
   handleUploadPricingsExcel: () => void;
 };
 
-type GetHeaderActionsReturn<TData> = Action[];
+type GetHeaderActionsReturn = Action[];
 
 type GetMultipleSelectActionsProps<TData> = {
   handleApplyIncrement: (rows: TData[]) => void;

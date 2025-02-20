@@ -28,7 +28,7 @@ type PricingsHookReturn = Omit<
 > & {
   columns: GetColumnsConfigReturn<Pricing>;
   data: Pricing[];
-  headerActionsProps: GetHeaderActionsReturn<Pricing>;
+  headerActionsProps: GetHeaderActionsReturn;
   incrementForm: UseFormReturn<IncrementSchema>;
   loadingIncrement: boolean;
   loadingPricing: boolean;

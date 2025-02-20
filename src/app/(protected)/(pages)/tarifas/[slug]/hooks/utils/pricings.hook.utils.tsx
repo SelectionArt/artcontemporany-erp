@@ -68,9 +68,9 @@ function getColumnsConfig({
   ];
 }
 
-function getHeaderActionsProps<TData>({
+function getHeaderActionsProps({
   handleUploadPricingsExcel,
-}: GetHeaderActionsProps): GetHeaderActionsReturn<TData> {
+}: GetHeaderActionsProps): GetHeaderActionsReturn {
   return [
     {
       icon: Upload,

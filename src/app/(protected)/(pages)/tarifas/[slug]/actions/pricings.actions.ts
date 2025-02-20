@@ -4,7 +4,7 @@ import * as XLSX from "xlsx";
 // Libs
 import { prisma } from "@/lib/prisma";
 // Schemas
-import { incrementSchema, pricingSchema } from "../schemas/pricing.schema";
+import { pricingSchema } from "../schemas/pricing.schema";
 // Types
 import type {
   ApplyIncrementProps,
