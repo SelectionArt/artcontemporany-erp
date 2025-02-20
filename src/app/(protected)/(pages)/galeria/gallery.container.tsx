@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef } from "react";
 // Components
 import { Artwork } from "./components/artwork/artwork.component";
 import { Button } from "@/components/ui/button";
@@ -13,14 +14,13 @@ import { Input } from "@/components/ui/input";
 // Hooks
 import { GalleryHook } from "./hooks/gallery.hook";
 // Icons
-import { Ellipsis } from "lucide-react";
+import { Ellipsis, LoaderCircle } from "lucide-react";
 // Types
 import type { GalleryProps } from "./types/gallery.container.types";
 
 const GalleryContainer = ({ gallery }: GalleryProps) => {
   const {
     filterConfig,
-    filteredArtworks,
     filters,
     handleArtworkSelect,
     handleDownloadClick,
@@ -29,8 +29,12 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
     handleSearchChange,
     handleWidthChange,
     height,
+    loading,
+    loadMoreRef,
+    paginatedArtworks,
     searchTerm,
     selectedArtworks,
+    totalArtworks,
     width,
   } = GalleryHook({
     gallery,
@@ -38,7 +42,12 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
 
   return (
     <div className="flex w-full flex-col gap-4 overflow-auto p-4">
-      <h1 className="text-2xl font-semibold">Galería de obras</h1>
+      <div className="flex items-center gap-4">
+        <h1 className="text-2xl font-semibold">Galería de obras</h1>
+        <p className="text-muted-foreground">{`(${totalArtworks} ${
+          totalArtworks === 1 ? "obra" : "obras"
+        })`}</p>
+      </div>
 
       <div className="flex flex-wrap gap-4">
         <Input
@@ -99,9 +108,9 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
         ))}
       </div>
 
-      {filteredArtworks.length > 0 ? (
+      {paginatedArtworks.length > 0 ? (
         <div className="p- p- grid auto-rows-auto grid-cols-[repeat(auto-fill,minmax(288px,1fr))] gap-4">
-          {filteredArtworks.map((artwork) => (
+          {paginatedArtworks.map((artwork) => (
             <Artwork
               key={artwork.id}
               artwork={artwork}
@@ -114,6 +123,15 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
           No se encontraron obras con los filtros seleccionados.
         </p>
       )}
+
+      <div
+        className="flex h-24 shrink-0 items-center justify-center"
+        ref={loadMoreRef}
+      >
+        {loading && (
+          <LoaderCircle className="size-12 animate-spin" strokeWidth={1} />
+        )}
+      </div>
     </div>
   );
 };

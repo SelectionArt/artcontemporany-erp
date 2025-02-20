@@ -3,15 +3,32 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 // Types
 import type {
-  GalleryHandlersProps,
-  GalleryHandlersReturn,
+  ArtworkSelectHandlerProps,
   DownloadClickHandlerProps,
   FilterChangeHandlerProps,
+  GalleryHandlersProps,
+  GalleryHandlersReturn,
   HeightChangeHandlerProps,
+  LoadMoreHandlerProps,
   SearchChangeHandlerProps,
-  ArtworkSelectHandlerProps,
   WidthChangeHandlerProps,
 } from "./types/gallery.handlers.types";
+
+const artworkSelectHandler = ({
+  artwork,
+  checked,
+  setSelectedArtworks,
+}: ArtworkSelectHandlerProps): void => {
+  setSelectedArtworks((prevSelectedArtworks) => {
+    if (checked === true) {
+      return [...prevSelectedArtworks, artwork];
+    }
+
+    return prevSelectedArtworks.filter(
+      (selectedArtwork) => selectedArtwork.id !== artwork.id,
+    );
+  });
+};
 
 const downloadClickHandler = async ({
   selectedArtworks,
@@ -53,27 +70,29 @@ const heightChangeHandler = ({
   setHeight(event.target.value);
 };
 
+const loadMoreHandler = async ({
+  hasMore,
+  loading,
+  setLoading,
+  setPage,
+}: LoadMoreHandlerProps): Promise<void> => {
+  if (loading || !hasMore) return;
+
+  setLoading(true);
+
+  await new Promise((resolve) => {
+    setTimeout(resolve, 2000);
+  });
+
+  setPage((prev) => prev + 1);
+  setLoading(false);
+};
+
 const searchChangeHandler = ({
   event,
   setSearchTerm,
 }: SearchChangeHandlerProps): void => {
   setSearchTerm(event.target.value);
-};
-
-const artworkSelectHandler = ({
-  artwork,
-  checked,
-  setSelectedArtworks,
-}: ArtworkSelectHandlerProps): void => {
-  setSelectedArtworks((prevSelectedArtworks) => {
-    if (checked === true) {
-      return [...prevSelectedArtworks, artwork];
-    }
-
-    return prevSelectedArtworks.filter(
-      (selectedArtwork) => selectedArtwork.id !== artwork.id,
-    );
-  });
 };
 
 const widthChangeHandler = ({
@@ -84,9 +103,13 @@ const widthChangeHandler = ({
 };
 
 const GalleryHandlers = ({
+  hasMore,
+  loading,
   selectedArtworks,
   setFilters,
   setHeight,
+  setLoading,
+  setPage,
   setSearchTerm,
   setSelectedArtworks,
   setWidth,
@@ -98,6 +121,8 @@ const GalleryHandlers = ({
     handleFilterChange: ({ key, newValues }) =>
       filterChangeHandler({ key, newValues, setFilters }),
     handleHeightChange: (event) => heightChangeHandler({ event, setHeight }),
+    handleLoadMore: () =>
+      loadMoreHandler({ hasMore, loading, setLoading, setPage }),
     handleSearchChange: (event) =>
       searchChangeHandler({ event, setSearchTerm }),
     handleWidthChange: (event) => widthChangeHandler({ event, setWidth }),

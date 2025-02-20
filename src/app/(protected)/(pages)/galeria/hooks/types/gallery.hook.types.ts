@@ -10,13 +10,16 @@ type GalleryHookProps = {
   gallery: FetchGalleryReturn;
 };
 
-type GalleryHookReturn = GalleryHandlersReturn & {
+type GalleryHookReturn = Omit<GalleryHandlersReturn, "handleLoadMore"> & {
   filterConfig: GetFiltersConfigReturn[];
-  filteredArtworks: GetFilteredArtworksReturn;
   filters: Record<string, Set<string>>;
   height: string;
+  loading: boolean;
+  loadMoreRef: React.RefObject<HTMLDivElement | null>;
+  paginatedArtworks: GetFilteredArtworksReturn;
   searchTerm: string;
   selectedArtworks: FetchGalleryReturn["artworks"];
+  totalArtworks: number;
   width: string;
 };
 
