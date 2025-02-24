@@ -26,9 +26,20 @@ function getColumnsConfig({
       id: "selection",
     },
     {
-      accessorKey: "name",
-      header: ({ column }) => <ColumnSorter column={column} label="Nombre" />,
-      meta: "Nombre",
+      accessorKey: "number",
+      header: ({ column }) => <ColumnSorter column={column} label="Número" />,
+      meta: "Número",
+    },
+    {
+      accessorKey: "date",
+      header: ({ column }) => <ColumnSorter column={column} label="Fecha" />,
+      meta: "Fecha",
+    },
+    {
+      accessorKey: "client",
+      cell: ({ row }) => row.original.client.name,
+      header: "Cliente",
+      id: "client",
     },
     {
       cell: ({ row }) => (

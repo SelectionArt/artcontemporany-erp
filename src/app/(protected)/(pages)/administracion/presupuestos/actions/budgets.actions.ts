@@ -95,7 +95,12 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
   try {
     const budgets = await prisma.budget.findMany({
       orderBy: { createdAt: "desc" },
-      select: { id: true, client: { select: { id: true, name: true } } },
+      select: {
+        id: true,
+        client: { select: { id: true, name: true } },
+        date: true,
+        number: true,
+      },
     });
     return budgets;
   } catch (error) {

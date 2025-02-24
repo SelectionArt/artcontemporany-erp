@@ -12,7 +12,6 @@ import type { BudgetSchema } from "../../../../schemas/types/budget.schema.types
 type BudgetsHookProps = {
   artworks: Artwork[];
   clients: Client[];
-  fieldArray: UseFieldArrayReturn<BudgetSchema, "items">;
   form: UseFormReturn<BudgetSchema>;
   frames: Frame[];
 };

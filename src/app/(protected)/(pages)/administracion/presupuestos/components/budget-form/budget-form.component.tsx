@@ -70,7 +70,7 @@ const BudgetForm = ({
     setSearchClient,
     setSearchFrame,
     total,
-  } = BudgetsHook({ artworks, clients, fieldArray, form, frames });
+  } = BudgetsHook({ artworks, clients, form, frames });
 
   return (
     <Form {...form}>

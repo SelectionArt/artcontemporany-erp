@@ -13,7 +13,6 @@ import type { PricingItem } from "../../../types/budgets.container.types";
 const BudgetsHook = ({
   artworks,
   clients,
-  fieldArray,
   form,
   frames,
 }: BudgetsHookProps): BudgetsHookReturn => {

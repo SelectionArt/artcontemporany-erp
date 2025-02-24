@@ -43,7 +43,7 @@ type FetchArtworksReturn = Pick<
 >[];
 
 type FetchBudgetsReturn = Array<
-  Pick<Budget, "id"> & {
+  Pick<Budget, "id" | "date" | "number"> & {
     client: Pick<Client, "id" | "name">;
   }
 >;

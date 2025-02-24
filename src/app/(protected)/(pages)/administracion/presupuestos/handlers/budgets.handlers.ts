@@ -151,7 +151,9 @@ const submitHandlerCreate = async ({
 
     if (success && budget) {
       setData((prev) =>
-        [...prev, budget].sort((a, b) => a.name.localeCompare(b.name)),
+        [...prev, budget].sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+        ),
       );
       form.reset();
       setOpenDialog(false);
