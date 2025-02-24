@@ -107,7 +107,6 @@ const BudgetsHook = ({
     handleArtworkPricingsValueChange,
     handleFramePricingsValueChange,
     handleHeightValueChange,
-    handleQuantityValueChange,
     handleWidthValueChange,
   } = BudgetFormHandlers({
     artworkPricingItems,
@@ -126,7 +125,6 @@ const BudgetsHook = ({
     handleArtworkPricingsValueChange,
     handleFramePricingsValueChange,
     handleHeightValueChange,
-    handleQuantityValueChange,
     handleWidthValueChange,
     isCalendarOpen,
     searchClient,

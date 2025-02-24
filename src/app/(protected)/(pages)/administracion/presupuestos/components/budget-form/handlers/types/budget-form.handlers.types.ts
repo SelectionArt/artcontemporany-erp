@@ -48,15 +48,6 @@ type BudgetFormHandlersReturn = {
     field: ControllerRenderProps<BudgetSchema, `items.${number}.height`>;
     index: number;
   }) => void;
-  handleQuantityValueChange: ({
-    event,
-    field,
-    index,
-  }: {
-    event: ChangeEvent<HTMLInputElement>;
-    field: ControllerRenderProps<BudgetSchema, `items.${number}.quantity`>;
-    index: number;
-  }) => void;
   handleWidthValueChange: ({
     event,
     field,
@@ -102,13 +93,6 @@ type FramePricingsValueChangeHandlerProps = Pick<
   value: string;
 };
 
-type QuantityValueChangeHandlerProps = {
-  event: ChangeEvent<HTMLInputElement>;
-  field: ControllerRenderProps<BudgetSchema, `items.${number}.quantity`>;
-  form: UseFormReturn<BudgetSchema>;
-  index: number;
-};
-
 type WidthValueChangeHandlerProps = {
   artworkPricingItems: Record<string, PricingItem[]>;
   event: ChangeEvent<HTMLInputElement>;
@@ -124,6 +108,5 @@ export type {
   BudgetFormHandlersReturn,
   HeightValueChangeHandlerProps,
   FramePricingsValueChangeHandlerProps,
-  QuantityValueChangeHandlerProps,
   WidthValueChangeHandlerProps,
 };

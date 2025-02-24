@@ -61,7 +61,6 @@ const BudgetForm = ({
     handleArtworkPricingsValueChange,
     handleFramePricingsValueChange,
     handleHeightValueChange,
-    handleQuantityValueChange,
     handleWidthValueChange,
     isCalendarOpen,
     searchClient,
@@ -410,13 +409,6 @@ const BudgetForm = ({
                             ...field,
                             ...constants.QUANTITY_FIELD.inputProps,
                             disabled: loading,
-                            onChange: (event) => {
-                              handleQuantityValueChange({
-                                event,
-                                field,
-                                index,
-                              });
-                            },
                           }}
                         />
                       </FormControl>

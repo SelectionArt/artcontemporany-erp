@@ -9,7 +9,6 @@ import type {
   BudgetFormHandlersReturn,
   HeightValueChangeHandlerProps,
   FramePricingsValueChangeHandlerProps,
-  QuantityValueChangeHandlerProps,
   WidthValueChangeHandlerProps,
 } from "./types/budget-form.handlers.types";
 
@@ -132,15 +131,6 @@ const heightValueChangeHandler = ({
   });
 };
 
-const quantityValueChangeHandler = ({
-  event,
-  field,
-  form,
-  index,
-}: QuantityValueChangeHandlerProps): void => {
-  field.onChange(event);
-};
-
 const widthValueChangeHandler = ({
   artworkPricingItems,
   event,
@@ -209,13 +199,6 @@ const BudgetFormHandlers = ({
         field,
         form,
         framePricingItems,
-        index,
-      }),
-    handleQuantityValueChange: ({ event, field, index }) =>
-      quantityValueChangeHandler({
-        event,
-        field,
-        form,
         index,
       }),
     handleWidthValueChange: ({ event, field, index }) =>
