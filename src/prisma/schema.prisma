@@ -203,7 +203,7 @@ model PricingItem {
   id        String   @id @default(cuid())
   width     Int
   height    Int
-  price     Decimal  @db.Decimal(10, 2)
+  price     Float
   pricingId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -238,10 +238,10 @@ model Budget {
 model BudgetItem {
   id               String   @id @default(cuid())
   artworkId        String
-  artworkPrice     Decimal  @db.Decimal(10, 2)
+  artworkPrice     Float
   artworkPricingId String
   frameId          String
-  framePrice       Decimal  @db.Decimal(10, 2)
+  framePrice       Float
   framePricingId   String
   height           Int
   quantity         Int
