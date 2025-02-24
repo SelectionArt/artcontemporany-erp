@@ -65,7 +65,7 @@ const getRoundedItem = ({
 
   return {
     ...item,
-    price: item.price.toNumber(),
+    price: Number(item?.price) || 0,
   };
 };
 
