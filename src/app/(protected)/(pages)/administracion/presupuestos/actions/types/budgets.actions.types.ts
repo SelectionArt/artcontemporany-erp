@@ -14,7 +14,9 @@ type CreateBudgetProps = {
 };
 
 type CreateBudgetReturn = {
-  budget?: Budget;
+  budget?: Pick<Budget, "id" | "date" | "number"> & {
+    client: Pick<Client, "id" | "name">;
+  };
   error?: string;
   success?: string;
 };
@@ -69,7 +71,9 @@ type UpdateBudgetProps = {
 };
 
 type UpdateBudgetReturn = {
-  budget?: Budget;
+  budget?: Pick<Budget, "id" | "date" | "number"> & {
+    client: Pick<Client, "id" | "name">;
+  };
   error?: string;
   success?: string;
 };

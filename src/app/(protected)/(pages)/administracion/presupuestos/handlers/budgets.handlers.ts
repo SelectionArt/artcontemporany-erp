@@ -197,7 +197,9 @@ const submitHandlerEdit = async ({
       setData((prev) =>
         prev
           .map((item) => (item.id === budget.id ? budget : item))
-          .sort((a, b) => a.name.localeCompare(b.name)),
+          .sort(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+          ),
       );
       form.reset();
       setOpenDialog(false);

@@ -34,6 +34,7 @@ const createBudget = async ({
   try {
     const newBudget = await prisma.budget.create({
       data: validatedFields.data,
+      include: { client: { select: { id: true, name: true } } },
     });
 
     return { success: "Presupuesto creado con éxito", budget: newBudget };
@@ -193,6 +194,7 @@ const updateBudget = async ({
     const updatedBudget = await prisma.budget.update({
       where: { id },
       data: validatedFields.data,
+      include: { client: { select: { id: true, name: true } } },
     });
 
     return {
