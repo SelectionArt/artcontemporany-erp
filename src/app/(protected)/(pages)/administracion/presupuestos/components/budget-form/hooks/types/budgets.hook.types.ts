@@ -6,7 +6,7 @@ import type {
   Frame,
 } from "../../../../types/budgets.container.types";
 import type { BudgetFormHandlersReturn } from "../../handlers/types/budget-form.handlers.types";
-import type { UseFieldArrayReturn, UseFormReturn } from "react-hook-form";
+import type { UseFormReturn } from "react-hook-form";
 import type { BudgetSchema } from "../../../../schemas/types/budget.schema.types";
 
 type BudgetsHookProps = {
