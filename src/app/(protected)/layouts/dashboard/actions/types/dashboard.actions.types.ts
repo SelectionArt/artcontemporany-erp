@@ -1,6 +1,6 @@
 // Types
-import type { Section } from "@prisma/client";
+import type { Pricing } from "@prisma/client";
 
-type FetchSectionsReturn = Omit<Section, "createdAt" | "updatedAt">[];
+type FetchPricingsReturn = Omit<Pricing, "createdAt" | "updatedAt">[];
 
-export type { FetchSectionsReturn };
+export type { FetchPricingsReturn };

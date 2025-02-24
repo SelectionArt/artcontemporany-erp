@@ -1,10 +1,10 @@
 // Types
 import type { Session } from "next-auth";
-import type { FetchSectionsReturn } from "../actions/types/dashboard.actions.types";
+import type { FetchPricingsReturn } from "../actions/types/dashboard.actions.types";
 
 type DashboardProps = {
   children: React.ReactNode;
-  pricingSections: FetchSectionsReturn;
+  pricings: FetchPricingsReturn;
   session: Session | null;
 };
 

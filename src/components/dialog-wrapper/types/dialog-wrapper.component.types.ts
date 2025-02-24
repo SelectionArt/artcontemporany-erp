@@ -1,4 +1,5 @@
 type DialogWrapperProps = {
+  className?: string;
   children: React.ReactNode;
   description: string;
   onOpenChange: (open: boolean) => void;

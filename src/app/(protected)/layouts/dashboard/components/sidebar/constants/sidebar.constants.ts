@@ -109,8 +109,8 @@ const ITEMS = {
       icon: ChartCandlestick,
       items: [
         {
-          title: "Secciones",
-          url: "/tarifas/secciones",
+          title: "Tipos de tarifa",
+          url: "/tarifas",
         },
       ],
     },

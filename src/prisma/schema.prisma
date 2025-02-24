@@ -58,8 +58,9 @@ model Artwork {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  colors ArtworkColor[]
-  images ArtworkImage[]
+  budgetItems BudgetItem[]
+  colors      ArtworkColor[]
+  images      ArtworkImage[]
 
   artist  Artist   @relation(fields: [artistId], references: [id])
   finish  Finish?  @relation(fields: [finishId], references: [id])
@@ -150,7 +151,8 @@ model Frame {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  images FrameImage[]
+  budgetItems BudgetItem[]
+  images      FrameImage[]
 
   manufacturer Manufacturer? @relation(fields: [manufacturerId], references: [id])
   material     Material?     @relation(fields: [materialId], references: [id])
@@ -171,7 +173,7 @@ model Manufacturer {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Frame     Frame[]
+  frames    Frame[]
 }
 
 model Material {
@@ -179,7 +181,7 @@ model Material {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Frame     Frame[]
+  frames    Frame[]
 }
 
 model Client {
@@ -194,24 +196,64 @@ model Client {
   iban        String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  budgets     Budget[]
 }
 
-model Pricing {
+model PricingItem {
   id        String   @id @default(cuid())
   width     Int
   height    Int
-  price     Float
-  sectionId String
+  price     Decimal  @db.Decimal(10, 2)
+  pricingId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  section   Section  @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  pricing   Pricing  @relation(fields: [pricingId], references: [id], onDelete: Cascade)
 }
 
-model Section {
-  id        String    @id @default(cuid())
-  name      String
-  slug      String    @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Pricing   Pricing[]
+model Pricing {
+  id                 String        @id @default(cuid())
+  name               String
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  pricingItems       PricingItem[]
+  artworkBudgetItems BudgetItem[]  @relation(name: "ArtworkPricing")
+  frameBudgetItems   BudgetItem[]  @relation(name: "FramePricing")
+}
+
+model Budget {
+  id           String   @id @default(cuid())
+  clientId     String
+  date         String
+  number       Int
+  observations String?
+  reference    String?
+  validity     Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  client      Client       @relation(fields: [clientId], references: [id])
+  budgetItems BudgetItem[]
+}
+
+model BudgetItem {
+  id               String   @id @default(cuid())
+  artworkId        String
+  artworkPrice     Decimal  @db.Decimal(10, 2)
+  artworkPricingId String
+  frameId          String
+  framePrice       Decimal  @db.Decimal(10, 2)
+  framePricingId   String
+  height           Int
+  quantity         Int
+  observations     String?
+  width            Int
+  budgetId         String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  artwork        Artwork @relation(fields: [artworkId], references: [id])
+  artworkPricing Pricing @relation(name: "ArtworkPricing", fields: [artworkPricingId], references: [id])
+  budget         Budget  @relation(fields: [budgetId], references: [id])
+  frame          Frame   @relation(fields: [frameId], references: [id])
+  framePricing   Pricing @relation(name: "FramePricing", fields: [framePricingId], references: [id])
 }

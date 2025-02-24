@@ -10,16 +10,16 @@ import { ITEMS } from "./constants/sidebar.constants";
 // Types
 import type { SidebarProps } from "./types/sidebar.component.types";
 
-const Sidebar = ({ pricingSections }: SidebarProps) => {
+const Sidebar = ({ pricings }: SidebarProps) => {
   const items = ITEMS.navMain.map((item) => {
     if (item.title === "Tarifas") {
       return {
         ...item,
         items: [
           ...(item.items ?? []),
-          ...pricingSections.map((section) => ({
-            title: section.name,
-            url: `/tarifas/${section.slug}`,
+          ...pricings.map((pricing) => ({
+            title: pricing.name,
+            url: `/tarifas/${pricing.id}`,
           })),
         ],
       };

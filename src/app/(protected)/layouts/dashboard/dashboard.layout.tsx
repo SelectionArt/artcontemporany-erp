@@ -9,12 +9,12 @@ import { DashboardProps } from "./types/dashboard.types";
 
 const DashboardLayout = ({
   children,
-  pricingSections,
+  pricings,
   session,
 }: DashboardProps) => {
   return (
     <div className="flex w-full flex-1">
-      <Sidebar pricingSections={pricingSections} />
+      <Sidebar pricings={pricings} />
 
       <div className="flex w-full flex-1 flex-col overflow-hidden">
         <header className="bg-background flex h-16 shrink-0 items-center justify-end border-b px-4">

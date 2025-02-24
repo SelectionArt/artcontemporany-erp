@@ -10,6 +10,7 @@ import {
 import { DialogWrapperProps } from "./types/dialog-wrapper.component.types";
 
 const DialogWrapper = ({
+  className,
   children,
   description,
   onOpenChange,
@@ -18,7 +19,7 @@ const DialogWrapper = ({
 }: DialogWrapperProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className={className}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}

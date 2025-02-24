@@ -2,15 +2,14 @@
 // Libs
 import { prisma } from "@/lib/prisma";
 // Types
-import type { FetchSectionsReturn } from "./types/dashboard.actions.types";
+import type { FetchPricingsReturn } from "./types/dashboard.actions.types";
 
-const fetchSections = async (): Promise<FetchSectionsReturn> => {
+const fetchPricings = async (): Promise<FetchPricingsReturn> => {
   try {
-    const sections = await prisma.section.findMany({
+    const sections = await prisma.pricing.findMany({
       select: {
         id: true,
         name: true,
-        slug: true,
       },
       orderBy: { name: "asc" },
     });
@@ -21,4 +20,4 @@ const fetchSections = async (): Promise<FetchSectionsReturn> => {
   }
 };
 
-export { fetchSections };
+export { fetchPricings };

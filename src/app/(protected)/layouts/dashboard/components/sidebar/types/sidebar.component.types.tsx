@@ -1,8 +1,8 @@
 // Types
-import type { FetchSectionsReturn } from "../../../actions/types/dashboard.actions.types";
+import type { FetchPricingsReturn } from "../../../actions/types/dashboard.actions.types";
 
 type SidebarProps = {
-  pricingSections: FetchSectionsReturn;
+  pricings: FetchPricingsReturn;
 };
 
 export type { SidebarProps };
