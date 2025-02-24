@@ -1,5 +1,6 @@
 import type { PricingItem } from "../../../../../types/budgets.container.types";
 import type { UseFormReturn } from "react-hook-form";
+import type { BudgetSchema } from "../../../../../schemas/types/budget.schema.types";
 
 type GetPriceProps = {
   pricingItems: PricingItem[];
@@ -23,7 +24,7 @@ type GetRoundedItemReturn = {
 };
 
 type UpdatePriceProps = {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<BudgetSchema>;
   index: number;
   pricingItems: PricingItem[];
   pricingId: string | undefined;
