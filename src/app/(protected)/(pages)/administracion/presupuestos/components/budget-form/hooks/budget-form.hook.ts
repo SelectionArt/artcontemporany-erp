@@ -9,6 +9,7 @@ import type {
   BudgetsHookReturn,
 } from "./types/budgets.hook.types";
 import type { PricingItem } from "../../../types/budgets.container.types";
+import type { BudgetSchema } from "../../../schemas/types/budget.schema.types";
 
 const BudgetsHook = ({
   artworks,
@@ -97,8 +98,10 @@ const BudgetsHook = ({
   const total = form
     .getValues()
     .items.reduce(
-      (acc: number, { artworkPrice, framePrice, quantity }: any) =>
-        acc + artworkPrice * quantity + framePrice * quantity,
+      (
+        acc: number,
+        { artworkPrice, framePrice, quantity }: BudgetSchema["items"][number],
+      ) => acc + artworkPrice * quantity + (framePrice ?? 0) * quantity,
       0,
     );
 
