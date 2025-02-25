@@ -79,7 +79,7 @@ const BudgetForm = ({
               control={form.control}
               name={constants.CLIENT_FIELD.name}
               render={({ field }) => (
-                <FormItem className="grow basis-1/2">
+                <FormItem className="grow basis-1/3">
                   <FormLabel>{constants.CLIENT_FIELD.labelText}</FormLabel>
                   <FormControl>
                     <AutoComplete
@@ -97,7 +97,7 @@ const BudgetForm = ({
               control={form.control}
               name={constants.DATE_FIELD.name}
               render={({ field }) => (
-                <FormItem className="grow basis-1/2">
+                <FormItem className="grow basis-1/3">
                   <FormLabel>{constants.DATE_FIELD.labelText}</FormLabel>
                   <Popover
                     open={isCalendarOpen}
@@ -108,12 +108,12 @@ const BudgetForm = ({
                         <Button
                           {...constants.DATE_FIELD.buttonProps}
                           className={cn(
-                            "w-full pl-3 text-left font-normal",
+                            "w-full pl-3 text-left font-normal text-ellipsis",
                             !field.value && "text-muted-foreground",
                           )}
                         >
                           {field.value ? (
-                            format(field.value, "PPP", { locale: es })
+                            format(field.value, "P", { locale: es })
                           ) : (
                             <span>{constants.DATE_FIELD.buttonText}</span>
                           )}
@@ -134,6 +134,35 @@ const BudgetForm = ({
                       />
                     </PopoverContent>
                   </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={constants.STATUS_FIELD.name}
+              render={({ field }) => (
+                <FormItem className="grow basis-1/3">
+                  <FormLabel>{constants.STATUS_FIELD.labelText}</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={constants.STATUS_FIELD.placeholder}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {constants.STATUS_FIELD.options.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -282,11 +311,13 @@ const BudgetForm = ({
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {pricings.map((pricing) => (
-                              <SelectItem key={pricing.id} value={pricing.id}>
-                                {pricing.name}
-                              </SelectItem>
-                            ))}
+                            {pricings
+                              .filter((pricing) => pricing.type === "artwork")
+                              .map((pricing) => (
+                                <SelectItem key={pricing.id} value={pricing.id}>
+                                  {pricing.name}
+                                </SelectItem>
+                              ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -318,11 +349,13 @@ const BudgetForm = ({
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {pricings.map((pricing) => (
-                              <SelectItem key={pricing.id} value={pricing.id}>
-                                {pricing.name}
-                              </SelectItem>
-                            ))}
+                            {pricings
+                              .filter((pricing) => pricing.type === "frame")
+                              .map((pricing) => (
+                                <SelectItem key={pricing.id} value={pricing.id}>
+                                  {pricing.name}
+                                </SelectItem>
+                              ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -518,27 +551,171 @@ const BudgetForm = ({
             Añadir item
           </Button>
 
-          <FormField
-            control={form.control}
-            name={constants.OBSERVATIONS_FIELD.inputProps.name}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel {...constants.OBSERVATIONS_FIELD.labelProps}>
-                  {constants.OBSERVATIONS_FIELD.labelText}
-                </FormLabel>
-                <FormControl>
-                  <Textarea
-                    {...{
-                      ...field,
-                      ...constants.OBSERVATIONS_FIELD.inputProps,
-                      disabled: loading,
-                    }}
+          <div className="grid grid-cols-[1fr_1fr_1fr] gap-2 sm:grid-cols-[2fr_1fr_1fr_1fr_1fr]">
+            <FormField
+              control={form.control}
+              name={constants.PAYMENT_METHOD_FIELD.inputProps.name}
+              render={({ field }) => (
+                <FormItem className="col-[1/3] sm:col-[1/2]">
+                  <FormLabel {...constants.PAYMENT_METHOD_FIELD.labelProps}>
+                    {constants.PAYMENT_METHOD_FIELD.labelText}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...{
+                        ...field,
+                        ...constants.PAYMENT_METHOD_FIELD.inputProps,
+                        disabled: loading,
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage
+                    {...constants.PAYMENT_METHOD_FIELD.messageProps}
                   />
-                </FormControl>
-                <FormMessage {...constants.OBSERVATIONS_FIELD.messageProps} />
-              </FormItem>
-            )}
-          />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={constants.SHOW_IBAN_FIELD.name}
+              render={({ field }) => (
+                <FormItem className="grow basis-1/5">
+                  <FormLabel>{constants.SHOW_IBAN_FIELD.labelText}</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={String(field.value)}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={constants.SHOW_IBAN_FIELD.placeholder}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {constants.SHOW_IBAN_FIELD.options.map((option) => (
+                        <SelectItem
+                          key={String(option.value)}
+                          value={String(option.value)}
+                        >
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={constants.DISCOUNT_FIELD.inputProps.name}
+              render={({ field }) => (
+                <FormItem className="grow basis-1/5">
+                  <FormLabel {...constants.DISCOUNT_FIELD.labelProps}>
+                    {constants.DISCOUNT_FIELD.labelText}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...{
+                        ...field,
+                        ...constants.DISCOUNT_FIELD.inputProps,
+                        disabled: loading,
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage {...constants.DISCOUNT_FIELD.messageProps} />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={constants.TRANSPORT_FIELD.inputProps.name}
+              render={({ field }) => (
+                <FormItem className="grow basis-1/5">
+                  <FormLabel {...constants.TRANSPORT_FIELD.labelProps}>
+                    {constants.TRANSPORT_FIELD.labelText}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...{
+                        ...field,
+                        ...constants.TRANSPORT_FIELD.inputProps,
+                        disabled: loading,
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage {...constants.TRANSPORT_FIELD.messageProps} />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={constants.TAX_FIELD.inputProps.name}
+              render={({ field }) => (
+                <FormItem className="grow basis-1/5">
+                  <FormLabel {...constants.TAX_FIELD.labelProps}>
+                    {constants.TAX_FIELD.labelText}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...{
+                        ...field,
+                        ...constants.TAX_FIELD.inputProps,
+                        disabled: loading,
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage {...constants.TAX_FIELD.messageProps} />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex gap-2">
+            <FormField
+              control={form.control}
+              name={constants.OBSERVATIONS_FIELD.inputProps.name}
+              render={({ field }) => (
+                <FormItem className="grow basis-1/2 grid-rows-[auto_1fr]">
+                  <FormLabel {...constants.OBSERVATIONS_FIELD.labelProps}>
+                    {constants.OBSERVATIONS_FIELD.labelText}
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...{
+                        ...field,
+                        ...constants.OBSERVATIONS_FIELD.inputProps,
+                        disabled: loading,
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage {...constants.OBSERVATIONS_FIELD.messageProps} />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={constants.SEND_ADDRESS_FIELD.inputProps.name}
+              render={({ field }) => (
+                <FormItem className="grow basis-1/2 grid-rows-[auto_1fr]">
+                  <FormLabel {...constants.SEND_ADDRESS_FIELD.labelProps}>
+                    {constants.SEND_ADDRESS_FIELD.labelText}
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...{
+                        ...field,
+                        ...constants.SEND_ADDRESS_FIELD.inputProps,
+                        disabled: loading,
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage {...constants.SEND_ADDRESS_FIELD.messageProps} />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
         <ButtonLoading
           {...{

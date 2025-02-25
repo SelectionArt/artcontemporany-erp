@@ -15,10 +15,24 @@ type CreateBudgetProps = {
 };
 
 type CreateBudgetReturn = {
-  budget?: Pick<Budget, "id" | "date" | "number" | "validity" | "clientId"> & {
+  budget?: Pick<
+    Budget,
+    | "id"
+    | "date"
+    | "number"
+    | "validity"
+    | "clientId"
+    | "discount"
+    | "transport"
+    | "tax"
+    | "paymentMethod"
+    | "status"
+    | "showIBAN"
+  > & {
     client: Pick<Client, "id" | "name">;
     observations: string;
     reference: string;
+    sendAddress: string;
     items: Array<
       Pick<
         BudgetItem,
@@ -64,10 +78,24 @@ type FetchArtworksReturn = Pick<
 >[];
 
 type FetchBudgetsReturn = Array<
-  Pick<Budget, "id" | "date" | "number" | "validity" | "clientId"> & {
+  Pick<
+    Budget,
+    | "id"
+    | "date"
+    | "number"
+    | "validity"
+    | "clientId"
+    | "discount"
+    | "transport"
+    | "tax"
+    | "paymentMethod"
+    | "status"
+    | "showIBAN"
+  > & {
     client: Pick<Client, "id" | "name">;
     observations: string;
     reference: string;
+    sendAddress: string;
     items: Array<
       Pick<
         BudgetItem,
@@ -100,7 +128,7 @@ type FetchPricingItemsReturn = Pick<
   "id" | "height" | "price" | "width"
 >[];
 
-type FetchPricingsReturn = Pick<Pricing, "id" | "name">[];
+type FetchPricingsReturn = Pick<Pricing, "id" | "name" | "type">[];
 
 type UpdateBudgetProps = {
   id: string;
@@ -108,10 +136,24 @@ type UpdateBudgetProps = {
 };
 
 type UpdateBudgetReturn = {
-  budget?: Pick<Budget, "id" | "date" | "number" | "validity" | "clientId"> & {
+  budget?: Pick<
+    Budget,
+    | "id"
+    | "date"
+    | "number"
+    | "validity"
+    | "clientId"
+    | "discount"
+    | "transport"
+    | "tax"
+    | "paymentMethod"
+    | "status"
+    | "showIBAN"
+  > & {
     client: Pick<Client, "id" | "name">;
     observations: string;
     reference: string;
+    sendAddress: string;
     items: Array<
       Pick<
         BudgetItem,

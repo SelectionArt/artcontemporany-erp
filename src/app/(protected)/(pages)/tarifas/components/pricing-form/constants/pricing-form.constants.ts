@@ -16,6 +16,11 @@ const constants = {
         id: "name-helper",
       },
     },
+    TYPE: {
+      labelText: "Tipo",
+      name: "type",
+      placeholder: "Tipo de tarifa",
+    },
   },
   BUTTON_PROPS: {
     SUBMIT: {

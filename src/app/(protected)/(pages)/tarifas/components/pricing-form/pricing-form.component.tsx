@@ -9,6 +9,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 // Constants
 import constants from "./constants/pricing-form.constants";
 // Types
@@ -44,6 +51,36 @@ const PricingForm = ({
                 />
               </FormControl>
               <FormMessage {...constants.FIELD_PROPS.NAME.messageProps} />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name={constants.FIELD_PROPS.TYPE.name}
+          render={({ field }) => (
+            <FormItem className="grow basis-1/2">
+              <FormLabel>{constants.FIELD_PROPS.TYPE.labelText}</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue
+                      placeholder={constants.FIELD_PROPS.TYPE.placeholder}
+                    />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {[
+                    { label: "Obra", value: "artwork" },
+                    { label: "Moldura", value: "frame" },
+                  ].map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
             </FormItem>
           )}
         />

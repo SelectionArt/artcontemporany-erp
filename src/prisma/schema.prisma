@@ -213,6 +213,7 @@ model PricingItem {
 model Pricing {
   id                 String        @id @default(cuid())
   name               String
+  type               String        @default("artwork")
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
   pricingItems       PricingItem[]
@@ -221,15 +222,22 @@ model Pricing {
 }
 
 model Budget {
-  id           String   @id @default(cuid())
-  clientId     String
-  date         String
-  number       Int
-  observations String?
-  reference    String?
-  validity     Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String   @id @default(cuid())
+  clientId      String
+  date          String
+  number        Int
+  observations  String?
+  reference     String?
+  validity      Int
+  discount      Int
+  transport     Int
+  tax           Int
+  paymentMethod String
+  status        String
+  sendAddress   String?
+  showIBAN      Boolean
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   client      Client       @relation(fields: [clientId], references: [id])
   budgetItems BudgetItem[]
@@ -253,7 +261,7 @@ model BudgetItem {
 
   artwork        Artwork @relation(fields: [artworkId], references: [id])
   artworkPricing Pricing @relation(name: "ArtworkPricing", fields: [artworkPricingId], references: [id])
-  budget         Budget  @relation(fields: [budgetId], references: [id])
+  budget         Budget  @relation(fields: [budgetId], references: [id], onDelete: Cascade)
   frame          Frame   @relation(fields: [frameId], references: [id])
   framePricing   Pricing @relation(name: "FramePricing", fields: [framePricingId], references: [id])
 }

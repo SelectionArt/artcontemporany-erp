@@ -20,6 +20,13 @@ const constants = {
     observations: "",
     reference: "",
     validity: 30,
+    discount: 0,
+    transport: 0,
+    tax: 21,
+    paymentMethod: "",
+    status: "pending",
+    sendAddress: "",
+    showIBAN: false,
   },
 };
 

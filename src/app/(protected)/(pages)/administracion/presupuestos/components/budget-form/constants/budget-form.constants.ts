@@ -161,6 +161,105 @@ const constants = {
       id: "width-helper",
     },
   },
+  DISCOUNT_FIELD: {
+    labelProps: {
+      htmlFor: "discount",
+    },
+    labelText: "Descuento (%)",
+    inputProps: {
+      id: "discount",
+      name: "discount",
+      placeholder: "Descuento",
+      type: "number",
+      ["aria-describedby"]: "discount-helper",
+    },
+    messageProps: {
+      id: "discount-helper",
+    },
+  },
+  TRANSPORT_FIELD: {
+    labelProps: {
+      htmlFor: "transport",
+    },
+    labelText: "Transporte (€)",
+    inputProps: {
+      id: "transport",
+      name: "transport",
+      placeholder: "Transporte",
+      type: "number",
+      ["aria-describedby"]: "transport-helper",
+    },
+    messageProps: {
+      id: "transport-helper",
+    },
+  },
+  TAX_FIELD: {
+    labelProps: {
+      htmlFor: "tax",
+    },
+    labelText: "IVA (%)",
+    inputProps: {
+      id: "tax",
+      name: "tax",
+      placeholder: "IVA",
+      type: "number",
+      ["aria-describedby"]: "tax-helper",
+    },
+    messageProps: {
+      id: "tax-helper",
+    },
+  },
+  PAYMENT_METHOD_FIELD: {
+    labelProps: {
+      htmlFor: "paymentMethod",
+    },
+    labelText: "Forma de pago",
+    inputProps: {
+      id: "paymentMethod",
+      name: "paymentMethod",
+      placeholder: "Forma de pago",
+      type: "text",
+      ["aria-describedby"]: "paymentMethod-helper",
+    },
+    messageProps: {
+      id: "paymentMethod-helper",
+    },
+  },
+  STATUS_FIELD: {
+    labelText: "Estado",
+    name: "status",
+    placeholder: "Estado",
+    options: [
+      { label: "Pendiente", value: "pending" },
+      { label: "Aceptado", value: "accepted" },
+      { label: "Rechazado", value: "rejected" },
+      { label: "Cerrado", value: "closed" },
+    ],
+  },
+  SEND_ADDRESS_FIELD: {
+    labelProps: {
+      htmlFor: "sendAddress",
+    },
+    labelText: "Dirección de envío",
+    inputProps: {
+      id: "sendAddress",
+      name: "sendAddress",
+      placeholder: "Dirección de envío",
+      ["aria-describedby"]: "sendAddress-helper",
+    },
+    messageProps: {
+      id: "sendAddress-helper",
+    },
+  },
+  SHOW_IBAN_FIELD: {
+    labelText: "Mostrar IBAN",
+    name: "showIBAN",
+    placeholder: "Mostrar IBAN",
+    options: [
+      { label: "Sí", value: true },
+      { label: "No", value: false },
+    ],
+  },
   ADD_BUTTON_PROPS: {
     type: "button",
   },

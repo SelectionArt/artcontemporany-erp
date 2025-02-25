@@ -45,6 +45,17 @@ const budgetSchema = z.object({
   validity: z.coerce
     .number({ required_error: "La validez es requerida" })
     .positive("La validez debe ser un número positivo"),
+  discount: z.coerce.number({ required_error: "El descuento es requerido" }),
+  transport: z.coerce.number({ required_error: "El transporte es requerido" }),
+  tax: z.coerce.number({ required_error: "El IVA es requerido" }),
+  paymentMethod: z
+    .string({ required_error: "La forma de pago es requerida" })
+    .min(1, "La forma de pago es requerida"),
+  status: z
+    .string({ required_error: "El estado es requerido" })
+    .min(1, "El estado es requerido"),
+  sendAddress: z.string().optional(),
+  showIBAN: z.boolean({ required_error: "El campo showIBAN es obligatorio" }),
 });
 
 export { budgetSchema };

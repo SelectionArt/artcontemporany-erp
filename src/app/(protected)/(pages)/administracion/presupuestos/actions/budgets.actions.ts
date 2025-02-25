@@ -31,13 +31,41 @@ const createBudget = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  const { clientId, date, number, observations, reference, validity, items } =
-    validatedFields.data;
+  const {
+    clientId,
+    date,
+    number,
+    observations,
+    reference,
+    validity,
+    discount,
+    transport,
+    tax,
+    paymentMethod,
+    status,
+    sendAddress,
+    showIBAN,
+    items,
+  } = validatedFields.data;
 
   try {
     const newBudget = await prisma.$transaction(async (prisma) => {
       const budget = await prisma.budget.create({
-        data: { clientId, date, number, observations, reference, validity },
+        data: {
+          clientId,
+          date,
+          number,
+          observations,
+          reference,
+          validity,
+          discount,
+          transport,
+          tax,
+          paymentMethod,
+          status,
+          sendAddress,
+          showIBAN,
+        },
         include: { client: { select: { id: true, name: true } } },
       });
 
@@ -84,6 +112,7 @@ const createBudget = async ({
         ...budget,
         observations: budget.observations ?? "",
         reference: budget.reference ?? "",
+        sendAddress: budget.sendAddress ?? "",
         client: budget.client,
         items: createdItems,
       };
@@ -157,6 +186,13 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
         observations: true,
         reference: true,
         validity: true,
+        discount: true,
+        transport: true,
+        tax: true,
+        paymentMethod: true,
+        status: true,
+        sendAddress: true,
+        showIBAN: true,
         budgetItems: {
           select: {
             artworkId: true,
@@ -178,6 +214,7 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
       ...budget,
       observations: budget.observations ?? "",
       reference: budget.reference ?? "",
+      sendAddress: budget.sendAddress ?? "",
       items: budgetItems.map((item) => ({
         ...item,
         observations: item.observations ?? "",
@@ -234,7 +271,7 @@ const fetchPricings = async (): Promise<FetchPricingsReturn> => {
   try {
     const pricings = await prisma.pricing.findMany({
       orderBy: { name: "asc" },
-      select: { id: true, name: true },
+      select: { id: true, name: true, type: true },
     });
     return pricings;
   } catch (error) {
@@ -269,14 +306,42 @@ const updateBudget = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  const { clientId, date, number, observations, reference, validity, items } =
-    validatedFields.data;
+  const {
+    clientId,
+    date,
+    number,
+    observations,
+    reference,
+    validity,
+    discount,
+    transport,
+    tax,
+    paymentMethod,
+    status,
+    sendAddress,
+    showIBAN,
+    items,
+  } = validatedFields.data;
 
   try {
     const updatedBudget = await prisma.$transaction(async (prisma) => {
       const budget = await prisma.budget.update({
         where: { id },
-        data: { clientId, date, number, observations, reference, validity },
+        data: {
+          clientId,
+          date,
+          number,
+          observations,
+          reference,
+          validity,
+          discount,
+          transport,
+          tax,
+          paymentMethod,
+          status,
+          sendAddress,
+          showIBAN,
+        },
         include: { client: { select: { id: true, name: true } } },
       });
 
@@ -320,6 +385,7 @@ const updateBudget = async ({
         ...budget,
         observations: budget.observations ?? "",
         reference: budget.reference ?? "",
+        sendAddress: budget.sendAddress ?? "",
         client: budget.client,
         items: updatedItems.map((item) => ({
           ...item,

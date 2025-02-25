@@ -4,7 +4,7 @@ import { SelectAllCheckbox } from "@/components/data-table/components/select-all
 import { SelectRowCheckbox } from "@/components/data-table/components/select-row-checkbox/select-row-checkbox.component";
 import { ColumnSorter } from "@/components/data-table/components/column-sorter/column-sorter.component";
 // Icons
-import { Ellipsis, SquarePen, Trash2 } from "lucide-react";
+import { Ellipsis, FileDown, SquarePen, Trash2 } from "lucide-react";
 // Types
 import type { Budget } from "../../types/budgets.container.types";
 import type {
@@ -50,6 +50,7 @@ function getColumnsConfig({
             icon: Ellipsis,
           }}
           actions={[
+            { icon: FileDown, label: "Descargar PDF", onClick: () => {} },
             { icon: SquarePen, label: "Editar", onClick: handleEdit },
             { icon: Trash2, label: "Eliminar", onClick: handleDelete },
           ]}
