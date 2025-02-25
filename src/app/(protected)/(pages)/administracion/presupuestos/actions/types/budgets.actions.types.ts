@@ -1,6 +1,5 @@
 // Types
 import type {
-  Artwork,
   Budget,
   BudgetItem,
   Client,
