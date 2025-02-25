@@ -164,9 +164,25 @@ const fetchArtworks = async (): Promise<FetchArtworksReturn> => {
   try {
     const artworks = await prisma.artwork.findMany({
       orderBy: { referenceNumber: "asc" },
-      select: { id: true, referenceNumber: true, referenceCode: true },
+      select: {
+        id: true,
+        referenceNumber: true,
+        referenceCode: true,
+        images: {
+          select: {
+            url: true,
+          },
+          take: 1,
+        },
+      },
     });
-    return artworks;
+
+    return artworks.map((artwork) => ({
+      id: artwork.id,
+      referenceNumber: artwork.referenceNumber,
+      referenceCode: artwork.referenceCode,
+      imageUrl: artwork.images.length > 0 ? artwork.images[0].url : null,
+    }));
   } catch (error) {
     console.error(error);
     return [];

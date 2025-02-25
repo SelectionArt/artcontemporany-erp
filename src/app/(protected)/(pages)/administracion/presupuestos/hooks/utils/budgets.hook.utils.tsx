@@ -1,4 +1,5 @@
 // Components
+import { Badge } from "@/components/ui/badge";
 import { RowActions } from "@/components/data-table/components/row-actions/row-actions.component";
 import { SelectAllCheckbox } from "@/components/data-table/components/select-all-checkbox/select-all-checkbox.component";
 import { SelectRowCheckbox } from "@/components/data-table/components/select-row-checkbox/select-row-checkbox.component";
@@ -37,9 +38,43 @@ function getColumnsConfig({
     },
     {
       accessorKey: "client",
-      cell: ({ row }) => row.original.client.name,
+      cell: ({ row }) => {
+        row.original.client.name;
+      },
       header: "Cliente",
       id: "client",
+    },
+    {
+      accessorKey: "status",
+      cell: ({ row }) => {
+        const statusMap: Record<string, { label: string; color: string }> = {
+          pending: {
+            label: "Pendiente",
+            color: "blue",
+          },
+          accepted: {
+            label: "Aceptado",
+            color: "green",
+          },
+          rejected: {
+            label: "Rechazado",
+            color: "red",
+          },
+          closed: {
+            label: "Cerrado",
+            color: "gray",
+          },
+        };
+        return (
+          <Badge
+            className={`bg-${statusMap[row.original.status].color}-100 text-${statusMap[row.original.status].color}-800`}
+          >
+            {statusMap[row.original.status].label}
+          </Badge>
+        );
+      },
+      header: "Estado",
+      id: "status",
     },
     {
       cell: ({ row }) => (

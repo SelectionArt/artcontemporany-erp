@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import { Command as CommandPrimitive } from "cmdk";
 import { Check } from "lucide-react";
 import { useMemo, useState, useEffect } from "react";
@@ -20,7 +21,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 type Props<T extends string> = {
   selectedValue: T;
   onSelectedValueChange: (value: T) => void;
-  items: { value: T; label: string }[];
+  items: { value: T; label: string; imageUrl?: string }[];
   isLoading?: boolean;
   emptyMessage?: string;
   placeholder?: string;
@@ -124,7 +125,20 @@ export function AutoComplete<T extends string>({
                       onSelect={onSelectItem}
                       className="flex justify-between"
                     >
-                      {option.label}
+                      <div className="flex items-center gap-2">
+                        {option.imageUrl && (
+                          <div className="relative size-10">
+                            <Image
+                              alt={option.label}
+                              className="h-10 w-10 rounded-md object-cover"
+                              fill={true}
+                              sizes="40px"
+                              src={option.imageUrl}
+                            />
+                          </div>
+                        )}
+                        <span>{option.label}</span>
+                      </div>
                       <Check
                         className={cn(
                           "mr-2 h-4 w-4",

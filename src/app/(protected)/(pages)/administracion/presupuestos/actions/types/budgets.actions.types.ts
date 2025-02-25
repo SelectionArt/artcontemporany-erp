@@ -72,10 +72,12 @@ type DeleteMultipleBudgetsReturn = {
   error?: string;
 };
 
-type FetchArtworksReturn = Pick<
-  Artwork,
-  "id" | "referenceNumber" | "referenceCode"
->[];
+type FetchArtworksReturn = Array<{
+  id: string;
+  referenceNumber: number;
+  referenceCode: string | null;
+  imageUrl: string | null;
+}>;
 
 type FetchBudgetsReturn = Array<
   Pick<

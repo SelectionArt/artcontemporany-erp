@@ -44,6 +44,7 @@ const BudgetsHook = ({
       .map((artwork) => ({
         value: artwork.id,
         label: `${artwork.referenceNumber}-${artwork.referenceCode}`,
+        imageUrl: artwork.imageUrl,
       }));
 
     return selectedArtwork
@@ -51,6 +52,7 @@ const BudgetsHook = ({
           {
             value: selectedArtwork.id,
             label: `${selectedArtwork.referenceNumber}-${selectedArtwork.referenceCode}`,
+            imageUrl: selectedArtwork.imageUrl,
           },
           ...filteredArtworks,
         ]

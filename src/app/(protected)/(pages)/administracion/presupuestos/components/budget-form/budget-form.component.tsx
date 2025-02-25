@@ -253,26 +253,19 @@ const BudgetForm = ({
                   <FormField
                     control={form.control}
                     name={`items.${index}.artworkId`}
-                    render={({ field }) => {
-                      console.log("AutoComplete items:", artworksValues(index));
-
-                      return (
-                        <FormItem className="min-w-[160px]">
-                          <FormControl>
-                            <AutoComplete
-                              {...constants.ARTWORK_FIELD.autocompleteProps}
-                              items={artworksValues(index)}
-                              onSelectedValueChange={(value) => {
-                                console.log("AutoComplete value:", value);
-                                field.onChange(value);
-                              }}
-                              selectedValue={field.value}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      );
-                    }}
+                    render={({ field }) => (
+                      <FormItem className="min-w-[160px]">
+                        <FormControl>
+                          <AutoComplete
+                            {...constants.ARTWORK_FIELD.autocompleteProps}
+                            items={artworksValues(index)}
+                            onSelectedValueChange={field.onChange}
+                            selectedValue={field.value}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                   <FormField
                     control={form.control}
