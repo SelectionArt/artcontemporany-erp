@@ -63,12 +63,7 @@ const BudgetForm = ({
     handleHeightValueChange,
     handleWidthValueChange,
     isCalendarOpen,
-    searchClient,
-    searchValues,
     setIsCalendarOpen,
-    setSearchArtwork,
-    setSearchClient,
-    setSearchFrame,
     total,
   } = BudgetsHook({ artworks, clients, form, frames });
 
@@ -90,9 +85,7 @@ const BudgetForm = ({
                     <AutoComplete
                       {...constants.CLIENT_FIELD.autocompleteProps}
                       items={clientsValues}
-                      onSearchValueChange={setSearchClient}
                       onSelectedValueChange={field.onChange}
-                      searchValue={searchClient}
                       selectedValue={field.value}
                     />
                   </FormControl>
@@ -138,7 +131,6 @@ const BudgetForm = ({
                           field.onChange(e);
                           setIsCalendarOpen(false);
                         }}
-                        initialFocus
                       />
                     </PopoverContent>
                   </Popover>
@@ -238,11 +230,7 @@ const BudgetForm = ({
                           <AutoComplete
                             {...constants.ARTWORK_FIELD.autocompleteProps}
                             items={artworksValues(index)}
-                            onSearchValueChange={(value) =>
-                              setSearchArtwork(index, value)
-                            }
                             onSelectedValueChange={field.onChange}
-                            searchValue={searchValues[index]?.artwork || ""}
                             selectedValue={field.value}
                           />
                         </FormControl>
@@ -259,11 +247,7 @@ const BudgetForm = ({
                           <AutoComplete
                             {...constants.FRAME_FIELD.autocompleteProps}
                             items={framesValues(index)}
-                            onSearchValueChange={(value) =>
-                              setSearchFrame(index, value)
-                            }
                             onSelectedValueChange={field.onChange}
-                            searchValue={searchValues[index]?.frame || ""}
                             selectedValue={field.value}
                           />
                         </FormControl>
@@ -275,7 +259,7 @@ const BudgetForm = ({
                 <div className="flex flex-col gap-2">
                   <FormField
                     control={form.control}
-                    name={`items.${index}.artworkPricingsId`}
+                    name={`items.${index}.artworkPricingId`}
                     render={({ field }) => (
                       <FormItem className="min-w-[160px]">
                         <Select
@@ -311,7 +295,7 @@ const BudgetForm = ({
                   />
                   <FormField
                     control={form.control}
-                    name={`items.${index}.framePricingsId`}
+                    name={`items.${index}.framePricingId`}
                     render={({ field }) => (
                       <FormItem className="min-w-[160px]">
                         <Select

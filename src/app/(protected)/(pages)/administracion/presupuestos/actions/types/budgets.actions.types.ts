@@ -2,6 +2,7 @@
 import type {
   Artwork,
   Budget,
+  BudgetItem,
   Client,
   Frame,
   Pricing,
@@ -14,8 +15,26 @@ type CreateBudgetProps = {
 };
 
 type CreateBudgetReturn = {
-  budget?: Pick<Budget, "id" | "date" | "number"> & {
+  budget?: Pick<Budget, "id" | "date" | "number" | "validity" | "clientId"> & {
     client: Pick<Client, "id" | "name">;
+    observations: string;
+    reference: string;
+    items: Array<
+      Pick<
+        BudgetItem,
+        | "artworkId"
+        | "artworkPrice"
+        | "artworkPricingId"
+        | "frameId"
+        | "framePrice"
+        | "framePricingId"
+        | "height"
+        | "width"
+        | "quantity"
+      > & {
+        observations: string;
+      }
+    >;
   };
   error?: string;
   success?: string;
@@ -45,8 +64,26 @@ type FetchArtworksReturn = Pick<
 >[];
 
 type FetchBudgetsReturn = Array<
-  Pick<Budget, "id" | "date" | "number"> & {
+  Pick<Budget, "id" | "date" | "number" | "validity" | "clientId"> & {
     client: Pick<Client, "id" | "name">;
+    observations: string;
+    reference: string;
+    items: Array<
+      Pick<
+        BudgetItem,
+        | "artworkId"
+        | "artworkPrice"
+        | "artworkPricingId"
+        | "frameId"
+        | "framePrice"
+        | "framePricingId"
+        | "height"
+        | "width"
+        | "quantity"
+      > & {
+        observations: string;
+      }
+    >;
   }
 >;
 

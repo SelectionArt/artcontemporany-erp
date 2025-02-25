@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Command as CommandPrimitive } from "cmdk";
 import { Check } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   Command,
   CommandEmpty,
@@ -20,8 +20,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 type Props<T extends string> = {
   selectedValue: T;
   onSelectedValueChange: (value: T) => void;
-  searchValue: string;
-  onSearchValueChange: (value: string) => void;
+  // searchValue: string;
+  // onSearchValueChange: (value: string) => void;
   items: { value: T; label: string }[];
   isLoading?: boolean;
   emptyMessage?: string;
@@ -31,36 +31,31 @@ type Props<T extends string> = {
 export function AutoComplete<T extends string>({
   selectedValue,
   onSelectedValueChange,
-  searchValue,
-  onSearchValueChange,
   items,
   isLoading,
   emptyMessage = "No items.",
   placeholder = "Search...",
 }: Props<T>) {
   const [open, setOpen] = useState(false);
+  const [internalSearchValue, setInternalSearchValue] = useState("");
 
-  const labels = useMemo(
-    () =>
-      items.reduce(
-        (acc, item) => {
-          acc[item.value] = item.label;
-          return acc;
-        },
-        {} as Record<string, string>,
-      ),
-    [items],
-  );
+  const selectedLabel = useMemo(() => {
+    return items.find((item) => item.value === selectedValue)?.label ?? "";
+  }, [selectedValue, items]);
+
+  useEffect(() => {
+    setInternalSearchValue(selectedLabel);
+  }, [selectedLabel]);
 
   const reset = () => {
     onSelectedValueChange("" as T);
-    onSearchValueChange("");
+    setInternalSearchValue("");
   };
 
   const onInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (
       !e.relatedTarget?.hasAttribute("cmdk-list") &&
-      labels[selectedValue] !== searchValue
+      internalSearchValue !== selectedLabel
     ) {
       reset();
     }
@@ -71,7 +66,9 @@ export function AutoComplete<T extends string>({
       reset();
     } else {
       onSelectedValueChange(inputValue as T);
-      onSearchValueChange(labels[inputValue] ?? "");
+      setInternalSearchValue(
+        items.find((item) => item.value === inputValue)?.label ?? "",
+      );
     }
     setOpen(false);
   };
@@ -83,16 +80,17 @@ export function AutoComplete<T extends string>({
           <PopoverAnchor asChild>
             <CommandPrimitive.Input
               asChild
-              value={searchValue}
-              onValueChange={onSearchValueChange}
+              value={internalSearchValue}
+              onValueChange={setInternalSearchValue}
               onKeyDown={(e) => setOpen(e.key !== "Escape")}
-              onMouseDown={() => setOpen((open) => !!searchValue || !open)}
+              onMouseDown={() =>
+                setOpen((open) => !!internalSearchValue || !open)
+              }
               onBlur={onInputBlur}
             >
               <Input placeholder={placeholder} />
             </CommandPrimitive.Input>
           </PopoverAnchor>
-          {!open && <CommandList aria-hidden="true" className="hidden" />}
           <PopoverContent
             asChild
             onOpenAutoFocus={(e) => e.preventDefault()}

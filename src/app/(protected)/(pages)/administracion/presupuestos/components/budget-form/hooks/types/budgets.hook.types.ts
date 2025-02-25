@@ -25,12 +25,7 @@ type BudgetsHookReturn = BudgetFormHandlersReturn & {
   framesValues: (index: number) => Item[];
   frameTotalPrice: (index: number) => number;
   isCalendarOpen: boolean;
-  searchValues: Record<number, { artwork: string; frame: string }>;
   setIsCalendarOpen: Dispatch<SetStateAction<boolean>>;
-  setSearchArtwork: (index: number, value: string) => void;
-  setSearchFrame: (index: number, value: string) => void;
-  searchClient: string;
-  setSearchClient: Dispatch<SetStateAction<string>>;
   total: number;
 };
 

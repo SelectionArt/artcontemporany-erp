@@ -44,8 +44,6 @@ const getPrice = ({
     height,
   });
 
-  if (!item) return 0;
-
   return item.price;
 };
 
@@ -53,19 +51,13 @@ const getRoundedItem = ({
   pricingItems,
   width,
   height,
-}: GetRoundedItemProps): GetRoundedItemReturn | null => {
-  const item =
-    pricingItems.find(
-      (item) => item.width === width && item.height === height,
-    ) ||
-    pricingItems
-      .filter((p) => p.width >= Number(width) && p.height >= Number(height))
-      .sort((a, b) => a.width * a.height - b.width * b.height)[0] ||
-    pricingItems
-      .filter((p) => p.width <= Number(width) && p.height <= Number(height))
-      .sort((a, b) => b.width * b.height - a.width * a.height)[0];
-
-  return item ? { ...item, price: Number(item.price) } : null;
-};
+}: GetRoundedItemProps): GetRoundedItemReturn =>
+  pricingItems.find((item) => item.width === width && item.height === height) ||
+  pricingItems
+    .filter((p) => p.width >= Number(width) && p.height >= Number(height))
+    .sort((a, b) => a.width * a.height - b.width * b.height)[0] ||
+  pricingItems
+    .filter((p) => p.width <= Number(width) && p.height <= Number(height))
+    .sort((a, b) => b.width * b.height - a.width * a.height)[0];
 
 export { getPrice, updatePrice };

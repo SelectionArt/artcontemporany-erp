@@ -31,10 +31,62 @@ const createBudget = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
+  const { clientId, date, number, observations, reference, validity, items } =
+    validatedFields.data;
+
   try {
-    const newBudget = await prisma.budget.create({
-      data: validatedFields.data,
-      include: { client: { select: { id: true, name: true } } },
+    const newBudget = await prisma.$transaction(async (prisma) => {
+      const budget = await prisma.budget.create({
+        data: { clientId, date, number, observations, reference, validity },
+        include: { client: { select: { id: true, name: true } } },
+      });
+
+      const createdItems = items.length
+        ? await Promise.all(
+            items.map(async (item) => {
+              const newItem = await prisma.budgetItem.create({
+                data: {
+                  artworkId: item.artworkId,
+                  artworkPrice: item.artworkPrice,
+                  artworkPricingId: item.artworkPricingId,
+                  frameId: item.frameId ?? "",
+                  framePrice: item.framePrice ?? 0,
+                  framePricingId: item.framePricingId ?? "",
+                  height: item.height,
+                  width: item.width,
+                  quantity: item.quantity,
+                  observations: item.observations ?? "",
+                  budgetId: budget.id,
+                },
+                select: {
+                  artworkId: true,
+                  artworkPrice: true,
+                  artworkPricingId: true,
+                  frameId: true,
+                  framePrice: true,
+                  framePricingId: true,
+                  height: true,
+                  width: true,
+                  quantity: true,
+                  observations: true,
+                },
+              });
+
+              return {
+                ...newItem,
+                observations: newItem.observations ?? "",
+              };
+            }),
+          )
+        : [];
+
+      return {
+        ...budget,
+        observations: budget.observations ?? "",
+        reference: budget.reference ?? "",
+        client: budget.client,
+        items: createdItems,
+      };
     });
 
     return { success: "Presupuesto creado con éxito", budget: newBudget };
@@ -98,12 +150,39 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
+        clientId: true,
         client: { select: { id: true, name: true } },
         date: true,
         number: true,
+        observations: true,
+        reference: true,
+        validity: true,
+        budgetItems: {
+          select: {
+            artworkId: true,
+            artworkPrice: true,
+            artworkPricingId: true,
+            frameId: true,
+            framePrice: true,
+            framePricingId: true,
+            height: true,
+            width: true,
+            quantity: true,
+            observations: true,
+          },
+        },
       },
     });
-    return budgets;
+
+    return budgets.map(({ budgetItems, ...budget }) => ({
+      ...budget,
+      observations: budget.observations ?? "",
+      reference: budget.reference ?? "",
+      items: budgetItems.map((item) => ({
+        ...item,
+        observations: item.observations ?? "",
+      })),
+    }));
   } catch (error) {
     console.error(error);
     return [];
@@ -190,11 +269,60 @@ const updateBudget = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
+  const { clientId, date, number, observations, reference, validity, items } =
+    validatedFields.data;
+
   try {
-    const updatedBudget = await prisma.budget.update({
-      where: { id },
-      data: validatedFields.data,
-      include: { client: { select: { id: true, name: true } } },
+    const updatedBudget = await prisma.$transaction(async (prisma) => {
+      const budget = await prisma.budget.update({
+        where: { id },
+        data: { clientId, date, number, observations, reference, validity },
+        include: { client: { select: { id: true, name: true } } },
+      });
+
+      await prisma.budgetItem.deleteMany({ where: { budgetId: id } });
+
+      const updatedItems = items.length
+        ? await Promise.all(
+            items.map(async (item) => {
+              return prisma.budgetItem.create({
+                data: {
+                  artworkId: item.artworkId,
+                  artworkPrice: item.artworkPrice,
+                  artworkPricingId: item.artworkPricingId,
+                  frameId: item.frameId ?? "",
+                  framePrice: item.framePrice ?? 0,
+                  framePricingId: item.framePricingId ?? "",
+                  height: item.height,
+                  width: item.width,
+                  quantity: item.quantity,
+                  observations: item.observations ?? "",
+                  budgetId: budget.id,
+                },
+                select: {
+                  artworkId: true,
+                  artworkPrice: true,
+                  artworkPricingId: true,
+                  frameId: true,
+                  framePrice: true,
+                  framePricingId: true,
+                  height: true,
+                  width: true,
+                  quantity: true,
+                  observations: true,
+                },
+              });
+            }),
+          )
+        : [];
+
+      return {
+        ...budget,
+        observations: budget.observations ?? "",
+        reference: budget.reference ?? "",
+        client: budget.client,
+        items: updatedItems,
+      };
     });
 
     return {

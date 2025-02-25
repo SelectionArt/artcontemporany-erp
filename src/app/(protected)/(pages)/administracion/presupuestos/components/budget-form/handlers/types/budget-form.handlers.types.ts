@@ -22,7 +22,7 @@ type BudgetFormHandlersReturn = {
   }: {
     field: ControllerRenderProps<
       BudgetSchema,
-      `items.${number}.artworkPricingsId`
+      `items.${number}.artworkPricingId`
     >;
     index: number;
     value: string;
@@ -34,7 +34,7 @@ type BudgetFormHandlersReturn = {
   }: {
     field: ControllerRenderProps<
       BudgetSchema,
-      `items.${number}.framePricingsId`
+      `items.${number}.framePricingId`
     >;
     index: number;
     value: string;
@@ -65,7 +65,7 @@ type ArtworkPricingsValueChangeHandlerProps = Pick<
 > & {
   field: ControllerRenderProps<
     BudgetSchema,
-    `items.${number}.artworkPricingsId`
+    `items.${number}.artworkPricingId`
   >;
   form: UseFormReturn<BudgetSchema>;
   framePricingItems: Record<string, PricingItem[]>;
@@ -87,7 +87,7 @@ type FramePricingsValueChangeHandlerProps = Pick<
   "setFramePricingItems"
 > & {
   artworkPricingItems: Record<string, PricingItem[]>;
-  field: ControllerRenderProps<BudgetSchema, `items.${number}.framePricingsId`>;
+  field: ControllerRenderProps<BudgetSchema, `items.${number}.framePricingId`>;
   form: UseFormReturn<BudgetSchema>;
   index: number;
   value: string;

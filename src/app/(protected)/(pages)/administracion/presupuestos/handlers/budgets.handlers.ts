@@ -61,6 +61,7 @@ const editHandler = ({
   setSelectedRow,
   setOpenDialog,
 }: EditHandlerProps): void => {
+  console.log("editHandler", row);
   form.reset(row, { keepDefaultValues: true });
   setSelectedRow(row);
   setOpenDialog(true);
@@ -110,7 +111,6 @@ const submitHandler = ({
   values,
 }: SubmitHandlerProps): void => {
   console.log("submitHandler", values);
-  return;
   if (selectedRow) {
     submitHandlerEdit({
       selectedRow,

@@ -27,7 +27,7 @@ const artworkPricingsValueChangeHandler = async ({
     [index]: artworkPricingItems,
   }));
 
-  const { artworkPricingsId, framePricingsId, height, width } = form.getValues(
+  const { artworkPricingId, framePricingId, height, width } = form.getValues(
     `items.${index}`,
   );
 
@@ -35,7 +35,7 @@ const artworkPricingsValueChangeHandler = async ({
     form,
     index,
     pricingItems: artworkPricingItems,
-    pricingId: artworkPricingsId,
+    pricingId: artworkPricingId,
     priceField: "artworkPrice",
     width,
     height,
@@ -46,7 +46,7 @@ const artworkPricingsValueChangeHandler = async ({
       form,
       index,
       pricingItems: framePricingItems[index],
-      pricingId: framePricingsId,
+      pricingId: framePricingId,
       priceField: "framePrice",
       width,
       height,
@@ -69,7 +69,7 @@ const framePricingsValueChangeHandler = async ({
     [index]: framePricingItems,
   }));
 
-  const { artworkPricingsId, framePricingsId, height, width } = form.getValues(
+  const { artworkPricingId, framePricingId, height, width } = form.getValues(
     `items.${index}`,
   );
 
@@ -78,7 +78,7 @@ const framePricingsValueChangeHandler = async ({
       form,
       index,
       pricingItems: artworkPricingItems[index],
-      pricingId: artworkPricingsId,
+      pricingId: artworkPricingId,
       priceField: "artworkPrice",
       width,
       height,
@@ -89,7 +89,7 @@ const framePricingsValueChangeHandler = async ({
     form,
     index,
     pricingItems: framePricingItems,
-    pricingId: framePricingsId,
+    pricingId: framePricingId,
     priceField: "framePrice",
     width,
     height,
@@ -106,7 +106,7 @@ const heightValueChangeHandler = ({
 }: HeightValueChangeHandlerProps): void => {
   field.onChange(event);
 
-  const { artworkPricingsId, framePricingsId, width, height } = form.getValues(
+  const { artworkPricingId, framePricingId, width, height } = form.getValues(
     `items.${index}`,
   );
 
@@ -114,7 +114,7 @@ const heightValueChangeHandler = ({
     form,
     index,
     pricingItems: artworkPricingItems[index] ?? [],
-    pricingId: artworkPricingsId,
+    pricingId: artworkPricingId,
     priceField: "artworkPrice",
     width,
     height,
@@ -124,7 +124,7 @@ const heightValueChangeHandler = ({
     form,
     index,
     pricingItems: framePricingItems[index] ?? [],
-    pricingId: framePricingsId,
+    pricingId: framePricingId,
     priceField: "framePrice",
     width,
     height,
@@ -141,7 +141,7 @@ const widthValueChangeHandler = ({
 }: WidthValueChangeHandlerProps): void => {
   field.onChange(event);
 
-  const { artworkPricingsId, framePricingsId, height, width } = form.getValues(
+  const { artworkPricingId, framePricingId, height, width } = form.getValues(
     `items.${index}`,
   );
 
@@ -149,7 +149,7 @@ const widthValueChangeHandler = ({
     form,
     index,
     pricingItems: artworkPricingItems[index] ?? [],
-    pricingId: artworkPricingsId,
+    pricingId: artworkPricingId,
     priceField: "artworkPrice",
     width,
     height,
@@ -159,7 +159,7 @@ const widthValueChangeHandler = ({
     form,
     index,
     pricingItems: framePricingItems[index] ?? [],
-    pricingId: framePricingsId,
+    pricingId: framePricingId,
     priceField: "framePrice",
     width,
     height,

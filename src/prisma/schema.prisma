@@ -203,7 +203,7 @@ model PricingItem {
   id        String   @id @default(cuid())
   width     Int
   height    Int
-  price     Float
+  price     Int
   pricingId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -238,10 +238,10 @@ model Budget {
 model BudgetItem {
   id               String   @id @default(cuid())
   artworkId        String
-  artworkPrice     Float
+  artworkPrice     Int
   artworkPricingId String
   frameId          String
-  framePrice       Float
+  framePrice       Int
   framePricingId   String
   height           Int
   quantity         Int

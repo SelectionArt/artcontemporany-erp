@@ -1,10 +1,10 @@
 const DEFAULT_ITEM = {
   artworkId: "",
   artworkPrice: 0,
-  artworkPricingsId: "",
+  artworkPricingId: "",
   frameId: "",
   framePrice: 0,
-  framePricingsId: "",
+  framePricingId: "",
   height: 0,
   quantity: 1,
   observations: "",

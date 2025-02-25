@@ -17,12 +17,12 @@ const budgetSchema = z.object({
         artworkPrice: z.coerce
           .number({ required_error: "El precio es requerido" })
           .positive("El precio debe ser un número positivo"),
-        artworkPricingsId: z
+        artworkPricingId: z
           .string({ required_error: "La tarifa de la obra es requerida" })
           .min(1, "La tarifa de la obra es requerida"),
         frameId: z.string().optional(),
         framePrice: z.coerce.number().optional(),
-        framePricingsId: z.string().optional(),
+        framePricingId: z.string().optional(),
         height: z.coerce
           .number({ required_error: "La altura es requerida" })
           .positive("La altura debe ser un número positivo"),
