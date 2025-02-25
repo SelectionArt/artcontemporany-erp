@@ -321,7 +321,10 @@ const updateBudget = async ({
         observations: budget.observations ?? "",
         reference: budget.reference ?? "",
         client: budget.client,
-        items: updatedItems,
+        items: updatedItems.map((item) => ({
+          ...item,
+          observations: item.observations ?? "",
+        })),
       };
     });
 
