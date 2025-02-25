@@ -38,9 +38,7 @@ function getColumnsConfig({
     },
     {
       accessorKey: "client",
-      cell: ({ row }) => {
-        row.original.client.name;
-      },
+      cell: ({ row }) => row.original.client.name,
       header: "Cliente",
       id: "client",
     },
