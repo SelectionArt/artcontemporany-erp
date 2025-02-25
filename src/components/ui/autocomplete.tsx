@@ -20,8 +20,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 type Props<T extends string> = {
   selectedValue: T;
   onSelectedValueChange: (value: T) => void;
-  // searchValue: string;
-  // onSearchValueChange: (value: string) => void;
   items: { value: T; label: string }[];
   isLoading?: boolean;
   emptyMessage?: string;
@@ -81,7 +79,10 @@ export function AutoComplete<T extends string>({
             <CommandPrimitive.Input
               asChild
               value={internalSearchValue}
-              onValueChange={setInternalSearchValue}
+              onValueChange={(val) => {
+                setInternalSearchValue(val);
+                onSelectedValueChange(val as T);
+              }}
               onKeyDown={(e) => setOpen(e.key !== "Escape")}
               onMouseDown={() =>
                 setOpen((open) => !!internalSearchValue || !open)

@@ -28,15 +28,17 @@ const BudgetsHook = ({
   const items = form.watch("items") || [];
 
   const artworksValues = (index: number) => {
+    const searchValue = form.watch(`items.${index}.artworkId`) || "";
+
     const selectedArtwork = artworks.find(
-      (artwork) => artwork.id === items[index]?.artworkId,
+      (artwork) => artwork.id === searchValue,
     );
 
     const filteredArtworks = artworks
       .filter((artwork) =>
         `${artwork.referenceNumber}-${artwork.referenceCode}`
           .toLowerCase()
-          .includes(form.watch(`items.${index}.artworkId`) || ""),
+          .includes(form.watch(`items.${index}.artworkId`).toLowerCase() || ""),
       )
       .slice(0, 10)
       .map((artwork) => ({
@@ -70,15 +72,15 @@ const BudgetsHook = ({
     }));
 
   const framesValues = (index: number) => {
-    const selectedFrame = frames.find(
-      (frame) => frame.id === items[index]?.frameId,
-    );
+    const searchValue = form.watch(`items.${index}.frameId`) || "";
+
+    const selectedFrame = frames.find((frame) => frame.id === searchValue);
 
     const filteredFrames = frames
       .filter((frame) =>
         frame.reference
           .toLowerCase()
-          .includes(form.watch(`items.${index}.frameId`) || ""),
+          .includes((form.watch(`items.${index}.frameId`) ?? "").toLowerCase()),
       )
       .slice(0, 10)
       .map((frame) => ({
