@@ -20,6 +20,7 @@ function getColumnsConfig({
   handleDownloadPDF,
   handleEdit,
   handleOpenSign,
+  handlePreviewPDF,
 }: GetColumnsConfigProps<Budget>): GetColumnsConfigReturn<Budget> {
   return [
     {
@@ -96,6 +97,11 @@ function getColumnsConfig({
             icon: Ellipsis,
           }}
           actions={[
+            {
+              icon: FileDown,
+              label: "Previsualizar Presupuesto",
+              onClick: (row) => handlePreviewPDF({ row, type: "budget" }),
+            },
             {
               icon: FileDown,
               label: "Descargar PDF Presupuesto",

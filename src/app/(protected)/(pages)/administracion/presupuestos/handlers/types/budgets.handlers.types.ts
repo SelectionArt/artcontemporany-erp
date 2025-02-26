@@ -36,6 +36,13 @@ type BudgetsHandlersReturn = {
   handleOpenChangeDialog: (open: boolean) => void;
   handleOpenChangeSignatureDialog: (open: boolean) => void;
   handleOpenSign: (row: Budget) => void;
+  handlePreviewPDF: ({
+    row,
+    type,
+  }: {
+    row: Budget;
+    type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
+  }) => void;
   handleSign: () => void;
   handleSubmit: (values: BudgetSchema) => void;
   handleSubmitDelete: () => void;
@@ -100,6 +107,11 @@ type OpenSignHandlerProps = Pick<
   row: Budget;
 };
 
+type PreviewPDFHandlerProps = {
+  row: Budget;
+  type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
+};
+
 type SignHandlerProps = Pick<
   BudgetsHandlersProps,
   | "selectedRow"
@@ -159,6 +171,7 @@ export type {
   OpenChangeDialogHandlerProps,
   OpenChangeSignatureDialogHandlerProps,
   OpenSignHandlerProps,
+  PreviewPDFHandlerProps,
   SignHandlerProps,
   SubmitHandlerCreateProps,
   SubmitHandlerDeleteMultipleProps,
