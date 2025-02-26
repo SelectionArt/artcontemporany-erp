@@ -60,10 +60,12 @@ const BudgetsHook = ({
   };
 
   const clientsValues = clients
-    .filter((client) =>
-      [client.name, client.legalName, client.cif].some((field) =>
-        field?.toLowerCase().includes(clientId.toLowerCase()),
-      ),
+    .filter(
+      (client) =>
+        client.id === clientId ||
+        [client.name, client.legalName, client.cif].some((field) =>
+          field?.toLowerCase().includes(clientId.toLowerCase()),
+        ),
     )
     .slice(0, 10)
     .map((client) => ({
