@@ -4,29 +4,7 @@ import type { MultipleSelectActionsProps } from "@/components/data-table/compone
 
 type GetColumnsConfigProps<TData> = {
   handleDelete: (row: TData) => void;
-  handlePreviewPDF: ({
-    row,
-    type,
-  }: {
-    row: TData;
-    type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
-  }) => void;
-  handleDownloadPDF: ({
-    row,
-    type,
-  }: {
-    row: TData;
-    type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
-  }) => void;
   handleEdit: (row: TData) => void;
-  handleOpenSign: (row: TData) => void;
-  handleSendEmail: ({
-    row,
-    type,
-  }: {
-    row: TData;
-    type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
-  }) => void;
 };
 
 type GetColumnsConfigReturn<TData> = ColumnDef<TData>[];

@@ -38,7 +38,7 @@ const Content = ({ items }: ContentProps) => {
   return (
     <SidebarContent>
       <SidebarGroup>
-        <SidebarGroupLabel>Platform</SidebarGroupLabel>
+        <SidebarGroupLabel>Secciones</SidebarGroupLabel>
         <SidebarMenu>
           {items.map((item) => {
             const isCollapsible = item.items && item.items.length > 0;

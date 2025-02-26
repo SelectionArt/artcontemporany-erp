@@ -23,6 +23,7 @@ type BudgetsHookReturn = Omit<
   | "handleResetForm"
   | "handleOpenSign"
   | "handlePreviewPDF"
+  | "handleSendEmail"
 > & {
   columns: GetColumnsConfigReturn<Budget>;
   data: Budget[];

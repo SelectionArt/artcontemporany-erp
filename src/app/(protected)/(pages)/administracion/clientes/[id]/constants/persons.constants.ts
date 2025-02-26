@@ -1,7 +1,8 @@
 const constants = {
   DEFAULT_FORM_VALUES: {
     name: "",
-    reference: "",
+    email: "",
+    phone: "",
   },
 } as const;
 

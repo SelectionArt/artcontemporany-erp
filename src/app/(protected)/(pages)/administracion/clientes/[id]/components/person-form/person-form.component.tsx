@@ -9,17 +9,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 // Constants
-import constants from "./constants/manufacturer-form.constants";
+import constants from "./constants/person-form.constants";
 // Types
-import type { ManufacturerFormProps } from "./types/manufacturer-form.component.types";
+import type { PersonFormProps } from "./types/person-form.component.types";
 
-const ManufacturerForm = ({
+const PersonForm = ({
   form,
   handleSubmit,
   label,
   loading,
-}: ManufacturerFormProps) => (
+}: PersonFormProps) => (
   <Form {...form}>
     <form
       onSubmit={form.handleSubmit(handleSubmit)}
@@ -49,22 +50,43 @@ const ManufacturerForm = ({
         />
         <FormField
           control={form.control}
-          name={constants.FIELD_PROPS.REFERENCE.inputProps.name}
+          name={constants.FIELD_PROPS.EMAIL.inputProps.name}
           render={({ field }) => (
             <FormItem>
-              <FormLabel {...constants.FIELD_PROPS.REFERENCE.labelProps}>
-                {constants.FIELD_PROPS.REFERENCE.labelText}
+              <FormLabel {...constants.FIELD_PROPS.EMAIL.labelProps}>
+                {constants.FIELD_PROPS.EMAIL.labelText}
               </FormLabel>
               <FormControl>
                 <Input
                   {...{
                     ...field,
-                    ...constants.FIELD_PROPS.REFERENCE.inputProps,
+                    ...constants.FIELD_PROPS.EMAIL.inputProps,
                     disabled: loading,
                   }}
                 />
               </FormControl>
-              <FormMessage {...constants.FIELD_PROPS.REFERENCE.messageProps} />
+              <FormMessage {...constants.FIELD_PROPS.EMAIL.messageProps} />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={constants.FIELD_PROPS.PHONE.inputProps.name}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel {...constants.FIELD_PROPS.PHONE.labelProps}>
+                {constants.FIELD_PROPS.PHONE.labelText}
+              </FormLabel>
+              <FormControl>
+                <Input
+                  {...{
+                    ...field,
+                    ...constants.FIELD_PROPS.PHONE.inputProps,
+                    disabled: loading,
+                  }}
+                />
+              </FormControl>
+              <FormMessage {...constants.FIELD_PROPS.PHONE.messageProps} />
             </FormItem>
           )}
         />
@@ -80,4 +102,4 @@ const ManufacturerForm = ({
   </Form>
 );
 
-export { ManufacturerForm };
+export { PersonForm };

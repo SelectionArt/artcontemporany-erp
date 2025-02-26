@@ -8,7 +8,7 @@ const constants = {
       inputProps: {
         id: "name",
         name: "name",
-        placeholder: "Nombre del fabricante",
+        placeholder: "Nombre del persona",
         type: "text",
         ["aria-describedby"]: "name-helper",
       },
@@ -16,20 +16,36 @@ const constants = {
         id: "name-helper",
       },
     },
-    REFERENCE: {
+    EMAIL: {
       labelProps: {
-        htmlFor: "reference",
+        htmlFor: "email",
       },
-      labelText: "Referencia",
+      labelText: "Correo electrónico",
       inputProps: {
-        id: "reference",
-        name: "reference",
-        placeholder: "Referencia del fabricante",
-        type: "text",
-        ["aria-describedby"]: "reference-helper",
+        id: "email",
+        name: "email",
+        placeholder: "Correo electrónico",
+        type: "email",
+        ["aria-describedby"]: "email-helper",
       },
       messageProps: {
-        id: "reference-helper",
+        id: "email-helper",
+      },
+    },
+    PHONE: {
+      labelProps: {
+        htmlFor: "phone",
+      },
+      labelText: "Teléfono",
+      inputProps: {
+        id: "phone",
+        name: "phone",
+        placeholder: "Teléfono",
+        type: "tel",
+        ["aria-describedby"]: "phone-helper",
+      },
+      messageProps: {
+        id: "phone-helper",
       },
     },
   },

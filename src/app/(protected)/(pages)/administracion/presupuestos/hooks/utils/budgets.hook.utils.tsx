@@ -5,7 +5,15 @@ import { SelectAllCheckbox } from "@/components/data-table/components/select-all
 import { SelectRowCheckbox } from "@/components/data-table/components/select-row-checkbox/select-row-checkbox.component";
 import { ColumnSorter } from "@/components/data-table/components/column-sorter/column-sorter.component";
 // Icons
-import { Ellipsis, FileDown, Signature, SquarePen, Trash2 } from "lucide-react";
+import {
+  Ellipsis,
+  Eye,
+  FileDown,
+  Mail,
+  Signature,
+  SquarePen,
+  Trash2,
+} from "lucide-react";
 // Types
 import type { Budget } from "../../types/budgets.container.types";
 import type {
@@ -21,6 +29,7 @@ function getColumnsConfig({
   handleEdit,
   handleOpenSign,
   handlePreviewPDF,
+  handleSendEmail,
 }: GetColumnsConfigProps<Budget>): GetColumnsConfigReturn<Budget> {
   return [
     {
@@ -98,9 +107,14 @@ function getColumnsConfig({
           }}
           actions={[
             {
-              icon: FileDown,
+              icon: Eye,
               label: "Previsualizar Presupuesto",
               onClick: (row) => handlePreviewPDF({ row, type: "budget" }),
+            },
+            {
+              icon: Mail,
+              label: "Enviar por correo",
+              onClick: (row) => handleSendEmail({ row, type: "budget" }),
             },
             {
               icon: FileDown,

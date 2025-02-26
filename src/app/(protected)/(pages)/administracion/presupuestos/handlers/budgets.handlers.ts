@@ -25,6 +25,7 @@ import type {
   OpenChangeSignatureDialogHandlerProps,
   OpenSignHandlerProps,
   PreviewPDFHandlerProps,
+  SendEmailHandlerProps,
   SignHandlerProps,
   SubmitHandlerCreateProps,
   SubmitHandlerDeleteMultipleProps,
@@ -179,6 +180,13 @@ const previewPDFHandler = async ({
   }
 };
 
+const sendEmailHandler = async ({
+  row,
+  type,
+}: SendEmailHandlerProps): Promise<void> => {
+  console.log("sendEmailHandler", row, type);
+};
+
 const signHandler = async ({
   selectedRow,
   signatureRef,
@@ -269,7 +277,8 @@ const submitHandlerCreate = async ({
     if (success && budget) {
       setData((prev) =>
         [...prev, budget].sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         ),
       );
       form.reset();
@@ -317,7 +326,8 @@ const submitHandlerEdit = async ({
         prev
           .map((item) => (item.id === budget.id ? budget : item))
           .sort(
-            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           ),
       );
       form.reset();
@@ -458,6 +468,7 @@ const BudgetsHandlers = ({
         setSelectedRow,
       }),
     handlePreviewPDF: ({ row, type }) => previewPDFHandler({ row, type }),
+    handleSendEmail: ({ row, type }) => sendEmailHandler({ row, type }),
     handleSign: () =>
       signHandler({
         selectedRow,

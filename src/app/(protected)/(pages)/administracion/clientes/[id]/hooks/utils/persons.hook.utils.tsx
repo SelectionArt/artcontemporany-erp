@@ -1,5 +1,3 @@
-// Vendors
-import Link from "next/link";
 // Components
 import { RowActions } from "@/components/data-table/components/row-actions/row-actions.component";
 import { SelectAllCheckbox } from "@/components/data-table/components/select-all-checkbox/select-all-checkbox.component";
@@ -8,18 +6,18 @@ import { ColumnSorter } from "@/components/data-table/components/column-sorter/c
 // Icons
 import { Ellipsis, SquarePen, Trash2 } from "lucide-react";
 // Types
-import type { Client } from "../../types/clients.container.types";
+import type { Person } from "../../types/persons.container.types";
 import type {
   GetColumnsConfigProps,
   GetColumnsConfigReturn,
   GetMultipleSelectActionsProps,
   GetMultipleSelectActionsReturn,
-} from "./types/clients.hook.utils.types";
+} from "./types/persons.hook.utils.types";
 
 function getColumnsConfig({
   handleDelete,
   handleEdit,
-}: GetColumnsConfigProps<Client>): GetColumnsConfigReturn<Client> {
+}: GetColumnsConfigProps<Person>): GetColumnsConfigReturn<Person> {
   return [
     {
       cell: ({ row }) => <SelectRowCheckbox row={row} />,
@@ -29,25 +27,8 @@ function getColumnsConfig({
     },
     {
       accessorKey: "name",
-      cell: ({ row }) => (
-        <Link href={`/administracion/clientes/${row.original.id}`}>
-          {row.original.name}
-        </Link>
-      ),
       header: ({ column }) => <ColumnSorter column={column} label="Nombre" />,
       meta: "Nombre",
-    },
-    {
-      accessorKey: "legalName",
-      header: ({ column }) => (
-        <ColumnSorter column={column} label="Razón social" />
-      ),
-      meta: "Razón social",
-    },
-    {
-      accessorKey: "cif",
-      header: ({ column }) => <ColumnSorter column={column} label="CIF" />,
-      meta: "CIF",
     },
     {
       accessorKey: "email",
@@ -60,25 +41,6 @@ function getColumnsConfig({
       accessorKey: "phone",
       header: ({ column }) => <ColumnSorter column={column} label="Teléfono" />,
       meta: "Teléfono",
-    },
-    {
-      accessorKey: "address",
-      header: ({ column }) => (
-        <ColumnSorter column={column} label="Dirección" />
-      ),
-      meta: "Dirección",
-    },
-    {
-      accessorKey: "sendAddress",
-      header: ({ column }) => (
-        <ColumnSorter column={column} label="Dirección de envío" />
-      ),
-      meta: "Dirección de envío",
-    },
-    {
-      accessorKey: "iban",
-      header: ({ column }) => <ColumnSorter column={column} label="IBAN" />,
-      meta: "IBAN",
     },
     {
       cell: ({ row }) => (

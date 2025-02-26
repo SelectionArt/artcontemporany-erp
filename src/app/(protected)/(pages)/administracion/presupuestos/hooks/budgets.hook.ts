@@ -75,6 +75,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     handleOpenChangeSignatureDialog,
     handleOpenSign,
     handlePreviewPDF,
+    handleSendEmail,
     handleSign,
     handleSubmit,
     handleSubmitDelete,
@@ -100,6 +101,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     handleEdit,
     handleOpenSign,
     handlePreviewPDF,
+    handleSendEmail,
   });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,

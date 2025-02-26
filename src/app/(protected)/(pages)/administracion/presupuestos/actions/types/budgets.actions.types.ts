@@ -27,6 +27,8 @@ type CreateBudgetReturn = {
     | "paymentMethod"
     | "status"
     | "showIBAN"
+    | "createdAt"
+    | "updatedAt"
   > & {
     client: Pick<Client, "id" | "name">;
     observations: string;
@@ -93,6 +95,8 @@ type FetchBudgetsReturn = Array<
     | "paymentMethod"
     | "status"
     | "showIBAN"
+    | "createdAt"
+    | "updatedAt"
   > & {
     client: Pick<Client, "id" | "name">;
     observations: string;
@@ -171,6 +175,8 @@ type UpdateBudgetReturn = {
     | "paymentMethod"
     | "status"
     | "showIBAN"
+    | "createdAt"
+    | "updatedAt"
   > & {
     client: Pick<Client, "id" | "name">;
     observations: string;

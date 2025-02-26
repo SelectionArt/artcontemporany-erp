@@ -43,6 +43,13 @@ type BudgetsHandlersReturn = {
     row: Budget;
     type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
   }) => void;
+  handleSendEmail: ({
+    row,
+    type,
+  }: {
+    row: Budget;
+    type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
+  }) => void;
   handleSign: () => void;
   handleSubmit: (values: BudgetSchema) => void;
   handleSubmitDelete: () => void;
@@ -112,6 +119,11 @@ type PreviewPDFHandlerProps = {
   type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
 };
 
+type SendEmailHandlerProps = {
+  row: Budget;
+  type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
+};
+
 type SignHandlerProps = Pick<
   BudgetsHandlersProps,
   | "selectedRow"
@@ -172,6 +184,7 @@ export type {
   OpenChangeSignatureDialogHandlerProps,
   OpenSignHandlerProps,
   PreviewPDFHandlerProps,
+  SendEmailHandlerProps,
   SignHandlerProps,
   SubmitHandlerCreateProps,
   SubmitHandlerDeleteMultipleProps,

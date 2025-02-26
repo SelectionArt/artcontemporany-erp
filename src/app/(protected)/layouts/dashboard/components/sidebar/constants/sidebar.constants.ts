@@ -13,7 +13,7 @@ import {
 const ITEMS = {
   navMain: [
     {
-      title: "Home",
+      title: "Principal",
       url: "/",
       icon: Home,
     },
@@ -93,14 +93,6 @@ const ITEMS = {
           title: "Presupuestos",
           url: "/administracion/presupuestos",
         },
-        {
-          title: "Hojas de confirmación",
-          url: "/administracion/hojas-de-confirmacion",
-        },
-        {
-          title: "Facturas",
-          url: "/administracion/facturas",
-        },
       ],
     },
     {
@@ -115,7 +107,7 @@ const ITEMS = {
       ],
     },
     {
-      title: "Settings",
+      title: "Ajustes",
       url: "#",
       icon: Settings,
       items: [
@@ -124,15 +116,7 @@ const ITEMS = {
           url: "#",
         },
         {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
+          title: "Usuarios",
           url: "#",
         },
       ],
