@@ -182,7 +182,12 @@ const gneratePDF = async ({
   const pdfDoc = await PDFDocument.create();
   const page = pdfDoc.addPage([595, 842]);
   const { width, height } = page.getSize();
+
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+  const leftMargin = 50;
+  const rightMargin = 50;
 
   let yPosition = height - 60;
 
@@ -225,29 +230,36 @@ const gneratePDF = async ({
     text: `${titleMap[type]}`,
     x: 50,
     y: yPosition,
-    font,
+    font: boldFont,
   });
   drawText({
     page,
     text: `N°: ${budgetData.number}`,
     x: 50,
-    y: yPosition - 16,
+    y: yPosition - 15,
     font,
   });
   drawText({
     page,
     text: `Fecha: ${format(new Date(budgetData.date), "dd/MM/yyyy")}`,
     x: 50,
-    y: yPosition - 32,
+    y: yPosition - 30,
     font,
   });
 
   // Datos del cliente
   const maxTextWidth = 180;
-  if (budgetData.client.name) {
+  yPosition -= drawText({
+    page,
+    text: budgetData.client.name,
+    x: width - maxTextWidth - 50,
+    y: yPosition,
+    font,
+  });
+  if (budgetData.client.legalName) {
     yPosition -= drawText({
       page,
-      text: budgetData.client.name,
+      text: budgetData.client.legalName,
       x: width - maxTextWidth - 50,
       y: yPosition,
       font,
@@ -294,7 +306,7 @@ const gneratePDF = async ({
   yPosition -= 40;
 
   // Tabla encabezados
-  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
   const tableStartX = 50;
   const tableEndX = width - 50;
   const columnWidths = [
@@ -646,7 +658,16 @@ const gneratePDF = async ({
     font,
   });
 
-  yPosition -= 40;
+  if (budgetData.showIBAN) {
+    drawText({
+      page,
+      text: `IBAN: ES8021001231231231231231`,
+      x: 50,
+      y: yPosition - 32,
+      font,
+    });
+  }
+  yPosition -= 56;
 
   drawText({
     page,
@@ -686,7 +707,10 @@ const gneratePDF = async ({
   });
 
   // Firma
-  if (budgetData.budgetSignature?.imageUrl) {
+  if (
+    budgetData.budgetSignature?.imageUrl &&
+    (type === "deliveryNote" || type === "orderConfirmation")
+  ) {
     await drawImage({
       page,
       pdfDoc,
@@ -957,7 +981,7 @@ const fetchClients = async (): Promise<FetchClientsReturn> => {
   try {
     const clients = await prisma.client.findMany({
       orderBy: { name: "asc" },
-      select: { id: true, name: true },
+      select: { id: true, name: true, legalName: true, cif: true },
     });
     return clients;
   } catch (error) {
@@ -970,9 +994,23 @@ const fetchFrames = async (): Promise<FetchFramesReturn> => {
   try {
     const frames = await prisma.frame.findMany({
       orderBy: { reference: "asc" },
-      select: { id: true, reference: true },
+      select: {
+        id: true,
+        reference: true,
+        images: {
+          select: {
+            url: true,
+          },
+          take: 1,
+        },
+      },
     });
-    return frames;
+
+    return frames.map((frame) => ({
+      id: frame.id,
+      reference: frame.reference,
+      imageUrl: frame.images.length > 0 ? frame.images[0].url : null,
+    }));
   } catch (error) {
     console.error(error);
     return [];

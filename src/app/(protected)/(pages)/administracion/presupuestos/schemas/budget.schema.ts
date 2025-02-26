@@ -55,7 +55,9 @@ const budgetSchema = z.object({
     .string({ required_error: "El estado es requerido" })
     .min(1, "El estado es requerido"),
   sendAddress: z.string().optional(),
-  showIBAN: z.boolean({ required_error: "El campo showIBAN es obligatorio" }),
+  showIBAN: z.coerce.boolean({
+    required_error: "El mostrar IBAN es requerido",
+  }),
 });
 
 export { budgetSchema };

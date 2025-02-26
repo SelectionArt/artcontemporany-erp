@@ -31,6 +31,19 @@ function getColumnsConfig({
       meta: "Nombre",
     },
     {
+      accessorKey: "type",
+      cell: ({ row }) => {
+        const typeMap: Record<string, string> = {
+          artwork: "Obra",
+          frame: "Moldura",
+        };
+
+        return typeMap[row.original.type];
+      },
+      header: ({ column }) => <ColumnSorter column={column} label="Tipo" />,
+      meta: "Tipo",
+    },
+    {
       cell: ({ row }) => (
         <RowActions
           row={row}

@@ -103,6 +103,7 @@ const createFrame = async ({
     }
   } catch (error) {
     console.error(error);
+    throw error;
     return {
       error: "Error al crear la moldura. Por favor, inténtalo de nuevo",
     };

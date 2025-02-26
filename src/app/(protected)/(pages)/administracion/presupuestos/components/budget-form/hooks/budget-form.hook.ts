@@ -61,11 +61,9 @@ const BudgetsHook = ({
 
   const clientsValues = clients
     .filter((client) =>
-      client.name
-        .toLowerCase()
-        .includes(
-          clients.find((c) => c.id === clientId)?.name.toLowerCase() || "",
-        ),
+      [client.name, client.legalName, client.cif].some((field) =>
+        field?.toLowerCase().includes(clientId.toLowerCase()),
+      ),
     )
     .slice(0, 10)
     .map((client) => ({
@@ -88,11 +86,16 @@ const BudgetsHook = ({
       .map((frame) => ({
         value: frame.id,
         label: frame.reference,
+        imageUrl: frame.imageUrl,
       }));
 
     return selectedFrame
       ? [
-          { value: selectedFrame.id, label: selectedFrame.reference },
+          {
+            value: selectedFrame.id,
+            label: selectedFrame.reference,
+            imageUrl: selectedFrame.imageUrl,
+          },
           ...filteredFrames,
         ]
       : filteredFrames;

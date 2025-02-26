@@ -82,6 +82,12 @@ function getColumnsConfig({
       id: "status",
     },
     {
+      accessorKey: "signature",
+      cell: ({ row }) => (row.original.signature ? "Sí" : "No"),
+      header: "Firmado",
+      id: "signature",
+    },
+    {
       cell: ({ row }) => (
         <RowActions
           row={row}

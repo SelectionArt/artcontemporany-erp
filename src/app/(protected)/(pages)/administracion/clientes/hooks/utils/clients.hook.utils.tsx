@@ -38,6 +38,11 @@ function getColumnsConfig({
       meta: "Razón social",
     },
     {
+      accessorKey: "cif",
+      header: ({ column }) => <ColumnSorter column={column} label="CIF" />,
+      meta: "CIF",
+    },
+    {
       accessorKey: "email",
       header: ({ column }) => (
         <ColumnSorter column={column} label="Correo electrónico" />
@@ -62,11 +67,6 @@ function getColumnsConfig({
         <ColumnSorter column={column} label="Dirección de envío" />
       ),
       meta: "Dirección de envío",
-    },
-    {
-      accessorKey: "cif",
-      header: ({ column }) => <ColumnSorter column={column} label="CIF" />,
-      meta: "CIF",
     },
     {
       accessorKey: "iban",

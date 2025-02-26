@@ -49,7 +49,7 @@ type CreateBudgetReturn = {
         observations: string;
       }
     >;
-    signature: Pick<BudgetSignature, "imageUrl"> | null
+    signature: Pick<BudgetSignature, "imageUrl"> | null;
   };
   error?: string;
   success?: string;
@@ -119,9 +119,13 @@ type FetchBudgetsReturn = Array<
   }
 >;
 
-type FetchClientsReturn = Pick<Client, "id" | "name">[];
+type FetchClientsReturn = Pick<Client, "id" | "name" | "legalName" | "cif">[];
 
-type FetchFramesReturn = Pick<Frame, "id" | "reference">[];
+type FetchFramesReturn = Array<{
+  id: string;
+  reference: string;
+  imageUrl: string | null;
+}>;
 
 type FetchPricingItemsProps = {
   id: string;
