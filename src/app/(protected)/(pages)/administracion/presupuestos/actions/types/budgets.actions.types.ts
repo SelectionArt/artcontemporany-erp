@@ -4,7 +4,6 @@ import type {
   BudgetItem,
   BudgetSignature,
   Client,
-  Frame,
   Pricing,
   PricingItem,
 } from "@prisma/client";

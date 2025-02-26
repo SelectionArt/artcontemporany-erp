@@ -71,7 +71,7 @@ const addNewPage = ({
   const page = pdfDoc.addPage([595, 842]);
   const { height, width } = page.getSize();
 
-  let yPosition = height - margins.top;
+  const yPosition = height - margins.top;
 
   return { height, page, yPosition, width };
 };
