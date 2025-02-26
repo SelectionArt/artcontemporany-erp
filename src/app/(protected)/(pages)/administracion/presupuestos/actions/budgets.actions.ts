@@ -1,6 +1,6 @@
 "use server";
 // Vendors
-import { PDFDocument, StandardFonts, PDFFont, rgb } from "pdf-lib";
+import { PDFDocument, StandardFonts, PDFFont, PDFPage, rgb } from "pdf-lib";
 import { format } from "date-fns";
 // Libs
 import { prisma } from "@/lib/prisma";
@@ -28,7 +28,7 @@ import type {
 } from "./types/budgets.actions.types";
 
 type DrawTextProps = {
-  page: any;
+  page: PDFPage;
   text: string;
   x: number;
   y: number;
@@ -40,8 +40,8 @@ type DrawTextProps = {
 };
 
 type DrawImageProps = {
-  page: any;
-  pdfDoc: any;
+  page: PDFPage;
+  pdfDoc: PDFDocument;
   url: string;
   x: number;
   y: number;
