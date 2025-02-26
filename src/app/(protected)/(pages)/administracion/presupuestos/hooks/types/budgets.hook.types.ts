@@ -7,6 +7,7 @@ import type {
   GetColumnsConfigReturn,
   GetMultipleSelectActionsReturn,
 } from "../utils/types/budgets.hook.utils.types";
+import type SignatureCanvas from "react-signature-canvas";
 
 type BudgetsHookProps = {
   budgets: Budget[];
@@ -33,7 +34,7 @@ type BudgetsHookReturn = Omit<
   openSignatureDialog: boolean;
   selectedRow: Budget | null;
   selectedRows: Budget[];
-  signatureRef: React.RefObject<null>;
+  signatureRef: React.RefObject<SignatureCanvas | null>;
 };
 
 export type { BudgetsHookProps, BudgetsHookReturn };

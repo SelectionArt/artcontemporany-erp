@@ -4,10 +4,13 @@ import SignatureCanvas from "react-signature-canvas";
 // Components
 import { AlertDialogWrapper } from "@/components/alert-dialog-wrapper/alert-dialog-wrapper.component";
 import { BudgetForm } from "./components/budget-form/budget-form.component";
+import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/data-table/data-table.component";
 import { DialogWrapper } from "@/components/dialog-wrapper/dialog-wrapper.component";
 // Hooks
 import { BudgetsHook } from "./hooks/budgets.hook";
+// Icons
+import { Eraser } from "lucide-react";
 // Types
 import type { BudgetsProps } from "./types/budgets.container.types";
 
@@ -75,10 +78,27 @@ const BudgetsContainer = ({
         open={openSignatureDialog}
         title="Firmar"
       >
-        <SignatureCanvas
-          canvasProps={{ width: 590, height: 300 }}
-          ref={signatureRef}
-        />
+        <div className="flex flex-col gap-4">
+          <div className="relative rounded-md border">
+            <Button
+              className="absolute top-4 right-4 size-10"
+              onClick={() => signatureRef.current?.clear()}
+              size="icon"
+              variant="ghost"
+            >
+              <Eraser />
+            </Button>
+            <SignatureCanvas
+              canvasProps={{ width: 590, height: 300 }}
+              ref={signatureRef}
+            />
+          </div>
+          <Button
+            onClick={() => signatureRef.current?.toDataURL()}
+          >
+            Firmar
+          </Button>
+        </div>
       </DialogWrapper>
       <AlertDialogWrapper
         action={{

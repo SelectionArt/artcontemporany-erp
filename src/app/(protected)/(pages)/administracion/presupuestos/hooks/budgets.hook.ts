@@ -16,6 +16,7 @@ import type {
   BudgetsHookProps,
   BudgetsHookReturn,
 } from "./types/budgets.hook.types";
+import type SignatureCanvas from "react-signature-canvas";
 // Utils
 import {
   getColumnsConfig,
@@ -42,7 +43,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     name: "items",
   });
 
-  const signatureRef = useRef(null);
+  const signatureRef = useRef<SignatureCanvas | null>(null);
 
   const {
     handleCreate,
