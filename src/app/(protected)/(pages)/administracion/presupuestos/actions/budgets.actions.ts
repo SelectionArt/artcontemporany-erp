@@ -244,7 +244,9 @@ const gneratePDF = async ({
   };
   const lineSpacing = 15;
 
-  let { page, yPosition, width } = addNewPage({ margins, pdfDoc });
+  const newPageData = addNewPage({ margins, pdfDoc });
+  let { page, yPosition } = newPageData;
+  const { width } = newPageData;
 
   const logoURL =
     "https://res.cloudinary.com/dpj6kupra/image/upload/v1740514863/uifwktt9tskfogjd97s4.png";
