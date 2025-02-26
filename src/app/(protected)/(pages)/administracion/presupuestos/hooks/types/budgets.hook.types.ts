@@ -20,6 +20,7 @@ type BudgetsHookReturn = Omit<
   | "handleEdit"
   | "handleFetch"
   | "handleResetForm"
+  | "handleSign"
 > & {
   columns: GetColumnsConfigReturn<Budget>;
   data: Budget[];
@@ -29,8 +30,10 @@ type BudgetsHookReturn = Omit<
   multipleSelectActionsProps: GetMultipleSelectActionsReturn<Budget>;
   openAlert: boolean;
   openDialog: boolean;
+  openSignatureDialog: boolean;
   selectedRow: Budget | null;
   selectedRows: Budget[];
+  signatureRef: React.RefObject<null>;
 };
 
 export type { BudgetsHookProps, BudgetsHookReturn };

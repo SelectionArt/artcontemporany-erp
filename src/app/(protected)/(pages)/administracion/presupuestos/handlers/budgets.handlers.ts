@@ -21,6 +21,8 @@ import type {
   EditHandlerProps,
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
+  OpenChangeSignatureDialogHandlerProps,
+  SignHandlerProps,
   SubmitHandlerCreateProps,
   SubmitHandlerDeleteMultipleProps,
   SubmitHandlerDeleteProps,
@@ -118,6 +120,20 @@ const openChangeDialogHandler = ({
     form.reset();
     setSelectedRow(null);
   }
+};
+
+const openChangeSignatureDialogHandler = ({
+  open,
+  setOpenSignatureDialog,
+}: OpenChangeSignatureDialogHandlerProps): void => {
+  setOpenSignatureDialog(open);
+};
+
+const signHandler = ({
+  row,
+  setOpenSignatureDialog,
+}: SignHandlerProps): void => {
+  setOpenSignatureDialog(true);
 };
 
 const submitHandler = ({
@@ -309,6 +325,7 @@ const BudgetsHandlers = ({
   setLoading,
   setOpenAlert,
   setOpenDialog,
+  setOpenSignatureDialog,
   setSelectedRow,
   setSelectedRows,
 }: BudgetsHandlersProps): BudgetsHandlersReturn => {
@@ -342,6 +359,12 @@ const BudgetsHandlers = ({
         setOpenDialog,
         setSelectedRow,
       }),
+    handleOpenChangeSignatureDialog: (open) =>
+      openChangeSignatureDialogHandler({
+        open,
+        setOpenSignatureDialog,
+      }),
+    handleSign: (row) => signHandler({ row, setOpenSignatureDialog }),
     handleSubmit: (values) =>
       submitHandler({
         form,

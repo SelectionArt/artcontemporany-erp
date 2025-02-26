@@ -12,6 +12,7 @@ type BudgetsHandlersProps = {
   setLoading: Dispatch<SetStateAction<boolean>>;
   setOpenAlert: Dispatch<SetStateAction<boolean>>;
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
+  setOpenSignatureDialog: Dispatch<SetStateAction<boolean>>;
   setSelectedRow: Dispatch<SetStateAction<Budget | null>>;
   setSelectedRows: Dispatch<SetStateAction<Budget[]>>;
 };
@@ -30,6 +31,8 @@ type BudgetsHandlersReturn = {
   handleEdit: (row: Budget) => void;
   handleOpenChangeAlertDialog: (open: boolean) => void;
   handleOpenChangeDialog: (open: boolean) => void;
+  handleOpenChangeSignatureDialog: (open: boolean) => void;
+  handleSign: (row: Budget) => void;
   handleSubmit: (values: BudgetSchema) => void;
   handleSubmitDelete: () => void;
   handleSubmitDeleteMultiple: () => void;
@@ -77,6 +80,17 @@ type OpenChangeDialogHandlerProps = Pick<
   "form" | "selectedRow" | "setOpenDialog" | "setSelectedRow"
 > & {
   open: boolean;
+};
+
+type OpenChangeSignatureDialogHandlerProps = Pick<
+  BudgetsHandlersProps,
+  "setOpenSignatureDialog"
+> & {
+  open: boolean;
+};
+
+type SignHandlerProps = Pick<BudgetsHandlersProps, "setOpenSignatureDialog"> & {
+  row: Budget;
 };
 
 type SubmitHandlerCreateProps = Pick<
@@ -127,6 +141,8 @@ export type {
   EditHandlerProps,
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
+  OpenChangeSignatureDialogHandlerProps,
+  SignHandlerProps,
   SubmitHandlerCreateProps,
   SubmitHandlerDeleteMultipleProps,
   SubmitHandlerDeleteProps,

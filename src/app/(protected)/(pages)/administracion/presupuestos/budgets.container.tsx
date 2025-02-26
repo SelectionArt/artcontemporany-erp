@@ -1,4 +1,6 @@
 "use client";
+// Vendors
+import SignatureCanvas from "react-signature-canvas";
 // Components
 import { AlertDialogWrapper } from "@/components/alert-dialog-wrapper/alert-dialog-wrapper.component";
 import { BudgetForm } from "./components/budget-form/budget-form.component";
@@ -24,6 +26,7 @@ const BudgetsContainer = ({
     handleCreate,
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
+    handleOpenChangeSignatureDialog,
     handleSubmit,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
@@ -31,8 +34,10 @@ const BudgetsContainer = ({
     multipleSelectActionsProps,
     openAlert,
     openDialog,
+    openSignatureDialog,
     selectedRow,
     selectedRows,
+    signatureRef,
   } = BudgetsHook({ budgets });
 
   return (
@@ -61,6 +66,18 @@ const BudgetsContainer = ({
           label={selectedRow ? "Editar" : "Crear"}
           loading={loading}
           pricings={pricings}
+        />
+      </DialogWrapper>
+      <DialogWrapper
+        className="max-w-[640px]"
+        description="Dibuja tu firma en el recuadro para firmar el presupuesto."
+        onOpenChange={handleOpenChangeSignatureDialog}
+        open={openSignatureDialog}
+        title="Firmar"
+      >
+        <SignatureCanvas
+          canvasProps={{ width: 590, height: 300 }}
+          ref={signatureRef}
         />
       </DialogWrapper>
       <AlertDialogWrapper

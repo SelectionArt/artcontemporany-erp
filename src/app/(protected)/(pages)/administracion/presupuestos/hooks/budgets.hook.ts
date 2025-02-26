@@ -1,7 +1,7 @@
 "use client";
 // Vendors
 import { useForm, useFieldArray } from "react-hook-form";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 // Constants
 import constants from "../constants/budgets.constants";
@@ -27,6 +27,8 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
   const [loading, setLoading] = useState<boolean>(false);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [openSignatureDialog, setOpenSignatureDialog] =
+    useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<Budget | null>(null);
   const [selectedRows, setSelectedRows] = useState<Budget[]>([]);
 
@@ -40,6 +42,8 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     name: "items",
   });
 
+  const signatureRef = useRef(null);
+
   const {
     handleCreate,
     handleDelete,
@@ -48,6 +52,8 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     handleEdit,
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
+    handleOpenChangeSignatureDialog,
+    handleSign,
     handleSubmit,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
@@ -59,6 +65,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     setLoading,
     setOpenAlert,
     setOpenDialog,
+    setOpenSignatureDialog,
     setSelectedRow,
     setSelectedRows,
   });
@@ -67,6 +74,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     handleDelete,
     handleDownloadPDF,
     handleEdit,
+    handleSign,
   });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,
@@ -80,6 +88,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     handleCreate,
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
+    handleOpenChangeSignatureDialog,
     handleSubmit,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
@@ -87,8 +96,10 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     multipleSelectActionsProps,
     openAlert,
     openDialog,
+    openSignatureDialog,
     selectedRow,
     selectedRows,
+    signatureRef,
   };
 };
 
