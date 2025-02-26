@@ -249,9 +249,9 @@ model BudgetItem {
   artworkId        String
   artworkPrice     Int
   artworkPricingId String
-  frameId          String
+  frameId          String?
   framePrice       Int
-  framePricingId   String
+  framePricingId   String?
   height           Int
   quantity         Int
   observations     String?
@@ -260,11 +260,11 @@ model BudgetItem {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
-  artwork        Artwork @relation(fields: [artworkId], references: [id])
-  artworkPricing Pricing @relation(name: "ArtworkPricing", fields: [artworkPricingId], references: [id])
-  budget         Budget  @relation(fields: [budgetId], references: [id], onDelete: Cascade)
-  frame          Frame   @relation(fields: [frameId], references: [id])
-  framePricing   Pricing @relation(name: "FramePricing", fields: [framePricingId], references: [id])
+  artwork        Artwork  @relation(fields: [artworkId], references: [id])
+  artworkPricing Pricing  @relation(name: "ArtworkPricing", fields: [artworkPricingId], references: [id])
+  budget         Budget   @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  frame          Frame?   @relation(fields: [frameId], references: [id])
+  framePricing   Pricing? @relation(name: "FramePricing", fields: [framePricingId], references: [id])
 }
 
 model BudgetSignature {

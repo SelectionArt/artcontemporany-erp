@@ -260,6 +260,8 @@ const submitHandlerEdit = async ({
 
   setLoading(true);
 
+  console.log("submitHandlerEdit", values);
+
   try {
     const { budget, error, success } = await updateBudget({
       id: selectedRow.id,

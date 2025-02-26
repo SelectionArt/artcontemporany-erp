@@ -51,6 +51,31 @@ type DrawImageProps = {
   maxHeight: number;
 };
 
+const addNewPage = ({
+  margins,
+  pdfDoc,
+}: {
+  margins: {
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+  };
+  pdfDoc: PDFDocument;
+}): {
+  height: number;
+  page: PDFPage;
+  yPosition: number;
+  width: number;
+} => {
+  const page = pdfDoc.addPage([595, 842]);
+  const { height, width } = page.getSize();
+
+  let yPosition = height - margins.top;
+
+  return { height, page, yPosition, width };
+};
+
 const drawText = ({
   page,
   text,
@@ -148,6 +173,34 @@ const formatter = new Intl.NumberFormat("es-ES", {
   currency: "EUR",
 });
 
+const ensureSpace = ({
+  neededSpace,
+  yPosition,
+  margins,
+  pdfDoc,
+  page,
+}: {
+  neededSpace: number;
+  yPosition: number;
+  margins: {
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+  };
+  pdfDoc: PDFDocument;
+  page: PDFPage;
+}) => {
+  if (yPosition - neededSpace < margins.bottom) {
+    const { page: newPage, yPosition: newYPosition } = addNewPage({
+      margins,
+      pdfDoc,
+    });
+    return { page: newPage, yPosition: newYPosition };
+  }
+  return { page, yPosition };
+};
+
 const gneratePDF = async ({
   id,
   type,
@@ -180,16 +233,18 @@ const gneratePDF = async ({
   }
 
   const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([595, 842]);
-  const { width, height } = page.getSize();
-
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-  const leftMargin = 50;
-  const rightMargin = 50;
+  const margins = {
+    left: 50,
+    right: 50,
+    top: 50,
+    bottom: 50,
+  };
+  const lineSpacing = 15;
 
-  let yPosition = height - 60;
+  let { page, yPosition, width } = addNewPage({ margins, pdfDoc });
 
   const logoURL =
     "https://res.cloudinary.com/dpj6kupra/image/upload/v1740514863/uifwktt9tskfogjd97s4.png";
@@ -228,22 +283,22 @@ const gneratePDF = async ({
   drawText({
     page,
     text: `${titleMap[type]}`,
-    x: 50,
+    x: margins.left,
     y: yPosition,
     font: boldFont,
   });
   drawText({
     page,
     text: `N°: ${budgetData.number}`,
-    x: 50,
-    y: yPosition - 15,
+    x: margins.left,
+    y: yPosition - lineSpacing,
     font,
   });
   drawText({
     page,
     text: `Fecha: ${format(new Date(budgetData.date), "dd/MM/yyyy")}`,
-    x: 50,
-    y: yPosition - 30,
+    x: margins.left,
+    y: yPosition - lineSpacing * 2,
     font,
   });
 
@@ -252,7 +307,7 @@ const gneratePDF = async ({
   yPosition -= drawText({
     page,
     text: budgetData.client.name,
-    x: width - maxTextWidth - 50,
+    x: width - maxTextWidth - margins.right,
     y: yPosition,
     font,
   });
@@ -260,7 +315,7 @@ const gneratePDF = async ({
     yPosition -= drawText({
       page,
       text: budgetData.client.legalName,
-      x: width - maxTextWidth - 50,
+      x: width - maxTextWidth - margins.right,
       y: yPosition,
       font,
     });
@@ -269,7 +324,7 @@ const gneratePDF = async ({
     yPosition -= drawText({
       page,
       text: budgetData.client.cif,
-      x: width - maxTextWidth - 50,
+      x: width - maxTextWidth - margins.right,
       y: yPosition,
       font,
     });
@@ -278,7 +333,7 @@ const gneratePDF = async ({
     yPosition -= drawText({
       page,
       text: budgetData.client.phone,
-      x: width - maxTextWidth - 50,
+      x: width - maxTextWidth - margins.right,
       y: yPosition,
       font,
     });
@@ -287,7 +342,7 @@ const gneratePDF = async ({
     yPosition -= drawText({
       page,
       text: budgetData.client.address,
-      x: width - maxTextWidth - 50,
+      x: width - maxTextWidth - margins.right,
       y: yPosition,
       maxWidth: maxTextWidth,
       font,
@@ -297,7 +352,7 @@ const gneratePDF = async ({
     yPosition -= drawText({
       page,
       text: budgetData.client.email,
-      x: width - maxTextWidth - 50,
+      x: width - maxTextWidth - margins.right,
       y: yPosition,
       font,
     });
@@ -374,6 +429,14 @@ const gneratePDF = async ({
   yPosition -= 30;
 
   for (const [index, item] of budgetData.budgetItems.entries()) {
+    ({ page, yPosition } = ensureSpace({
+      neededSpace: 60,
+      yPosition,
+      margins,
+      pdfDoc,
+      page,
+    }));
+
     // Artículo
     drawText({
       page,
@@ -517,6 +580,13 @@ const gneratePDF = async ({
   const iva = (subtotal - discount + transport) * 0.21;
   const total = subtotal - discount + transport + iva;
 
+  ({ page, yPosition } = ensureSpace({
+    neededSpace: 80,
+    yPosition,
+    margins,
+    pdfDoc,
+    page,
+  }));
   drawText({
     page,
     text: "SUBTOTAL",
@@ -641,20 +711,27 @@ const gneratePDF = async ({
   });
 
   yPosition -= 20;
-  // Información extra
 
+  // Información extra
+  ({ page, yPosition } = ensureSpace({
+    neededSpace: 160,
+    yPosition,
+    margins,
+    pdfDoc,
+    page,
+  }));
   drawText({
     page,
     text: "CONDICIONES VENTA:",
-    x: 50,
+    x: margins.left,
     y: yPosition,
     font,
   });
   drawText({
     page,
     text: `${budgetData.paymentMethod}`,
-    x: 50,
-    y: yPosition - 16,
+    x: margins.left,
+    y: yPosition - lineSpacing,
     font,
   });
 
@@ -662,8 +739,8 @@ const gneratePDF = async ({
     drawText({
       page,
       text: `IBAN: ES8021001231231231231231`,
-      x: 50,
-      y: yPosition - 32,
+      x: margins.left,
+      y: yPosition - lineSpacing * 2,
       font,
     });
   }
@@ -672,7 +749,7 @@ const gneratePDF = async ({
   drawText({
     page,
     text: "FECHA ENTREGA:",
-    x: 50,
+    x: margins.left,
     y: yPosition,
     font,
   });
@@ -689,7 +766,7 @@ const gneratePDF = async ({
   drawText({
     page,
     text: "DIRECCIÓN ENTREGA:",
-    x: 50,
+    x: margins.left,
     y: yPosition,
     font,
   });
@@ -701,8 +778,8 @@ const gneratePDF = async ({
   drawText({
     page,
     text: `${address}`,
-    x: 50,
-    y: yPosition - 16,
+    x: margins.left,
+    y: yPosition - lineSpacing,
     font,
   });
 
@@ -711,6 +788,13 @@ const gneratePDF = async ({
     budgetData.budgetSignature?.imageUrl &&
     (type === "deliveryNote" || type === "orderConfirmation")
   ) {
+    ({ page, yPosition } = ensureSpace({
+      neededSpace: 100,
+      yPosition,
+      margins,
+      pdfDoc,
+      page,
+    }));
     await drawImage({
       page,
       pdfDoc,
@@ -722,12 +806,19 @@ const gneratePDF = async ({
     });
   }
 
+  ({ page, yPosition } = ensureSpace({
+    neededSpace: 8,
+    yPosition,
+    margins,
+    pdfDoc,
+    page,
+  }));
   drawText({
     page,
     fontSize: 8,
     text: "Telf. + 3496 120 1908 Camino Vereda (norte), 56 46469 Beniparrell (Valencia-España) info@artcontemporany.com",
     x: 90,
-    y: 40,
+    y: margins.bottom,
     font,
   });
 
@@ -805,13 +896,13 @@ const createBudget = async ({
                   artworkId: item.artworkId,
                   artworkPrice: item.artworkPrice,
                   artworkPricingId: item.artworkPricingId,
-                  frameId: item.frameId ?? "",
+                  frameId: item.frameId || null,
                   framePrice: item.framePrice ?? 0,
-                  framePricingId: item.framePricingId ?? "",
+                  framePricingId: item.framePricingId || null,
                   height: item.height,
                   width: item.width,
                   quantity: item.quantity,
-                  observations: item.observations ?? "",
+                  observations: item.observations || null,
                   budgetId: budget.id,
                 },
                 select: {
@@ -842,7 +933,12 @@ const createBudget = async ({
         reference: budget.reference ?? "",
         sendAddress: budget.sendAddress ?? "",
         client: budget.client,
-        items: createdItems,
+        items: createdItems.map((item) => ({
+          ...item,
+          frameId: item.frameId ?? "",
+          framePricingId: item.framePricingId ?? "",
+          observations: item.observations ?? "",
+        })),
         signature: budget.budgetSignature ?? null,
       };
     });
@@ -967,6 +1063,8 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
       sendAddress: budget.sendAddress ?? "",
       items: budgetItems.map((item) => ({
         ...item,
+        frameId: item.frameId ?? "",
+        framePricingId: item.framePricingId ?? "",
         observations: item.observations ?? "",
       })),
       signature: budget.budgetSignature ?? null,
@@ -1173,13 +1271,13 @@ const updateBudget = async ({
                   artworkId: item.artworkId,
                   artworkPrice: item.artworkPrice,
                   artworkPricingId: item.artworkPricingId,
-                  frameId: item.frameId ?? "",
+                  frameId: item.frameId || null,
                   framePrice: item.framePrice ?? 0,
-                  framePricingId: item.framePricingId ?? "",
+                  framePricingId: item.framePricingId || null,
                   height: item.height,
                   width: item.width,
                   quantity: item.quantity,
-                  observations: item.observations ?? "",
+                  observations: item.observations || null,
                   budgetId: budget.id,
                 },
                 select: {
@@ -1207,6 +1305,8 @@ const updateBudget = async ({
         client: budget.client,
         items: updatedItems.map((item) => ({
           ...item,
+          frameId: item.frameId ?? "",
+          framePricingId: item.framePricingId ?? "",
           observations: item.observations ?? "",
         })),
         signature: budget.budgetSignature ?? null,

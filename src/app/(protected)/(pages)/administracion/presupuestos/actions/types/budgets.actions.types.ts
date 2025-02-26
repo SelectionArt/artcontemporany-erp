@@ -39,13 +39,13 @@ type CreateBudgetReturn = {
         | "artworkId"
         | "artworkPrice"
         | "artworkPricingId"
-        | "frameId"
         | "framePrice"
-        | "framePricingId"
         | "height"
         | "width"
         | "quantity"
       > & {
+        frameId: string;
+        framePricingId: string;
         observations: string;
       }
     >;
@@ -105,13 +105,13 @@ type FetchBudgetsReturn = Array<
         | "artworkId"
         | "artworkPrice"
         | "artworkPricingId"
-        | "frameId"
         | "framePrice"
-        | "framePricingId"
         | "height"
         | "width"
         | "quantity"
       > & {
+        frameId: string;
+        framePricingId: string;
         observations: string;
       }
     >;
@@ -183,13 +183,13 @@ type UpdateBudgetReturn = {
         | "artworkId"
         | "artworkPrice"
         | "artworkPricingId"
-        | "frameId"
         | "framePrice"
-        | "framePricingId"
         | "height"
         | "width"
         | "quantity"
       > & {
+        frameId: string;
+        framePricingId: string;
         observations: string;
       }
     >;
