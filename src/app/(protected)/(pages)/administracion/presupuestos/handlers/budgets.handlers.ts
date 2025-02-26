@@ -6,6 +6,7 @@ import {
   createBudget,
   deleteBudget,
   deleteMultipleBudgets,
+  gneratePDF,
   generateUniqueRandomNumber,
   updateBudget,
 } from "../actions/budgets.actions";
@@ -16,6 +17,7 @@ import type {
   CreateHandlerProps,
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
+  DownloadPDFHandlerProps,
   EditHandlerProps,
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
@@ -53,6 +55,23 @@ const deleteMultipleHandler = ({
 }: DeleteMultipleHandlerProps): void => {
   setSelectedRows(rows);
   setOpenAlert(true);
+};
+
+const downloadPDFHandler = async ({
+  row,
+  type,
+}: DownloadPDFHandlerProps): Promise<void> => {
+  const { pdf, fileName } = await gneratePDF({ id: row.id, type });
+  const blob = new Blob([pdf], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 };
 
 const editHandler = ({
@@ -110,7 +129,6 @@ const submitHandler = ({
   setSelectedRow,
   values,
 }: SubmitHandlerProps): void => {
-  console.log("submitHandler", values);
   if (selectedRow) {
     submitHandlerEdit({
       selectedRow,
@@ -299,6 +317,7 @@ const BudgetsHandlers = ({
     handleDelete: (row) => deleteHandler({ row, setSelectedRow, setOpenAlert }),
     handleDeleteMultiple: (rows) =>
       deleteMultipleHandler({ rows, setSelectedRows, setOpenAlert }),
+    handleDownloadPDF: ({ row, type }) => downloadPDFHandler({ row, type }),
     handleEdit: (row) =>
       editHandler({
         form,

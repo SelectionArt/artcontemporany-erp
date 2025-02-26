@@ -5,7 +5,7 @@ import { SelectAllCheckbox } from "@/components/data-table/components/select-all
 import { SelectRowCheckbox } from "@/components/data-table/components/select-row-checkbox/select-row-checkbox.component";
 import { ColumnSorter } from "@/components/data-table/components/column-sorter/column-sorter.component";
 // Icons
-import { Ellipsis, FileDown, SquarePen, Trash2 } from "lucide-react";
+import { Ellipsis, FileDown, Signature, SquarePen, Trash2 } from "lucide-react";
 // Types
 import type { Budget } from "../../types/budgets.container.types";
 import type {
@@ -17,6 +17,7 @@ import type {
 
 function getColumnsConfig({
   handleDelete,
+  handleDownloadPDF,
   handleEdit,
 }: GetColumnsConfigProps<Budget>): GetColumnsConfigReturn<Budget> {
   return [
@@ -45,29 +46,34 @@ function getColumnsConfig({
     {
       accessorKey: "status",
       cell: ({ row }) => {
-        const statusMap: Record<string, { label: string; color: string }> = {
-          pending: {
-            label: "Pendiente",
-            color: "blue",
-          },
-          accepted: {
-            label: "Aceptado",
-            color: "green",
-          },
-          rejected: {
-            label: "Rechazado",
-            color: "red",
-          },
-          closed: {
-            label: "Cerrado",
-            color: "gray",
-          },
-        };
+        const statusMap: Record<string, { label: string; className: string }> =
+          {
+            pending: {
+              label: "Pendiente",
+              className: "bg-blue-100 text-blue-800",
+            },
+            accepted: {
+              label: "Aceptado",
+              className: "bg-green-100 text-green-800",
+            },
+            rejected: {
+              label: "Rechazado",
+              className: "bg-red-100 text-red-800",
+            },
+            closed: {
+              label: "Cerrado",
+              className: "bg-orange-100 text-orange-800",
+            },
+          };
+
+        const status = row.original.status;
         return (
           <Badge
-            className={`bg-${statusMap[row.original.status].color}-100 text-${statusMap[row.original.status].color}-800`}
+            className={
+              statusMap[status]?.className || "bg-gray-100 text-gray-800"
+            }
           >
-            {statusMap[row.original.status].label}
+            {statusMap[status]?.label || "Desconocido"}
           </Badge>
         );
       },
@@ -83,7 +89,29 @@ function getColumnsConfig({
             icon: Ellipsis,
           }}
           actions={[
-            { icon: FileDown, label: "Descargar PDF", onClick: () => {} },
+            {
+              icon: FileDown,
+              label: "Descargar PDF Presupuesto",
+              onClick: (row) => handleDownloadPDF({ row, type: "budget" }),
+            },
+            {
+              icon: FileDown,
+              label: "Descargar PDF Factura",
+              onClick: (row) => handleDownloadPDF({ row, type: "invoice" }),
+            },
+            {
+              icon: FileDown,
+              label: "Descargar PDF Albarán",
+              onClick: (row) =>
+                handleDownloadPDF({ row, type: "deliveryNote" }),
+            },
+            {
+              icon: FileDown,
+              label: "Descargar PDF Confirmación de pedido",
+              onClick: (row) =>
+                handleDownloadPDF({ row, type: "orderConfirmation" }),
+            },
+            { icon: Signature, label: "Firmar", onClick: () => {} },
             { icon: SquarePen, label: "Editar", onClick: handleEdit },
             { icon: Trash2, label: "Eliminar", onClick: handleDelete },
           ]}

@@ -20,6 +20,13 @@ type BudgetsHandlersReturn = {
   handleCreate: () => void;
   handleDelete: (row: Budget) => void;
   handleDeleteMultiple: (rows: Budget[]) => void;
+  handleDownloadPDF: ({
+    row,
+    type,
+  }: {
+    row: Budget;
+    type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
+  }) => void;
   handleEdit: (row: Budget) => void;
   handleOpenChangeAlertDialog: (open: boolean) => void;
   handleOpenChangeDialog: (open: boolean) => void;
@@ -40,6 +47,11 @@ type DeleteMultipleHandlerProps = Pick<
   "setSelectedRows" | "setOpenAlert"
 > & {
   rows: Budget[];
+};
+
+type DownloadPDFHandlerProps = {
+  row: Budget;
+  type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
 };
 
 type EditHandlerProps = Pick<
@@ -111,6 +123,7 @@ export type {
   CreateHandlerProps,
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
+  DownloadPDFHandlerProps,
   EditHandlerProps,
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,

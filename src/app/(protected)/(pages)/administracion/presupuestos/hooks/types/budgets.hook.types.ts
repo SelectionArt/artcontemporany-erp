@@ -16,6 +16,7 @@ type BudgetsHookReturn = Omit<
   BudgetsHandlersReturn,
   | "handleDelete"
   | "handleDeleteMultiple"
+  | "handleDownloadPDF"
   | "handleEdit"
   | "handleFetch"
   | "handleResetForm"

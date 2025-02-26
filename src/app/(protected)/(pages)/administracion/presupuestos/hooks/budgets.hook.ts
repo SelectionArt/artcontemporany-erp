@@ -44,6 +44,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     handleCreate,
     handleDelete,
     handleDeleteMultiple,
+    handleDownloadPDF,
     handleEdit,
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
@@ -62,7 +63,11 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     setSelectedRows,
   });
 
-  const columns = getColumnsConfig({ handleDelete, handleEdit });
+  const columns = getColumnsConfig({
+    handleDelete,
+    handleDownloadPDF,
+    handleEdit,
+  });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,
   });

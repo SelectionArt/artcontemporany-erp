@@ -131,6 +131,16 @@ type FetchPricingItemsReturn = Pick<
 
 type FetchPricingsReturn = Pick<Pricing, "id" | "name" | "type">[];
 
+type GeneratePDFProps = {
+  id: string;
+  type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
+};
+
+type GeneratePDFReturn = {
+  pdf: Uint8Array;
+  fileName: string;
+};
+
 type UpdateBudgetProps = {
   id: string;
   values: BudgetSchema;
@@ -190,6 +200,8 @@ export type {
   FetchPricingItemsProps,
   FetchPricingItemsReturn,
   FetchPricingsReturn,
+  GeneratePDFProps,
+  GeneratePDFReturn,
   UpdateBudgetProps,
   UpdateBudgetReturn,
 };

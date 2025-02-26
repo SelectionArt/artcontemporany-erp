@@ -1,4 +1,7 @@
 "use server";
+// Vendors
+import { PDFDocument, StandardFonts, PDFFont, rgb } from "pdf-lib";
+import { format } from "date-fns";
 // Libs
 import { prisma } from "@/lib/prisma";
 // Schemas
@@ -18,9 +21,679 @@ import type {
   FetchPricingItemsProps,
   FetchPricingItemsReturn,
   FetchPricingsReturn,
+  GeneratePDFProps,
+  GeneratePDFReturn,
   UpdateBudgetProps,
   UpdateBudgetReturn,
 } from "./types/budgets.actions.types";
+
+type DrawTextProps = {
+  page: any;
+  text: string;
+  x: number;
+  y: number;
+  maxWidth?: number;
+  align?: "left" | "right";
+  font: PDFFont;
+  fontSize?: number;
+  color?: { r: number; g: number; b: number };
+};
+
+type DrawImageProps = {
+  page: any;
+  pdfDoc: any;
+  url: string;
+  x: number;
+  y: number;
+  maxWidth: number;
+  maxHeight: number;
+};
+
+const drawText = ({
+  page,
+  text,
+  x,
+  y,
+  maxWidth,
+  align = "left",
+  font,
+  fontSize = 10,
+  color = { r: 0, g: 0, b: 0 },
+}: DrawTextProps) => {
+  const lines = text.split("\n");
+  let yOffset = 0;
+
+  lines.forEach((lineText) => {
+    const words = lineText.split(" ");
+    let line = "";
+
+    words.forEach((word) => {
+      const testLine = line.length > 0 ? `${line} ${word}` : word;
+      const textWidth = font.widthOfTextAtSize(testLine, fontSize);
+
+      if (textWidth < (maxWidth ?? page.getWidth() - x)) {
+        line = testLine;
+      } else {
+        const xPos =
+          align === "right" ? x - font.widthOfTextAtSize(line, fontSize) : x;
+        page.drawText(line, {
+          x: xPos,
+          y: y - yOffset,
+          size: fontSize,
+          font,
+          color: rgb(color.r, color.g, color.b),
+        });
+        line = word;
+        yOffset += fontSize * 1.5;
+      }
+    });
+
+    if (line.length > 0) {
+      const xPos =
+        align === "right" ? x - font.widthOfTextAtSize(line, fontSize) : x;
+      page.drawText(line, {
+        x: xPos,
+        y: y - yOffset,
+        size: fontSize,
+        font,
+        color: rgb(color.r, color.g, color.b),
+      });
+    }
+
+    yOffset += fontSize * 1.5;
+  });
+
+  return yOffset;
+};
+
+const drawImage = async ({
+  page,
+  pdfDoc,
+  url,
+  x,
+  y,
+  maxWidth,
+  maxHeight,
+}: DrawImageProps) => {
+  const imageBytes = await fetch(url).then((res) => res.arrayBuffer());
+  const image = url.endsWith(".png")
+    ? await pdfDoc.embedPng(imageBytes)
+    : await pdfDoc.embedJpg(imageBytes);
+
+  const originalWidth = image.width;
+  const originalHeight = image.height;
+
+  const aspectRatio = originalWidth / originalHeight;
+
+  let width = maxWidth;
+  let height = maxWidth / aspectRatio;
+
+  if (height > maxHeight) {
+    height = maxHeight;
+    width = maxHeight * aspectRatio;
+  }
+
+  page.drawImage(image, {
+    x,
+    y,
+    width,
+    height,
+  });
+};
+
+const formatter = new Intl.NumberFormat("es-ES", {
+  style: "currency",
+  currency: "EUR",
+});
+
+const gneratePDF = async ({
+  id,
+  type,
+}: GeneratePDFProps): Promise<GeneratePDFReturn> => {
+  const budgetData = await prisma.budget.findUnique({
+    where: { id },
+    include: {
+      client: true,
+      budgetItems: {
+        include: {
+          artwork: {
+            include: {
+              artist: true,
+              images: true,
+            },
+          },
+          frame: {
+            include: {
+              images: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!budgetData) {
+    throw new Error("Presupuesto no encontrado");
+  }
+
+  const pdfDoc = await PDFDocument.create();
+  const page = pdfDoc.addPage([595, 842]);
+  const { width, height } = page.getSize();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+  let yPosition = height - 60;
+
+  const logoURL =
+    "https://res.cloudinary.com/dpj6kupra/image/upload/v1740514863/uifwktt9tskfogjd97s4.png";
+
+  await drawImage({
+    page,
+    pdfDoc,
+    url: logoURL,
+    x: width / 2 - 60,
+    y: yPosition,
+    maxWidth: 120,
+    maxHeight: 120,
+  });
+
+  yPosition -= 40;
+
+  // Cabecera
+  const titleMap = {
+    budget: "PRESUPUESTO",
+    invoice: "FACTURA PROFORMA",
+    orderConfirmation: "CONFIRMACIÓN DE PEDIDO",
+    deliveryNote: "HOJA DE ENTREGA",
+  };
+  drawText({
+    page,
+    text: `${titleMap[type]}`,
+    x: 50,
+    y: yPosition,
+    font,
+  });
+  drawText({
+    page,
+    text: `N°: ${budgetData.number}`,
+    x: 50,
+    y: yPosition - 16,
+    font,
+  });
+  drawText({
+    page,
+    text: `Fecha: ${format(new Date(budgetData.date), "dd/MM/yyyy")}`,
+    x: 50,
+    y: yPosition - 32,
+    font,
+  });
+
+  // Datos del cliente
+  const maxTextWidth = 180;
+  if (budgetData.client.name) {
+    yPosition -= drawText({
+      page,
+      text: budgetData.client.name,
+      x: width - maxTextWidth - 50,
+      y: yPosition,
+      font,
+    });
+  }
+  if (budgetData.client.cif) {
+    yPosition -= drawText({
+      page,
+      text: budgetData.client.cif,
+      x: width - maxTextWidth - 50,
+      y: yPosition,
+      font,
+    });
+  }
+  if (budgetData.client.phone) {
+    yPosition -= drawText({
+      page,
+      text: budgetData.client.phone,
+      x: width - maxTextWidth - 50,
+      y: yPosition,
+      font,
+    });
+  }
+  if (budgetData.client.address) {
+    yPosition -= drawText({
+      page,
+      text: budgetData.client.address,
+      x: width - maxTextWidth - 50,
+      y: yPosition,
+      maxWidth: maxTextWidth,
+      font,
+    });
+  }
+  if (budgetData.client.email) {
+    yPosition -= drawText({
+      page,
+      text: budgetData.client.email,
+      x: width - maxTextWidth - 50,
+      y: yPosition,
+      font,
+    });
+  }
+
+  yPosition -= 40;
+
+  // Tabla encabezados
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  const tableStartX = 50;
+  const tableEndX = width - 50;
+  const columnWidths = [
+    (tableEndX - tableStartX) * 0.2,
+    100,
+    (tableEndX - tableStartX) * 0.2,
+    (tableEndX - tableStartX) * 0.1,
+    (tableEndX - tableStartX) * 0.175,
+    (tableEndX - tableStartX) * 0.175,
+  ];
+
+  drawText({
+    page,
+    text: "ARTÍCULO",
+    x: tableStartX,
+    y: yPosition,
+    font: boldFont,
+  });
+
+  drawText({
+    page,
+    text: "OBRA",
+    x: tableStartX + columnWidths[0],
+    y: yPosition,
+    font: boldFont,
+  });
+  drawText({
+    page,
+    text: "DESCRIPCIÓN",
+    x: tableStartX + columnWidths[0] + columnWidths[1],
+    y: yPosition,
+    font: boldFont,
+  });
+  drawText({
+    page,
+    text: "CANTIDAD",
+    x: tableStartX + columnWidths[0] + columnWidths[1] + columnWidths[2],
+    y: yPosition,
+    font: boldFont,
+  });
+  drawText({
+    page,
+    text: "PRECIO",
+    x:
+      tableStartX +
+      columnWidths[0] +
+      columnWidths[1] +
+      columnWidths[2] +
+      columnWidths[3] +
+      columnWidths[4] -
+      5,
+    y: yPosition,
+    font: boldFont,
+    align: "right",
+  });
+  drawText({
+    page,
+    text: "IMPORTE",
+    x: tableEndX,
+    y: yPosition,
+    font: boldFont,
+    align: "right",
+  });
+
+  yPosition -= 30;
+
+  for (const [index, item] of budgetData.budgetItems.entries()) {
+    // Artículo
+    drawText({
+      page,
+      text: `${item.artwork.referenceNumber}-${item.artwork.referenceCode}`,
+      x: tableStartX,
+      y: yPosition,
+      font,
+    });
+    if (item.frame) {
+      drawText({
+        page,
+        text: `${item.frame.reference}`,
+        x: tableStartX,
+        y: yPosition - 20,
+        font,
+      });
+    }
+
+    const artworkImageUrl =
+      item.artwork.images.length > 0 ? item.artwork.images[0].url : null;
+
+    if (artworkImageUrl) {
+      await drawImage({
+        page,
+        pdfDoc,
+        url: artworkImageUrl,
+        x: tableStartX + columnWidths[0],
+        y: yPosition - 60,
+        maxWidth: 70,
+        maxHeight: 70,
+      });
+    }
+
+    // Descripción
+    drawText({
+      page,
+      text: `${item.artwork.artist.name} ${item.width}x${item.height}`,
+      x: tableStartX + columnWidths[0] + columnWidths[1],
+      y: yPosition,
+      font,
+    });
+    if (item.frame) {
+      drawText({
+        page,
+        text: `Moldura ${item.frame.name}`,
+        x: tableStartX + columnWidths[0] + columnWidths[1],
+        y: yPosition - 20,
+        font,
+      });
+    }
+
+    // Cantidad
+    drawText({
+      page,
+      text: `${item.quantity}`,
+      x: tableStartX + columnWidths[0] + columnWidths[1] + columnWidths[2],
+      y: yPosition,
+      font,
+    });
+    drawText({
+      page,
+      text: `${item.quantity}`,
+      x: tableStartX + columnWidths[0] + columnWidths[1] + columnWidths[2],
+      y: yPosition - 20,
+      font,
+    });
+
+    // Precio
+    drawText({
+      page,
+      text: formatter.format(item.artworkPrice),
+      x:
+        tableStartX +
+        columnWidths[0] +
+        columnWidths[1] +
+        columnWidths[2] +
+        columnWidths[3] +
+        columnWidths[4] -
+        5,
+      y: yPosition,
+      font,
+      align: "right",
+    });
+
+    if (item.frame) {
+      drawText({
+        page,
+        text: formatter.format(item.framePrice),
+        x:
+          tableStartX +
+          columnWidths[0] +
+          columnWidths[1] +
+          columnWidths[2] +
+          columnWidths[3] +
+          columnWidths[4] -
+          5,
+        y: yPosition - 20,
+        font,
+        align: "right",
+      });
+    }
+
+    // Importe
+    drawText({
+      page,
+      text: formatter.format(item.artworkPrice * item.quantity),
+      x: tableEndX,
+      y: yPosition,
+      font,
+      align: "right",
+    });
+
+    if (item.frame) {
+      drawText({
+        page,
+        text: formatter.format(item.framePrice * item.quantity),
+        x: tableEndX,
+        y: yPosition - 20,
+        font,
+        align: "right",
+      });
+    }
+
+    if (artworkImageUrl) {
+      yPosition -= 60;
+    }
+    if (index !== budgetData.budgetItems.length - 1) {
+      yPosition -= 30;
+    }
+  }
+
+  yPosition -= 30;
+
+  // Resumen final
+  const subtotal = budgetData.budgetItems.reduce(
+    (sum, item) => sum + item.artworkPrice * item.quantity,
+    0,
+  );
+  const discount = subtotal * (budgetData.discount / 100);
+  const transport = budgetData.transport;
+  const iva = (subtotal - discount + transport) * 0.21;
+  const total = subtotal - discount + transport + iva;
+
+  drawText({
+    page,
+    text: "SUBTOTAL",
+    x:
+      tableStartX +
+      columnWidths[0] +
+      columnWidths[1] +
+      columnWidths[2] +
+      columnWidths[3] +
+      columnWidths[4] -
+      5,
+    y: yPosition,
+    font,
+    align: "right",
+  });
+  drawText({
+    page,
+    text: formatter.format(subtotal),
+    x: tableEndX,
+    y: yPosition,
+    font,
+    align: "right",
+  });
+  yPosition -= 16;
+  if (budgetData.discount) {
+    drawText({
+      page,
+      text: `DESCUENTO ${budgetData.discount}%`,
+      x:
+        tableStartX +
+        columnWidths[0] +
+        columnWidths[1] +
+        columnWidths[2] +
+        columnWidths[3] +
+        columnWidths[4] -
+        5,
+      y: yPosition,
+      font,
+      align: "right",
+    });
+    drawText({
+      page,
+      text: `${formatter.format(discount)}`,
+      x: tableEndX,
+      y: yPosition,
+      font,
+      align: "right",
+    });
+    yPosition -= 16;
+  }
+
+  drawText({
+    page,
+    text: "TRANSPORTE",
+    x:
+      tableStartX +
+      columnWidths[0] +
+      columnWidths[1] +
+      columnWidths[2] +
+      columnWidths[3] +
+      columnWidths[4] -
+      5,
+    y: yPosition,
+    font,
+    align: "right",
+  });
+  drawText({
+    page,
+    text: formatter.format(transport),
+    x: tableEndX,
+    y: yPosition,
+    font,
+    align: "right",
+  });
+  yPosition -= 16;
+  drawText({
+    page,
+    text: `IVA ${budgetData.tax}%`,
+    x:
+      tableStartX +
+      columnWidths[0] +
+      columnWidths[1] +
+      columnWidths[2] +
+      columnWidths[3] +
+      columnWidths[4] -
+      5,
+    y: yPosition,
+    font,
+    align: "right",
+  });
+  drawText({
+    page,
+    text: formatter.format(iva),
+    x: tableEndX,
+    y: yPosition,
+    font,
+    align: "right",
+  });
+  yPosition -= 16;
+  drawText({
+    page,
+    text: "TOTAL",
+    x:
+      tableStartX +
+      columnWidths[0] +
+      columnWidths[1] +
+      columnWidths[2] +
+      columnWidths[3] +
+      columnWidths[4] -
+      5,
+    y: yPosition,
+    font: boldFont,
+    align: "right",
+  });
+  drawText({
+    page,
+    text: formatter.format(total),
+    x: tableEndX,
+    y: yPosition,
+    font: boldFont,
+    align: "right",
+  });
+
+  yPosition -= 20;
+  // Información extra
+
+  drawText({
+    page,
+    text: "CONDICIONES VENTA:",
+    x: 50,
+    y: yPosition,
+    font,
+  });
+  drawText({
+    page,
+    text: `${budgetData.paymentMethod}`,
+    x: 50,
+    y: yPosition - 16,
+    font,
+  });
+
+  yPosition -= 40;
+
+  drawText({
+    page,
+    text: "FECHA ENTREGA:",
+    x: 50,
+    y: yPosition,
+    font,
+  });
+  drawText({
+    page,
+    text: `${budgetData.validity} días`,
+    x: 140,
+    y: yPosition,
+    font,
+  });
+
+  yPosition -= 30;
+
+  drawText({
+    page,
+    text: "DIRECCIÓN ENTREGA:",
+    x: 50,
+    y: yPosition,
+    font,
+  });
+  const address = budgetData.sendAddress
+    ? budgetData.sendAddress
+    : budgetData.client.sendAddress
+      ? budgetData.client.sendAddress
+      : budgetData.client.address;
+  drawText({
+    page,
+    text: `${address}`,
+    x: 50,
+    y: yPosition - 16,
+    font,
+  });
+
+  drawText({
+    page,
+    fontSize: 8,
+    text: "Telf. + 3496 120 1908 Camino Vereda (norte), 56 46469 Beniparrell (Valencia-España) info@artcontemporary.com",
+    x: 90,
+    y: 40,
+    font,
+  });
+
+  // Generar PDF
+  const pdfBytes = await pdfDoc.save();
+
+  const fileNameMap = {
+    budget: `presupuesto_${budgetData.number}.pdf`,
+    invoice: `factura-proforma_${budgetData.number}.pdf`,
+    orderConfirmation: `confirmacion-pedido_${budgetData.number}.pdf`,
+    deliveryNote: `hoja-entrega_${budgetData.number}.pdf`,
+  };
+
+  return {
+    pdf: pdfBytes,
+    fileName: fileNameMap[type],
+  };
+};
 
 const createBudget = async ({
   values,
@@ -433,6 +1106,7 @@ export {
   fetchFrames,
   fetchPricings,
   fetchPricingItems,
+  gneratePDF,
   generateUniqueRandomNumber,
   updateBudget,
 };
