@@ -1,7 +1,7 @@
 "use client";
 // Vendors
 import { useForm, useFieldArray } from "react-hook-form";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 // Constants
 import constants from "../constants/budgets.constants";
@@ -32,6 +32,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<Budget | null>(null);
   const [selectedRows, setSelectedRows] = useState<Budget[]>([]);
+  const [signLoading, setSignLoading] = useState<boolean>(false);
 
   const form = useForm<BudgetSchema>({
     resolver: zodResolver(budgetSchema),
@@ -45,6 +46,24 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
 
   const signatureRef = useRef<SignatureCanvas | null>(null);
 
+  useEffect(() => {
+    if (openSignatureDialog && selectedRow?.signature?.imageUrl) {
+      const convertToBase64 = async (url: string) => {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.readAsDataURL(blob);
+        });
+      };
+
+      convertToBase64(selectedRow.signature.imageUrl).then((base64) => {
+        signatureRef.current?.fromDataURL(base64);
+      });
+    }
+  }, [openSignatureDialog]);
+
   const {
     handleCreate,
     handleDelete,
@@ -54,6 +73,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
     handleOpenChangeSignatureDialog,
+    handleOpenSign,
     handleSign,
     handleSubmit,
     handleSubmitDelete,
@@ -69,13 +89,15 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     setOpenSignatureDialog,
     setSelectedRow,
     setSelectedRows,
+    setSignLoading,
+    signatureRef,
   });
 
   const columns = getColumnsConfig({
     handleDelete,
     handleDownloadPDF,
     handleEdit,
-    handleSign,
+    handleOpenSign,
   });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,
@@ -90,6 +112,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
     handleOpenChangeSignatureDialog,
+    handleSign,
     handleSubmit,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
@@ -101,6 +124,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     selectedRow,
     selectedRows,
     signatureRef,
+    signLoading,
   };
 };
 

@@ -19,7 +19,7 @@ function getColumnsConfig({
   handleDelete,
   handleDownloadPDF,
   handleEdit,
-  handleSign,
+  handleOpenSign,
 }: GetColumnsConfigProps<Budget>): GetColumnsConfigReturn<Budget> {
   return [
     {
@@ -112,7 +112,7 @@ function getColumnsConfig({
               onClick: (row) =>
                 handleDownloadPDF({ row, type: "orderConfirmation" }),
             },
-            { icon: Signature, label: "Firmar", onClick: handleSign },
+            { icon: Signature, label: "Firmar", onClick: handleOpenSign },
             { icon: SquarePen, label: "Editar", onClick: handleEdit },
             { icon: Trash2, label: "Eliminar", onClick: handleDelete },
           ]}

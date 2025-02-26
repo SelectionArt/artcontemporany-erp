@@ -239,8 +239,9 @@ model Budget {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  client      Client       @relation(fields: [clientId], references: [id])
-  budgetItems BudgetItem[]
+  client          Client           @relation(fields: [clientId], references: [id])
+  budgetItems     BudgetItem[]
+  budgetSignature BudgetSignature?
 }
 
 model BudgetItem {
@@ -264,4 +265,14 @@ model BudgetItem {
   budget         Budget  @relation(fields: [budgetId], references: [id], onDelete: Cascade)
   frame          Frame   @relation(fields: [frameId], references: [id])
   framePricing   Pricing @relation(name: "FramePricing", fields: [framePricingId], references: [id])
+}
+
+model BudgetSignature {
+  id        String   @id @default(cuid())
+  budgetId  String   @unique
+  imageUrl  String
+  publicId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  budget    Budget   @relation(fields: [budgetId], references: [id], onDelete: Cascade)
 }

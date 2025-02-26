@@ -12,7 +12,7 @@ type GetColumnsConfigProps<TData> = {
     type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
   }) => void;
   handleEdit: (row: TData) => void;
-  handleSign: (row: TData) => void;
+  handleOpenSign: (row: TData) => void;
 };
 
 type GetColumnsConfigReturn<TData> = ColumnDef<TData>[];

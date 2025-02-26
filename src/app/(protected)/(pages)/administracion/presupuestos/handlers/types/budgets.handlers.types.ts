@@ -3,6 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import type { Budget } from "../../types/budgets.container.types";
 import type { BudgetSchema } from "../../schemas/types/budget.schema.types";
+import type SignatureCanvas from "react-signature-canvas";
 
 type BudgetsHandlersProps = {
   form: UseFormReturn<BudgetSchema>;
@@ -15,6 +16,8 @@ type BudgetsHandlersProps = {
   setOpenSignatureDialog: Dispatch<SetStateAction<boolean>>;
   setSelectedRow: Dispatch<SetStateAction<Budget | null>>;
   setSelectedRows: Dispatch<SetStateAction<Budget[]>>;
+  setSignLoading: Dispatch<SetStateAction<boolean>>;
+  signatureRef: React.RefObject<SignatureCanvas | null>;
 };
 
 type BudgetsHandlersReturn = {
@@ -32,7 +35,8 @@ type BudgetsHandlersReturn = {
   handleOpenChangeAlertDialog: (open: boolean) => void;
   handleOpenChangeDialog: (open: boolean) => void;
   handleOpenChangeSignatureDialog: (open: boolean) => void;
-  handleSign: (row: Budget) => void;
+  handleOpenSign: (row: Budget) => void;
+  handleSign: () => void;
   handleSubmit: (values: BudgetSchema) => void;
   handleSubmitDelete: () => void;
   handleSubmitDeleteMultiple: () => void;
@@ -89,9 +93,21 @@ type OpenChangeSignatureDialogHandlerProps = Pick<
   open: boolean;
 };
 
-type SignHandlerProps = Pick<BudgetsHandlersProps, "setOpenSignatureDialog"> & {
+type OpenSignHandlerProps = Pick<
+  BudgetsHandlersProps,
+  "setOpenSignatureDialog" | "setSelectedRow"
+> & {
   row: Budget;
 };
+
+type SignHandlerProps = Pick<
+  BudgetsHandlersProps,
+  | "selectedRow"
+  | "signatureRef"
+  | "setOpenSignatureDialog"
+  | "setSignLoading"
+  | "setData"
+>;
 
 type SubmitHandlerCreateProps = Pick<
   SubmitHandlerProps,
@@ -142,6 +158,7 @@ export type {
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
   OpenChangeSignatureDialogHandlerProps,
+  OpenSignHandlerProps,
   SignHandlerProps,
   SubmitHandlerCreateProps,
   SubmitHandlerDeleteMultipleProps,

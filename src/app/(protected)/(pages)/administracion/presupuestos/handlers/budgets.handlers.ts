@@ -8,6 +8,7 @@ import {
   deleteMultipleBudgets,
   gneratePDF,
   generateUniqueRandomNumber,
+  signBudget,
   updateBudget,
 } from "../actions/budgets.actions";
 // Types
@@ -22,6 +23,7 @@ import type {
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
   OpenChangeSignatureDialogHandlerProps,
+  OpenSignHandlerProps,
   SignHandlerProps,
   SubmitHandlerCreateProps,
   SubmitHandlerDeleteMultipleProps,
@@ -129,11 +131,53 @@ const openChangeSignatureDialogHandler = ({
   setOpenSignatureDialog(open);
 };
 
-const signHandler = ({
-  // row,
+const openSignHandler = ({
+  row,
   setOpenSignatureDialog,
-}: SignHandlerProps): void => {
+  setSelectedRow,
+}: OpenSignHandlerProps): void => {
   setOpenSignatureDialog(true);
+  setSelectedRow(row);
+};
+
+const signHandler = async ({
+  selectedRow,
+  signatureRef,
+  setOpenSignatureDialog,
+  setSignLoading,
+  setData,
+}: SignHandlerProps): Promise<void> => {
+  if (!selectedRow) {
+    return;
+  }
+
+  setSignLoading(true);
+
+  try {
+    const signature = signatureRef?.current?.toDataURL();
+
+    if (!signature) {
+      throw new Error("No se pudo obtener la firma.");
+    }
+
+    const imageUrl = await signBudget({ id: selectedRow.id, signature });
+
+    setData((prev) =>
+      prev.map((item) =>
+        item.id === selectedRow.id
+          ? { ...item, signature: { imageUrl } }
+          : item,
+      ),
+    );
+
+    toast.success("Presupuesto firmado correctamente");
+    setOpenSignatureDialog(false);
+  } catch (error) {
+    console.error("Error al firmar el presupuesto:", error);
+    toast.error("Ocurrió un error al firmar el presupuesto.");
+  } finally {
+    setSignLoading(false);
+  }
 };
 
 const submitHandler = ({
@@ -328,6 +372,8 @@ const BudgetsHandlers = ({
   setOpenSignatureDialog,
   setSelectedRow,
   setSelectedRows,
+  setSignLoading,
+  signatureRef,
 }: BudgetsHandlersProps): BudgetsHandlersReturn => {
   return {
     handleCreate: () => createHandler({ form, setOpenDialog }),
@@ -364,7 +410,20 @@ const BudgetsHandlers = ({
         open,
         setOpenSignatureDialog,
       }),
-    handleSign: (row) => signHandler({ row, setOpenSignatureDialog }),
+    handleOpenSign: (row) =>
+      openSignHandler({
+        row,
+        setOpenSignatureDialog,
+        setSelectedRow,
+      }),
+    handleSign: () =>
+      signHandler({
+        selectedRow,
+        signatureRef,
+        setData,
+        setOpenSignatureDialog,
+        setSignLoading,
+      }),
     handleSubmit: (values) =>
       submitHandler({
         form,

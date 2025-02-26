@@ -21,7 +21,7 @@ type BudgetsHookReturn = Omit<
   | "handleEdit"
   | "handleFetch"
   | "handleResetForm"
-  | "handleSign"
+  | "handleOpenSign"
 > & {
   columns: GetColumnsConfigReturn<Budget>;
   data: Budget[];
@@ -35,6 +35,7 @@ type BudgetsHookReturn = Omit<
   selectedRow: Budget | null;
   selectedRows: Budget[];
   signatureRef: React.RefObject<SignatureCanvas | null>;
+  signLoading: boolean;
 };
 
 export type { BudgetsHookProps, BudgetsHookReturn };

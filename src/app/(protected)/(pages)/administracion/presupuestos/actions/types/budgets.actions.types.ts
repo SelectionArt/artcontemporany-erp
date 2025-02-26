@@ -2,6 +2,7 @@
 import type {
   Budget,
   BudgetItem,
+  BudgetSignature,
   Client,
   Frame,
   Pricing,
@@ -48,6 +49,7 @@ type CreateBudgetReturn = {
         observations: string;
       }
     >;
+    signature: Pick<BudgetSignature, "imageUrl"> | null
   };
   error?: string;
   success?: string;
@@ -113,6 +115,7 @@ type FetchBudgetsReturn = Array<
         observations: string;
       }
     >;
+    signature: Pick<BudgetSignature, "imageUrl"> | null;
   }
 >;
 
@@ -139,6 +142,11 @@ type GeneratePDFProps = {
 type GeneratePDFReturn = {
   pdf: Uint8Array;
   fileName: string;
+};
+
+type SignBudgetProps = {
+  id: string;
+  signature: string;
 };
 
 type UpdateBudgetProps = {
@@ -181,6 +189,7 @@ type UpdateBudgetReturn = {
         observations: string;
       }
     >;
+    signature: Pick<BudgetSignature, "imageUrl"> | null;
   };
   error?: string;
   success?: string;
@@ -202,6 +211,7 @@ export type {
   FetchPricingsReturn,
   GeneratePDFProps,
   GeneratePDFReturn,
+  SignBudgetProps,
   UpdateBudgetProps,
   UpdateBudgetReturn,
 };

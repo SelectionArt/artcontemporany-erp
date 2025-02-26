@@ -5,6 +5,7 @@ import SignatureCanvas from "react-signature-canvas";
 import { AlertDialogWrapper } from "@/components/alert-dialog-wrapper/alert-dialog-wrapper.component";
 import { BudgetForm } from "./components/budget-form/budget-form.component";
 import { Button } from "@/components/ui/button";
+import { ButtonLoading } from "@/components/ui/button-loading";
 import { DataTable } from "@/components/data-table/data-table.component";
 import { DialogWrapper } from "@/components/dialog-wrapper/dialog-wrapper.component";
 // Hooks
@@ -30,6 +31,7 @@ const BudgetsContainer = ({
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
     handleOpenChangeSignatureDialog,
+    handleSign,
     handleSubmit,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
@@ -41,6 +43,7 @@ const BudgetsContainer = ({
     selectedRow,
     selectedRows,
     signatureRef,
+    signLoading,
   } = BudgetsHook({ budgets });
 
   return (
@@ -89,15 +92,18 @@ const BudgetsContainer = ({
               <Eraser />
             </Button>
             <SignatureCanvas
-              canvasProps={{ width: 590, height: 300 }}
+              canvasProps={{
+                className: "h-full w-full",
+                height: 200,
+              }}
               ref={signatureRef}
             />
           </div>
-          <Button
-            onClick={() => signatureRef.current?.toDataURL()}
-          >
-            Firmar
-          </Button>
+          <ButtonLoading
+            label="Firmar"
+            loading={signLoading}
+            onClick={handleSign}
+          />
         </div>
       </DialogWrapper>
       <AlertDialogWrapper

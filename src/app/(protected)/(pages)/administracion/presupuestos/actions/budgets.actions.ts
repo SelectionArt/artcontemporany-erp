@@ -4,6 +4,7 @@ import { PDFDocument, StandardFonts, PDFFont, PDFPage, rgb } from "pdf-lib";
 import { format } from "date-fns";
 // Libs
 import { prisma } from "@/lib/prisma";
+import { uploadImage, deleteImage } from "@/lib/cloudinary";
 // Schemas
 import { budgetSchema } from "../schemas/budget.schema";
 // Types
@@ -23,6 +24,7 @@ import type {
   FetchPricingsReturn,
   GeneratePDFProps,
   GeneratePDFReturn,
+  SignBudgetProps,
   UpdateBudgetProps,
   UpdateBudgetReturn,
 } from "./types/budgets.actions.types";
@@ -739,7 +741,10 @@ const createBudget = async ({
           sendAddress,
           showIBAN,
         },
-        include: { client: { select: { id: true, name: true } } },
+        include: {
+          client: { select: { id: true, name: true } },
+          budgetSignature: { select: { imageUrl: true } },
+        },
       });
 
       const createdItems = items.length
@@ -788,6 +793,7 @@ const createBudget = async ({
         sendAddress: budget.sendAddress ?? "",
         client: budget.client,
         items: createdItems,
+        signature: budget.budgetSignature ?? null,
       };
     });
 
@@ -896,6 +902,11 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
             observations: true,
           },
         },
+        budgetSignature: {
+          select: {
+            imageUrl: true,
+          },
+        },
       },
     });
 
@@ -908,6 +919,7 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
         ...item,
         observations: item.observations ?? "",
       })),
+      signature: budget.budgetSignature ?? null,
     }));
   } catch (error) {
     console.error(error);
@@ -985,6 +997,56 @@ const generateUniqueRandomNumber = async (): Promise<number> => {
   return number;
 };
 
+const signBudget = async ({
+  id,
+  signature,
+}: SignBudgetProps): Promise<string> => {
+  const existingSignature = await prisma.budgetSignature.findUnique({
+    where: { budgetId: id },
+  });
+
+  if (existingSignature) {
+    await deleteImage(existingSignature.publicId);
+  }
+
+  const byteString = atob(signature.split(",")[1]);
+  const mimeString = signature.split(",")[0].split(":")[1].split(";")[0];
+  const arrayBuffer = new ArrayBuffer(byteString.length);
+  const uint8Array = new Uint8Array(arrayBuffer);
+
+  for (let i = 0; i < byteString.length; i++) {
+    uint8Array[i] = byteString.charCodeAt(i);
+  }
+
+  const blob = new Blob([uint8Array], { type: mimeString });
+  const file = new File([blob], `signature_${id}.png`, { type: mimeString });
+
+  const uploadedImage = await uploadImage({
+    file,
+    folder: "budget_signatures",
+    reference: `budget_${id}`,
+  });
+
+  if (!uploadedImage) {
+    throw new Error("Error al subir la firma a Cloudinary.");
+  }
+
+  await prisma.budgetSignature.upsert({
+    where: { budgetId: id },
+    update: {
+      imageUrl: uploadedImage.url,
+      publicId: uploadedImage.publicId,
+    },
+    create: {
+      budgetId: id,
+      imageUrl: uploadedImage.url,
+      publicId: uploadedImage.publicId,
+    },
+  });
+
+  return uploadedImage.url;
+};
+
 const updateBudget = async ({
   id,
   values,
@@ -1031,7 +1093,10 @@ const updateBudget = async ({
           sendAddress,
           showIBAN,
         },
-        include: { client: { select: { id: true, name: true } } },
+        include: {
+          client: { select: { id: true, name: true } },
+          budgetSignature: { select: { imageUrl: true } },
+        },
       });
 
       await prisma.budgetItem.deleteMany({ where: { budgetId: id } });
@@ -1080,6 +1145,7 @@ const updateBudget = async ({
           ...item,
           observations: item.observations ?? "",
         })),
+        signature: budget.budgetSignature ?? null,
       };
     });
 
@@ -1108,5 +1174,6 @@ export {
   fetchPricingItems,
   gneratePDF,
   generateUniqueRandomNumber,
+  signBudget,
   updateBudget,
 };
