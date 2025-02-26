@@ -130,7 +130,7 @@ const openChangeSignatureDialogHandler = ({
 };
 
 const signHandler = ({
-  row,
+  // row,
   setOpenSignatureDialog,
 }: SignHandlerProps): void => {
   setOpenSignatureDialog(true);
