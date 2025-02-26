@@ -9,6 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 // Constants
 import constants from "./constants/client-form.constants";
 // Types
@@ -137,15 +138,16 @@ const ClientForm = ({
           control={form.control}
           name={constants.FIELD_PROPS.ADDRESS.inputProps.name}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="grow basis-1/2 grid-rows-[auto_1fr]">
               <FormLabel {...constants.FIELD_PROPS.ADDRESS.labelProps}>
                 {constants.FIELD_PROPS.ADDRESS.labelText}
               </FormLabel>
               <FormControl>
-                <Input
+                <Textarea
                   {...{
                     ...field,
                     ...constants.FIELD_PROPS.ADDRESS.inputProps,
+                    className: "min-h-16",
                     disabled: loading,
                   }}
                 />
@@ -158,15 +160,16 @@ const ClientForm = ({
           control={form.control}
           name={constants.FIELD_PROPS.SEND_ADDRESS.inputProps.name}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="grow basis-1/2 grid-rows-[auto_1fr]">
               <FormLabel {...constants.FIELD_PROPS.SEND_ADDRESS.labelProps}>
                 {constants.FIELD_PROPS.SEND_ADDRESS.labelText}
               </FormLabel>
               <FormControl>
-                <Input
+                <Textarea
                   {...{
                     ...field,
                     ...constants.FIELD_PROPS.SEND_ADDRESS.inputProps,
+                    className: "min-h-16",
                     disabled: loading,
                   }}
                 />
@@ -177,6 +180,7 @@ const ClientForm = ({
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name={constants.FIELD_PROPS.IBAN.inputProps.name}

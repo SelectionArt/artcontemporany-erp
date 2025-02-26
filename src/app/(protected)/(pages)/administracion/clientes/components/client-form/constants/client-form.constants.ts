@@ -73,7 +73,6 @@ const constants = {
         id: "address",
         name: "address",
         placeholder: "Dirección",
-        type: "text",
         ["aria-describedby"]: "address-helper",
       },
       messageProps: {
@@ -89,7 +88,6 @@ const constants = {
         id: "sendAddress",
         name: "sendAddress",
         placeholder: "Dirección de envío",
-        type: "text",
         ["aria-describedby"]: "sendAddress-helper",
       },
       messageProps: {
