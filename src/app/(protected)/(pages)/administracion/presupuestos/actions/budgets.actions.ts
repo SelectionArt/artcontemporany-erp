@@ -155,7 +155,6 @@ const gneratePDF = async ({
   const budgetData = await prisma.budget.findUnique({
     where: { id },
     include: {
-      client: true,
       budgetItems: {
         include: {
           artwork: {
@@ -171,6 +170,8 @@ const gneratePDF = async ({
           },
         },
       },
+      client: true,
+      budgetSignature: true,
     },
   });
 
@@ -198,7 +199,19 @@ const gneratePDF = async ({
     maxHeight: 120,
   });
 
-  yPosition -= 40;
+  yPosition -= 20;
+
+  // CIF
+  drawText({
+    page,
+    text: "CIF: B98511637",
+    fontSize: 8,
+    x: width / 2 - 40,
+    y: yPosition,
+    font,
+  });
+
+  yPosition -= 20;
 
   // Cabecera
   const titleMap = {
@@ -480,7 +493,7 @@ const gneratePDF = async ({
     }
   }
 
-  yPosition -= 30;
+  yPosition -= 100;
 
   // Resumen final
   const subtotal = budgetData.budgetItems.reduce(
@@ -672,10 +685,23 @@ const gneratePDF = async ({
     font,
   });
 
+  // Firma
+  if (budgetData.budgetSignature?.imageUrl) {
+    await drawImage({
+      page,
+      pdfDoc,
+      url: budgetData.budgetSignature.imageUrl,
+      x: width - 50 - 200,
+      y: 60,
+      maxWidth: 300,
+      maxHeight: 200,
+    });
+  }
+
   drawText({
     page,
     fontSize: 8,
-    text: "Telf. + 3496 120 1908 Camino Vereda (norte), 56 46469 Beniparrell (Valencia-España) info@artcontemporary.com",
+    text: "Telf. + 3496 120 1908 Camino Vereda (norte), 56 46469 Beniparrell (Valencia-España) info@artcontemporany.com",
     x: 90,
     y: 40,
     font,
