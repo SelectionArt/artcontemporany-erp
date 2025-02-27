@@ -429,10 +429,10 @@ const submitHandlerDeleteMultiple = async ({
 };
 
 const submitEmailHandler = async ({
-  sendEmailForm,
-  setSendEmails,
-  setSelectedRow,
-  setOpenSendEmailDialog,
+  // sendEmailForm,
+  // setSendEmails,
+  // setSelectedRow,
+  // setOpenSendEmailDialog,
   values,
 }: SubmitEmailHandlerProps): Promise<void> => {
   console.log("values", values);
