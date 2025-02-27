@@ -2,11 +2,15 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import type { Budget } from "../../types/budgets.container.types";
-import type { BudgetSchema } from "../../schemas/types/budget.schema.types";
+import type {
+  BudgetSchema,
+  SendEmailSchema,
+} from "../../schemas/types/budget.schema.types";
 import type SignatureCanvas from "react-signature-canvas";
 
 type BudgetsHandlersProps = {
   form: UseFormReturn<BudgetSchema>;
+  sendEmailForm: UseFormReturn<SendEmailSchema>;
   selectedRow: Budget | null;
   selectedRows: Budget[];
   setData: Dispatch<SetStateAction<Budget[]>>;
@@ -60,6 +64,7 @@ type BudgetsHandlersReturn = {
   handleSubmit: (values: BudgetSchema) => void;
   handleSubmitDelete: () => void;
   handleSubmitDeleteMultiple: () => void;
+  handleSubmitEmail: (values: SendEmailSchema) => void;
 };
 
 type CreateHandlerProps = Pick<BudgetsHandlersProps, "form" | "setOpenDialog">;
@@ -189,6 +194,16 @@ type SubmitHandlerProps = Pick<
   values: BudgetSchema;
 };
 
+type SubmitEmailHandlerProps = Pick<
+  BudgetsHandlersProps,
+  | "sendEmailForm"
+  | "setSendEmails"
+  | "setSelectedRow"
+  | "setOpenSendEmailDialog"
+> & {
+  values: SendEmailSchema;
+};
+
 export type {
   BudgetsHandlersProps,
   BudgetsHandlersReturn,
@@ -210,4 +225,5 @@ export type {
   SubmitHandlerDeleteProps,
   SubmitHandlerEditProps,
   SubmitHandlerProps,
+  SubmitEmailHandlerProps,
 };

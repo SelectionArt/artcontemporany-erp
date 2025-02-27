@@ -1,6 +1,10 @@
 // Vendors
 import * as z from "zod";
 // Schemas
-import { budgetSchema } from "../budget.schema";
+import { budgetSchema, sendEmailSchema } from "../budget.schema";
 
-export type BudgetSchema = z.infer<typeof budgetSchema>;
+type BudgetSchema = z.infer<typeof budgetSchema>;
+
+type SendEmailSchema = z.infer<typeof sendEmailSchema>;
+
+export type { BudgetSchema, SendEmailSchema };

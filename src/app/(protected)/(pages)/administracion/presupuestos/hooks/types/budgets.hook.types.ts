@@ -1,7 +1,10 @@
 // Types
 import type { UseFieldArrayReturn, UseFormReturn } from "react-hook-form";
 import type { Budget } from "../../types/budgets.container.types";
-import type { BudgetSchema } from "../../schemas/types/budget.schema.types";
+import type {
+  BudgetSchema,
+  SendEmailSchema,
+} from "../../schemas/types/budget.schema.types";
 import type { BudgetsHandlersReturn } from "../../handlers/types/budgets.handlers.types";
 import type {
   GetColumnsConfigReturn,
@@ -38,6 +41,7 @@ type BudgetsHookReturn = Omit<
   selectedRow: Budget | null;
   selectedRows: Budget[];
   sendEmails: Array<{ label: string; value: string }>;
+  sendEmailForm: UseFormReturn<SendEmailSchema>;
   signatureRef: React.RefObject<SignatureCanvas | null>;
   signLoading: boolean;
 };

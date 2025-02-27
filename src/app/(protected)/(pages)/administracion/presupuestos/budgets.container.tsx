@@ -8,6 +8,24 @@ import { Button } from "@/components/ui/button";
 import { ButtonLoading } from "@/components/ui/button-loading";
 import { DataTable } from "@/components/data-table/data-table.component";
 import { DialogWrapper } from "@/components/dialog-wrapper/dialog-wrapper.component";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { MultiSelect } from "@/components/ui/multiple-selector";
 // Hooks
 import { BudgetsHook } from "./hooks/budgets.hook";
 // Icons
@@ -36,6 +54,7 @@ const BudgetsContainer = ({
     handleSubmit,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
+    handleSubmitEmail,
     loading,
     multipleSelectActionsProps,
     openAlert,
@@ -44,6 +63,8 @@ const BudgetsContainer = ({
     openSignatureDialog,
     selectedRow,
     selectedRows,
+    sendEmails,
+    sendEmailForm,
     signatureRef,
     signLoading,
   } = BudgetsHook({ budgets });
@@ -115,7 +136,124 @@ const BudgetsContainer = ({
         open={openSendEmailDialog}
         title="Enviar por email"
       >
-        <div>hola</div>
+        <Form {...sendEmailForm}>
+          <form
+            onSubmit={sendEmailForm.handleSubmit(handleSubmitEmail)}
+            className="flex flex-col gap-6"
+          >
+            <FormField
+              control={sendEmailForm.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tipo de documento</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona el tipo de documento" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {[
+                        { label: "Presupuesto", value: "budget" },
+                        { label: "Factura proforma", value: "invoice" },
+                        { label: "Nota de entrega", value: "deliveryNote" },
+                        {
+                          label: "Confirmación de pedido",
+                          value: "orderConfirmation",
+                        },
+                      ].map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={sendEmailForm.control}
+              name="emails"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Emails cliente o personas</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      {...field}
+                      options={sendEmails}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      placeholder="Selecciona los emails"
+                      variant="inverted"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={sendEmailForm.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email libre</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...{
+                        ...field,
+                        type: "email",
+                        placeholder: "Escribe un email",
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={sendEmailForm.control}
+              name="subject"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Asunto</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...{
+                        ...field,
+                        placeholder: "Escribe un asunto",
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={sendEmailForm.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cuerpo del mensaje</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...{
+                        ...field,
+                        placeholder: "Escribe un mensaje",
+                        rows: 1,
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
       </DialogWrapper>
       <AlertDialogWrapper
         action={{

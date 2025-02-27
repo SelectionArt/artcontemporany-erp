@@ -28,6 +28,14 @@ const constants = {
     sendAddress: "",
     showIBAN: false,
   },
+  DEFAULT_SEND_EMAIL_FORM_VALUES: {
+    type: "budget",
+    emails: [] as string[],
+    email: "",
+    subject: "{{type}}",
+    message:
+      "Estimado cliente.\n\nAdjunto envío {{type}}. Por favor, revísalo y en el caso de que necesites más información o alguna modificación no dudes en contactar.\n\nSaludos",
+  },
 };
 
 export default constants;

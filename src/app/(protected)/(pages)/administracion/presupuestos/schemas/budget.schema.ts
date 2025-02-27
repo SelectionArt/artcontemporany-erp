@@ -60,4 +60,18 @@ const budgetSchema = z.object({
   }),
 });
 
-export { budgetSchema };
+const sendEmailSchema = z.object({
+  type: z
+    .string({ required_error: "El tipo es requerido" })
+    .min(1, "El tipo es requerido"),
+  emails: z.array(z.string()).max(10, "Máximo 10 emails permitidas"),
+  email: z.string().optional(),
+  subject: z
+    .string({ required_error: "El asunto es requerido" })
+    .min(1, "El asunto es requerido"),
+  message: z
+    .string({ required_error: "El mensaje es requerido" })
+    .min(1, "El mensaje es requerido"),
+});
+
+export { budgetSchema, sendEmailSchema };

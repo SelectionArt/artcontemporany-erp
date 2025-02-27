@@ -8,10 +8,13 @@ import constants from "../constants/budgets.constants";
 // Handlers
 import { BudgetsHandlers } from "../handlers/budgets.handlers";
 // Schemas
-import { budgetSchema } from "../schemas/budget.schema";
+import { budgetSchema, sendEmailSchema } from "../schemas/budget.schema";
 // Types
 import type { Budget } from "../types/budgets.container.types";
-import type { BudgetSchema } from "../schemas/types/budget.schema.types";
+import type {
+  BudgetSchema,
+  SendEmailSchema,
+} from "../schemas/types/budget.schema.types";
 import type {
   BudgetsHookProps,
   BudgetsHookReturn,
@@ -42,6 +45,11 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
   const form = useForm<BudgetSchema>({
     resolver: zodResolver(budgetSchema),
     defaultValues: constants.DEFAULT_FORM_VALUES,
+  });
+
+  const sendEmailForm = useForm<SendEmailSchema>({
+    resolver: zodResolver(sendEmailSchema),
+    defaultValues: constants.DEFAULT_SEND_EMAIL_FORM_VALUES,
   });
 
   const fieldArray = useFieldArray({
@@ -86,8 +94,10 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     handleSubmit,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
+    handleSubmitEmail,
   } = BudgetsHandlers({
     form,
+    sendEmailForm,
     selectedRow,
     selectedRows,
     setData,
@@ -129,6 +139,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     handleSubmit,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
+    handleSubmitEmail,
     loading,
     multipleSelectActionsProps,
     openAlert,
@@ -138,6 +149,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     selectedRow,
     selectedRows,
     sendEmails,
+    sendEmailForm,
     signatureRef,
     signLoading,
   };

@@ -34,6 +34,7 @@ import type {
   SubmitHandlerDeleteProps,
   SubmitHandlerEditProps,
   SubmitHandlerProps,
+  SubmitEmailHandlerProps,
 } from "./types/budgets.handlers.types";
 
 const createHandler = async ({
@@ -427,8 +428,19 @@ const submitHandlerDeleteMultiple = async ({
   }
 };
 
+const submitEmailHandler = async ({
+  sendEmailForm,
+  setSendEmails,
+  setSelectedRow,
+  setOpenSendEmailDialog,
+  values,
+}: SubmitEmailHandlerProps): Promise<void> => {
+  console.log("values", values);
+};
+
 const BudgetsHandlers = ({
   form,
+  sendEmailForm,
   selectedRow,
   selectedRows,
   setData,
@@ -524,6 +536,14 @@ const BudgetsHandlers = ({
         setData,
         setLoading,
         setSelectedRows,
+      }),
+    handleSubmitEmail: (values) =>
+      submitEmailHandler({
+        sendEmailForm,
+        setSendEmails,
+        setSelectedRow,
+        setOpenSendEmailDialog,
+        values,
       }),
   };
 };
