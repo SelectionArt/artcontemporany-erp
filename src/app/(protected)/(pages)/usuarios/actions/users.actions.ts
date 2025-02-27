@@ -120,8 +120,6 @@ const updateUser = async ({
     return { error: "Campos inválidos. Por favor, revisa los datos" };
   }
 
-  console.log("validatedFields", validatedFields);
-
   try {
     const updatedUser = await prisma.user.update({
       where: { id },

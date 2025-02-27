@@ -162,8 +162,6 @@ const submitHandlerEdit = async ({
     return;
   }
 
-  console.log("values", values);
-
   setLoading(true);
 
   try {
