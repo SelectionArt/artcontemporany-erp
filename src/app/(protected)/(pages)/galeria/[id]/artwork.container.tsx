@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/carousel";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
@@ -25,6 +26,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 // Icons
 import {
+  X,
   Download,
   PaintbrushIcon as PaintBrush,
   Square,
@@ -77,7 +79,19 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
                 />
               </div>
             </DialogTrigger>
-            <DialogContent className="flex max-w-full items-center justify-center gap-0 overflow-auto border-none bg-black p-0 py-0 sm:h-dvh sm:rounded-none sm:py-0">
+            <DialogContent
+              className="flex max-w-full items-center justify-center gap-0 overflow-auto border-none bg-black p-0 py-0 sm:h-dvh sm:rounded-none sm:py-0"
+              hideCloseButton
+            >
+              <DialogClose asChild>
+                <Button
+                  size="icon"
+                  className="absolute top-4 right-4 z-10 cursor-pointer"
+                  variant={"outline"}
+                >
+                  <X className="h-6 w-6" />
+                </Button>
+              </DialogClose>
               <DialogTitle />
               <DialogDescription />
               <div className="relative h-full w-full">
@@ -85,7 +99,7 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
                   alt={artwork.title}
                   className="object-contain"
                   fill={true}
-                  sizes="300px"
+                  sizes="100vw"
                   src={selectedImage}
                 />
               </div>
