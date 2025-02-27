@@ -476,6 +476,7 @@ const submitEmailHandler = async ({
       message: values.message.replace("{{type}}", values.type),
       file: pdfBlob,
       fileName,
+      type: values.type,
     });
 
     if (!response.success) {

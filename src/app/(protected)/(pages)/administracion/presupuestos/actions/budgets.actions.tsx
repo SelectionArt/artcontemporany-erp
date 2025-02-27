@@ -1390,10 +1390,39 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 type BudgetEmailProps = {
   subject: string;
+  type: string;
   message: string;
 };
 
-const BudgetEmail = ({ subject, message }: BudgetEmailProps) => {
+const BudgetEmail = ({ subject, type, message }: BudgetEmailProps) => {
+  const messageMap = {
+    budget: "el presupuesto solicitado",
+    invoice: "la factura proforma solicitada",
+    orderConfirmation: "la confirmación de pedido",
+    deliveryNote: "la hoja de entrega",
+  };
+
+  const subjectMap = {
+    budget: "Presupuesto",
+    invoice: "Factura proforma",
+    orderConfirmation: "Confirmación de pedido",
+    deliveryNote: "Hoja de entrega",
+  };
+
+  const finalMessage = message.replace(
+    /{{type}}/g,
+    messageMap[
+      type as "budget" | "invoice" | "deliveryNote" | "orderConfirmation"
+    ],
+  );
+
+  const finalSubject = subject.replace(
+    /{{subject}}/g,
+    subjectMap[
+      type as "budget" | "invoice" | "deliveryNote" | "orderConfirmation"
+    ],
+  );
+
   return (
     <Html>
       <Head />
@@ -1403,10 +1432,10 @@ const BudgetEmail = ({ subject, message }: BudgetEmailProps) => {
           <Container className="max-w-lg rounded-lg bg-white p-8 shadow-lg">
             <Section>
               <Text className="text-3xl font-semibold text-slate-700">
-                {subject}
+                {finalSubject}
               </Text>
               <Text className="text-lg whitespace-pre-line text-slate-700">
-                {message}
+                {finalMessage}
               </Text>
             </Section>
 
@@ -1414,7 +1443,8 @@ const BudgetEmail = ({ subject, message }: BudgetEmailProps) => {
 
             <Section>
               <Text className="text-sm text-slate-400">
-                Si tiene alguna consulta, no dude en responder a este correo.
+                Si tiene alguna consulta, no dude en ponerse en contacto con
+                nostros a traves de nuestro email info@artcontemporany.com
               </Text>
             </Section>
           </Container>
@@ -1430,6 +1460,7 @@ const sendEmail = async ({
   message,
   file,
   fileName,
+  type,
 }: SendEmailProps): Promise<{
   success: boolean;
   error?: string;
@@ -1449,7 +1480,7 @@ const sendEmail = async ({
       from: "noreply@gesartcontemporany.com",
       to: emails,
       subject,
-      react: <BudgetEmail subject={subject} message={message} />,
+      react: <BudgetEmail subject={subject} message={message} type={type} />,
       attachments: [
         {
           filename: fileName,

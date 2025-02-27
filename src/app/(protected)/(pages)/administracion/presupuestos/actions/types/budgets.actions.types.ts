@@ -221,6 +221,7 @@ type SendEmailProps = {
   message: string;
   file: Blob;
   fileName: string;
+  type: string;
 };
 
 export type {
