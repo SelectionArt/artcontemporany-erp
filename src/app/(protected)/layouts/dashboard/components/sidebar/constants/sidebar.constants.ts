@@ -113,11 +113,11 @@ const ITEMS = {
       items: [
         {
           title: "General",
-          url: "#",
+          url: "/ajustes",
         },
         {
           title: "Usuarios",
-          url: "#",
+          url: "/usuarios",
         },
       ],
     },

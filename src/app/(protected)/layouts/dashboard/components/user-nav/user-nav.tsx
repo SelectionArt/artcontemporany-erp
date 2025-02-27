@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 // Icons
-import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from "lucide-react";
+import { Users, LogOut, Settings } from "lucide-react";
 // Typess
 import { Session } from "next-auth";
 
@@ -50,31 +50,24 @@ const UserNav = ({ session }: UserNavProps) => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Sparkles />
-            Upgrade to Pro
+          <DropdownMenuItem asChild>
+            <Link href="/ajustes" className="cursor-pointer">
+              <Settings />
+              Ajustes
+            </Link>
           </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BadgeCheck />
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCard />
-            Billing
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Bell />
-            Notifications
+          <DropdownMenuItem asChild>
+            <Link href="/usuarios" className="cursor-pointer">
+              <Users />
+              Usuarios
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href="/logout">
             <LogOut />
-            Log out
+            Cerrar sesión
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

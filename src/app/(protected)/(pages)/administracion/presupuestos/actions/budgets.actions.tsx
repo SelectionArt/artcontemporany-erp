@@ -42,6 +42,7 @@ import {
   Section,
   Tailwind,
   Text,
+  Img,
 } from "@react-email/components";
 
 type DrawTextProps = {
@@ -1400,6 +1401,13 @@ const BudgetEmail = ({ subject, message }: BudgetEmailProps) => {
       <Preview>{subject}</Preview>
       <Tailwind>
         <Body className="m-0 bg-slate-50 p-4 font-sans">
+          <Img
+            alt="Logo"
+            className="mx-auto"
+            height={200}
+            src="https://res.cloudinary.com/dpj6kupra/image/upload/v1740514863/uifwktt9tskfogjd97s4.png"
+          />
+
           <Container className="max-w-lg rounded-lg bg-white p-8 shadow-lg">
             <Section>
               <Text className="text-3xl font-semibold text-slate-700">
@@ -1414,8 +1422,9 @@ const BudgetEmail = ({ subject, message }: BudgetEmailProps) => {
 
             <Section>
               <Text className="text-md text-slate-400">
-                No responda a este mensaje. Si tiene alguna consulta, no dude en ponerse en contacto con
-                nostros a traves de nuestro email info@artcontemporany.com
+                No responda a este mensaje. Si tiene alguna consulta, no dude en
+                ponerse en contacto con nostros a traves de nuestro email
+                info@artcontemporany.com
               </Text>
             </Section>
           </Container>
