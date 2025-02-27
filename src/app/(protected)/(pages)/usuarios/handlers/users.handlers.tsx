@@ -179,6 +179,7 @@ const submitHandlerEdit = async ({
     if (success && user) {
       setData((prev) =>
         prev
+          // @ts-expect-error TypeScript no reconoce id en selectedRow
           .map((item) => (item.id === user.id ? user : item))
           .sort((a, b) => a.name.localeCompare(b.name)),
       );
