@@ -210,6 +210,7 @@ const submitHandlerDelete = async ({
   setLoading(true);
 
   try {
+    // @ts-expect-error TypeScript no reconoce id en selectedRow
     const { success, error } = await deleteUser({ id: selectedRow.id });
 
     if (error) {
@@ -218,6 +219,7 @@ const submitHandlerDelete = async ({
     }
 
     if (success) {
+      // @ts-expect-error TypeScript no reconoce id en selectedRow
       setData((prev) => prev.filter((item) => item.id !== selectedRow.id));
       toast.success(success);
     }
@@ -238,6 +240,7 @@ const submitHandlerDeleteMultiple = async ({
   setLoading(true);
   try {
     const { success, error } = await deleteMultipleUsers({
+      // @ts-expect-error TypeScript no reconoce id en selectedRow
       ids: selectedRows.map((row) => row.id),
     });
 
@@ -248,6 +251,7 @@ const submitHandlerDeleteMultiple = async ({
 
     if (success) {
       setData((prev) =>
+        // @ts-expect-error TypeScript no reconoce id en selectedRow
         prev.filter((item) => !selectedRows.some((row) => row.id === item.id)),
       );
       toast.success(success);
