@@ -166,7 +166,7 @@ const submitHandlerEdit = async ({
 
   try {
     const { user, error, success } = await updateUser({
-      // @ts-expect-error
+      // @ts-expect-error TypeScript no reconoce id en selectedRow
       id: selectedRow.id,
       values,
     });
