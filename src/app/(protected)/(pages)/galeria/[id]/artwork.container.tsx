@@ -1,11 +1,14 @@
 "use client";
 // Vendors
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 import { useState } from "react";
 import Image from "next/image";
 import { format } from "date-fns";
 import { es } from "date-fns/locale/es";
 // Components
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -22,6 +25,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 // Icons
 import {
+  Download,
   PaintbrushIcon as PaintBrush,
   Square,
   SquareStack,
@@ -34,6 +38,27 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
   const [selectedImage, setSelectedImage] = useState(
     artwork.images[0]?.url || "",
   );
+
+  const handleDownload = async (): Promise<void> => {
+    const zip = new JSZip();
+
+    const downloadPromises = artwork.images.map(async (image) => {
+      try {
+        const response = await fetch(image.url);
+        const blob = await response.blob();
+        const fileExtension = image.url.split(".").pop();
+        const filename = `${artwork.referenceNumber}-${artwork.referenceCode}_${image.id}.${fileExtension}`;
+        zip.file(filename, blob);
+      } catch (error) {
+        console.error(`Error descargando la imagen ${image.url}:`, error);
+      }
+    });
+
+    await Promise.all(downloadPromises);
+
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+    saveAs(zipBlob, `${artwork.referenceNumber}.zip`);
+  };
 
   return (
     <div className="grid w-full max-w-6xl grid-cols-1 gap-6 overflow-y-auto p-4 lg:grid-cols-2">
@@ -91,13 +116,23 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
 
       <Card className="max-w-auto p-0">
         <CardContent>
-          <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-semibold">
-              {artwork.title || "Untitled"}
-            </h1>
-            <p className="text-muted-foreground text-lg">
-              by {artwork.artist.name}
-            </p>
+          <div className="flex justify-between">
+            <div className="flex flex-col gap-1">
+              <h1 className="text-2xl font-semibold">
+                {artwork.title || "Untitled"}
+              </h1>
+              <p className="text-muted-foreground text-lg">
+                by {artwork.artist.name}
+              </p>
+            </div>
+            <Button
+              size={"icon"}
+              variant={"outline"}
+              className="flex items-center gap-2"
+              onClick={handleDownload}
+            >
+              <Download />
+            </Button>
           </div>
 
           <Separator className="my-4" />
