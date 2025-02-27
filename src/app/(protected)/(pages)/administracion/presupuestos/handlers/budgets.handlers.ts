@@ -509,7 +509,6 @@ const submitEmailHandler = async ({
       message: finalMessage,
       file: pdfBlob,
       fileName,
-      type: values.type,
     });
 
     if (!response.success) {

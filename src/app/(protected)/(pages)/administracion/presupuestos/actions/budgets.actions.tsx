@@ -1431,7 +1431,6 @@ const sendEmail = async ({
   message,
   file,
   fileName,
-  type,
 }: SendEmailProps): Promise<{
   success: boolean;
   error?: string;
