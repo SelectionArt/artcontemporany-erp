@@ -1,7 +1,6 @@
 // Vendors
 import {
   Body,
-  Button,
   Container,
   Head,
   Hr,
@@ -14,28 +13,13 @@ import {
 import * as React from "react";
 
 type BudgetEmailProps = {
-  recipientEmail: string;
   subject: string;
   message: string;
-  downloadLink?: string;
 };
 
-const constants = {
-  previewText: "Password reset",
-  title: "Password reset",
-  button: "Reset your password",
-  firstParagraph:
-    "If you requested a password reset, click the button below. This link will expire in 1 hour.",
-  secondParagraph: "Or copy and paste the following link into your browser:",
-  footer:
-    "If you didn't request this email, you can safely ignore it. Only a person with access to your email can reset your account password.",
-} as const;
-
 const BudgetEmail = ({
-  recipientEmail,
   subject,
   message,
-  downloadLink,
 }: BudgetEmailProps) => {
   return (
     <Html>
