@@ -67,6 +67,7 @@ const BudgetsContainer = ({
     sendEmailForm,
     signatureRef,
     signLoading,
+    emailLoading,
   } = BudgetsHook({ budgets });
 
   return (
@@ -148,6 +149,7 @@ const BudgetsContainer = ({
                 <FormItem>
                   <FormLabel>Tipo de documento</FormLabel>
                   <Select
+                    disabled={emailLoading}
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
@@ -190,6 +192,7 @@ const BudgetsContainer = ({
                       defaultValue={field.value}
                       placeholder="Selecciona los emails"
                       variant="inverted"
+                      disabled={emailLoading}
                     />
                   </FormControl>
                   <FormMessage />
@@ -208,6 +211,7 @@ const BudgetsContainer = ({
                         ...field,
                         type: "email",
                         placeholder: "Escribe un email",
+                        disabled: emailLoading,
                       }}
                     />
                   </FormControl>
@@ -226,6 +230,7 @@ const BudgetsContainer = ({
                       {...{
                         ...field,
                         placeholder: "Escribe un asunto",
+                        disabled: emailLoading,
                       }}
                     />
                   </FormControl>
@@ -245,12 +250,21 @@ const BudgetsContainer = ({
                         ...field,
                         placeholder: "Escribe un mensaje",
                         rows: 1,
+                        disabled: emailLoading,
                       }}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
+            />
+            <ButtonLoading
+              {...{
+                fullWidth: true,
+                type: "submit",
+                label: "Enviar",
+                loading: emailLoading,
+              }}
             />
           </form>
         </Form>

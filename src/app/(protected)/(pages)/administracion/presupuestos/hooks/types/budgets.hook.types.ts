@@ -44,6 +44,7 @@ type BudgetsHookReturn = Omit<
   sendEmailForm: UseFormReturn<SendEmailSchema>;
   signatureRef: React.RefObject<SignatureCanvas | null>;
   signLoading: boolean;
+  emailLoading: boolean;
 };
 
 export type { BudgetsHookProps, BudgetsHookReturn };

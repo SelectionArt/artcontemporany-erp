@@ -11,6 +11,7 @@ import {
   generateUniqueRandomNumber,
   signBudget,
   updateBudget,
+  sendEmail,
 } from "../actions/budgets.actions";
 // Types
 import type {
@@ -429,13 +430,70 @@ const submitHandlerDeleteMultiple = async ({
 };
 
 const submitEmailHandler = async ({
-  // sendEmailForm,
-  // setSendEmails,
-  // setSelectedRow,
-  // setOpenSendEmailDialog,
+  sendEmailForm,
+  setSendEmails,
+  setSelectedRow,
+  setOpenSendEmailDialog,
+  setEmailLoading,
   values,
+  selectedRow,
 }: SubmitEmailHandlerProps): Promise<void> => {
-  console.log("values", values);
+  if (!selectedRow) {
+    return;
+  }
+  try {
+    setEmailLoading(true);
+
+    console.log("values", values);
+
+    const recipientEmails: string[] = [
+      ...(values.emails ?? []),
+      values.email,
+    ].filter((email): email is string => Boolean(email));
+
+    if (recipientEmails.length === 0) {
+      throw new Error("No hay correos electrónicos para enviar.");
+    }
+
+    const { pdf, fileName } = await gneratePDF({
+      id: selectedRow.id,
+      type: values.type as
+        | "budget"
+        | "invoice"
+        | "deliveryNote"
+        | "orderConfirmation",
+    });
+
+    if (!pdf) {
+      throw new Error("Error al generar el PDF.");
+    }
+
+    const pdfBlob = new Blob([pdf], { type: "application/pdf" });
+
+    const response = await sendEmail({
+      emails: recipientEmails,
+      subject: values.subject.replace("{{type}}", values.type),
+      message: values.message.replace("{{type}}", values.type),
+      file: pdfBlob,
+      fileName,
+    });
+
+    if (!response.success) {
+      toast.error("Ocurrió un error al enviar el email.");
+    }
+
+    toast.success("Email enviado correctamente");
+
+    sendEmailForm.reset();
+    setSendEmails([]);
+    setSelectedRow(null);
+    setOpenSendEmailDialog(false);
+  } catch (error) {
+    console.error("Error en submitEmailHandler:", error);
+    toast.error("Ocurrió un error al enviar el email.");
+  } finally {
+    setEmailLoading(false);
+  }
 };
 
 const BudgetsHandlers = ({
@@ -454,6 +512,7 @@ const BudgetsHandlers = ({
   setSelectedRows,
   setSignLoading,
   signatureRef,
+  setEmailLoading,
 }: BudgetsHandlersProps): BudgetsHandlersReturn => {
   return {
     handleCreate: () => createHandler({ form, setOpenDialog }),
@@ -539,10 +598,12 @@ const BudgetsHandlers = ({
       }),
     handleSubmitEmail: (values) =>
       submitEmailHandler({
+        selectedRow,
         sendEmailForm,
         setSendEmails,
         setSelectedRow,
         setOpenSendEmailDialog,
+        setEmailLoading,
         values,
       }),
   };

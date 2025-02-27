@@ -41,6 +41,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
   const [selectedRow, setSelectedRow] = useState<Budget | null>(null);
   const [selectedRows, setSelectedRows] = useState<Budget[]>([]);
   const [signLoading, setSignLoading] = useState<boolean>(false);
+  const [emailLoading, setEmailLoading] = useState<boolean>(false);
 
   const form = useForm<BudgetSchema>({
     resolver: zodResolver(budgetSchema),
@@ -111,6 +112,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     setSelectedRows,
     setSignLoading,
     signatureRef,
+    setEmailLoading,
   });
 
   const columns = getColumnsConfig({
@@ -152,6 +154,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     sendEmailForm,
     signatureRef,
     signLoading,
+    emailLoading, 
   };
 };
 

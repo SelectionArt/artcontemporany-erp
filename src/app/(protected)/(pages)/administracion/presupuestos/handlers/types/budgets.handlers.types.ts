@@ -27,6 +27,7 @@ type BudgetsHandlersProps = {
   setSelectedRows: Dispatch<SetStateAction<Budget[]>>;
   setSignLoading: Dispatch<SetStateAction<boolean>>;
   signatureRef: React.RefObject<SignatureCanvas | null>;
+  setEmailLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 type BudgetsHandlersReturn = {
@@ -196,10 +197,12 @@ type SubmitHandlerProps = Pick<
 
 type SubmitEmailHandlerProps = Pick<
   BudgetsHandlersProps,
+  | "selectedRow"
   | "sendEmailForm"
   | "setSendEmails"
   | "setSelectedRow"
   | "setOpenSendEmailDialog"
+  | "setEmailLoading"
 > & {
   values: SendEmailSchema;
 };

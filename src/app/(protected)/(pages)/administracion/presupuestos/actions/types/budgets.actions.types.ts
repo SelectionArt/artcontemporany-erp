@@ -215,6 +215,14 @@ type UpdateBudgetReturn = {
   success?: string;
 };
 
+type SendEmailProps = {
+  emails: string[];
+  subject: string;
+  message: string;
+  file: Blob;
+  fileName: string;
+};
+
 export type {
   CreateBudgetProps,
   CreateBudgetReturn,
@@ -236,4 +244,5 @@ export type {
   SignBudgetProps,
   UpdateBudgetProps,
   UpdateBudgetReturn,
+  SendEmailProps,
 };

@@ -1,5 +1,6 @@
 "use server";
 // Vendors
+import { Resend } from "resend";
 import { PDFDocument, StandardFonts, PDFFont, PDFPage, rgb } from "pdf-lib";
 import { format } from "date-fns";
 // Libs
@@ -29,7 +30,20 @@ import type {
   SignBudgetProps,
   UpdateBudgetProps,
   UpdateBudgetReturn,
+  SendEmailProps,
 } from "./types/budgets.actions.types";
+import {
+  Body,
+  Button,
+  Container,
+  Head,
+  Hr,
+  Html,
+  Preview,
+  Section,
+  Tailwind,
+  Text,
+} from "@react-email/components";
 
 type DrawTextProps = {
   page: PDFPage;
@@ -1373,6 +1387,95 @@ const updateBudget = async ({
   }
 };
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+type BudgetEmailProps = {
+  subject: string;
+  message: string;
+};
+
+const BudgetEmail = ({ subject, message }: BudgetEmailProps) => {
+  return (
+    <Html>
+      <Head />
+      <Preview>{subject}</Preview>
+      <Tailwind>
+        <Body className="m-0 bg-slate-50 p-4 font-sans">
+          <Container className="max-w-lg rounded-lg bg-white p-8 shadow-lg">
+            <Section>
+              <Text className="text-3xl font-semibold text-slate-700">
+                {subject}
+              </Text>
+              <Text className="text-lg whitespace-pre-line text-slate-700">
+                {message}
+              </Text>
+            </Section>
+
+            <Hr className="my-4 border-t border-slate-300" />
+
+            <Section>
+              <Text className="text-sm text-slate-400">
+                Si tiene alguna consulta, no dude en responder a este correo.
+              </Text>
+            </Section>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
+  );
+};
+
+const sendEmail = async ({
+  emails,
+  subject,
+  message,
+  file,
+  fileName,
+}: SendEmailProps): Promise<{
+  success: boolean;
+  error?: string;
+}> => {
+  try {
+    if (!emails.length || !subject || !message || !file) {
+      return {
+        success: false,
+        error: "Faltan datos necesarios para enviar el email.",
+      };
+    }
+
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    const emailResponse = await resend.emails.send({
+      from: "noreply@gesartcontemporany.com",
+      to: emails,
+      subject,
+      react: <BudgetEmail subject={subject} message={message} />,
+      attachments: [
+        {
+          filename: fileName,
+          content: buffer.toString("base64"),
+        },
+      ],
+    });
+
+    if (emailResponse.error) {
+      return {
+        success: false,
+        error: "Error al enviar el email.",
+      };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error al enviar el email:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Error desconocido",
+    };
+  }
+};
+
 export {
   createBudget,
   deleteBudget,
@@ -1388,4 +1491,5 @@ export {
   generateUniqueRandomNumber,
   signBudget,
   updateBudget,
+  sendEmail,
 };
