@@ -137,9 +137,9 @@ function getColumnsConfig({
             icon: Ellipsis,
           }}
           actions={[
+            { icon: Eye, label: "Ver obra", onClick: handleNavigate },
             { icon: SquarePen, label: "Editar", onClick: handleEdit },
             { icon: Trash2, label: "Eliminar", onClick: handleDelete },
-            { icon: Eye, label: "Ver obra", onClick: handleNavigate },
           ]}
         />
       ),

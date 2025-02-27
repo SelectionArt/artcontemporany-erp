@@ -18,6 +18,7 @@ type ClientsHookReturn = Omit<
   | "handleDeleteMultiple"
   | "handleEdit"
   | "handleFetch"
+  | "handleNavigate"
   | "handleResetForm"
 > & {
   columns: GetColumnsConfigReturn<Client>;

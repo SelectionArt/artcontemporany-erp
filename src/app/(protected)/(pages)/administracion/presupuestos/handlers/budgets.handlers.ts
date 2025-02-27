@@ -86,7 +86,6 @@ const editHandler = ({
   setSelectedRow,
   setOpenDialog,
 }: EditHandlerProps): void => {
-  console.log("editHandler", row);
   form.reset(row, { keepDefaultValues: true });
   setSelectedRow(row);
   setOpenDialog(true);
@@ -307,8 +306,6 @@ const submitHandlerEdit = async ({
   }
 
   setLoading(true);
-
-  console.log("submitHandlerEdit", values);
 
   try {
     const { budget, error, success } = await updateBudget({

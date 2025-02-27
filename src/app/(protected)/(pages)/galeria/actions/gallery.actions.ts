@@ -10,33 +10,105 @@ const fetchGallery = async (): Promise<FetchGalleryReturn> => {
       await Promise.all([
         prisma.artwork.findMany({
           orderBy: { createdAt: "desc" },
-          include: {
-            artist: true,
-            colors: {
-              include: {
-                color: true,
+          select: {
+            id: true,
+            title: true,
+            referenceCode: true,
+            referenceNumber: true,
+            height: true,
+            width: true,
+            artist: {
+              select: {
+                id: true,
+                name: true,
               },
             },
-            finish: true,
-            format: true,
-            style: true,
-            support: true,
-            images: true,
+            colors: {
+              select: {
+                color: {
+                  select: {
+                    id: true,
+                    name: true,
+                    hex: true,
+                  },
+                },
+              },
+            },
+            finish: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            format: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            style: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            support: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            images: {
+              select: {
+                id: true,
+                url: true,
+              },
+            },
           },
         }),
-        prisma.artist.findMany(),
-        prisma.color.findMany(),
-        prisma.finish.findMany(),
-        prisma.format.findMany(),
-        prisma.style.findMany(),
-        prisma.support.findMany(),
+        prisma.artist.findMany({
+          select: {
+            id: true,
+            name: true,
+          },
+        }),
+        prisma.color.findMany({
+          select: {
+            id: true,
+            name: true,
+            hex: true,
+          },
+        }),
+        prisma.finish.findMany({
+          select: {
+            id: true,
+            name: true,
+          },
+        }),
+        prisma.format.findMany({
+          select: {
+            id: true,
+            name: true,
+          },
+        }),
+        prisma.style.findMany({
+          select: {
+            id: true,
+            name: true,
+          },
+        }),
+        prisma.support.findMany({
+          select: {
+            id: true,
+            name: true,
+          },
+        }),
       ]);
 
     return {
       artworks: artworks.map((artwork) => ({
         artist: artwork.artist,
         colors: artwork.colors.map((color) => color.color),
-        createdAt: artwork.createdAt,
         finish: artwork.finish,
         format: artwork.format,
         height: artwork.height,
@@ -47,7 +119,6 @@ const fetchGallery = async (): Promise<FetchGalleryReturn> => {
         style: artwork.style,
         support: artwork.support,
         title: artwork.title ?? "",
-        updatedAt: artwork.updatedAt,
         width: artwork.width,
       })),
       filters: {

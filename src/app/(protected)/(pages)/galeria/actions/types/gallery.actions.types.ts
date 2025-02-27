@@ -10,29 +10,27 @@ import {
 
 type FetchGalleryReturn = {
   artworks: {
-    artist: Artist;
-    colors: Color[];
-    createdAt: Date;
-    finish: Finish | null;
-    format: Format | null;
+    artist: Pick<Artist, "id" | "name">;
+    colors: Pick<Color, "id" | "name" | "hex">[];
+    finish: Pick<Finish, "id" | "name"> | null;
+    format: Pick<Format, "id" | "name"> | null;
     height: number;
     id: string;
-    images: ArtworkImage[];
+    images: Pick<ArtworkImage, "id" | "url">[];
     referenceCode: string;
     referenceNumber: number;
-    style: Style | null;
-    support: Support | null;
+    style: Pick<Style, "id" | "name"> | null;
+    support: Pick<Support, "id" | "name"> | null;
     title: string;
-    updatedAt: Date;
     width: number;
   }[];
   filters: {
-    artists: Artist[];
-    colors: Color[];
-    finishes: Finish[];
-    formats: Format[];
-    styles: Style[];
-    supports: Support[];
+    artists: Pick<Artist, "id" | "name">[];
+    colors: Pick<Color, "id" | "name" | "hex">[];
+    finishes: Pick<Finish, "id" | "name">[];
+    formats: Pick<Format, "id" | "name">[];
+    styles: Pick<Style, "id" | "name">[];
+    supports: Pick<Support, "id" | "name">[];
   };
 };
 

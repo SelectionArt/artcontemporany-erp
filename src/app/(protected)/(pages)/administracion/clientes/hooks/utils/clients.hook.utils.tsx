@@ -6,7 +6,7 @@ import { SelectAllCheckbox } from "@/components/data-table/components/select-all
 import { SelectRowCheckbox } from "@/components/data-table/components/select-row-checkbox/select-row-checkbox.component";
 import { ColumnSorter } from "@/components/data-table/components/column-sorter/column-sorter.component";
 // Icons
-import { Ellipsis, SquarePen, Trash2 } from "lucide-react";
+import { Ellipsis, Eye, SquarePen, Trash2 } from "lucide-react";
 // Types
 import type { Client } from "../../types/clients.container.types";
 import type {
@@ -19,6 +19,7 @@ import type {
 function getColumnsConfig({
   handleDelete,
   handleEdit,
+  handleNavigate,
 }: GetColumnsConfigProps<Client>): GetColumnsConfigReturn<Client> {
   return [
     {
@@ -89,6 +90,7 @@ function getColumnsConfig({
             icon: Ellipsis,
           }}
           actions={[
+            { icon: Eye, label: "Ver cliente", onClick: handleNavigate },
             { icon: SquarePen, label: "Editar", onClick: handleEdit },
             { icon: Trash2, label: "Eliminar", onClick: handleDelete },
           ]}

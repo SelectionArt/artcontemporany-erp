@@ -15,6 +15,7 @@ import type {
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
   EditHandlerProps,
+  NavigateHandlerProps,
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
   SubmitHandlerCreateProps,
@@ -67,6 +68,10 @@ const editHandler = ({
   setOpenDialog(true);
 };
 
+const navigateHandler = ({ row, router }: NavigateHandlerProps): void => {
+  router.push(`/administracion/clientes/${row.id}`);
+};
+
 const openChangeAlertDialogHandler = ({
   open,
   selectedRow,
@@ -110,7 +115,6 @@ const submitHandler = ({
   setSelectedRow,
   values,
 }: SubmitHandlerProps): void => {
-  console.log("submitHandler", { selectedRow, values });
   if (selectedRow) {
     submitHandlerEdit({
       selectedRow,
@@ -279,6 +283,7 @@ const submitHandlerDeleteMultiple = async ({
 
 const ClientsHandlers = ({
   form,
+  router,
   selectedRow,
   selectedRows,
   setData,
@@ -300,6 +305,7 @@ const ClientsHandlers = ({
         setSelectedRow,
         setOpenDialog,
       }),
+    handleNavigate: (row) => navigateHandler({ row, router }),
     handleOpenChangeAlertDialog: (open) =>
       openChangeAlertDialogHandler({
         open,

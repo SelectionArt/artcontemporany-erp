@@ -1,6 +1,7 @@
 "use client";
 // Vendors
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 // Constants
@@ -35,11 +36,14 @@ const ClientsHook = ({ initialData }: ClientsHookProps): ClientsHookReturn => {
     defaultValues: constants.DEFAULT_FORM_VALUES,
   });
 
+   const router = useRouter();
+
   const {
     handleCreate,
     handleDelete,
     handleDeleteMultiple,
     handleEdit,
+    handleNavigate,
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
     handleSubmit,
@@ -47,6 +51,7 @@ const ClientsHook = ({ initialData }: ClientsHookProps): ClientsHookReturn => {
     handleSubmitDeleteMultiple,
   } = ClientsHandlers({
     form,
+    router,
     selectedRow,
     selectedRows,
     setData,
@@ -57,7 +62,11 @@ const ClientsHook = ({ initialData }: ClientsHookProps): ClientsHookReturn => {
     setSelectedRows,
   });
 
-  const columns = getColumnsConfig({ handleDelete, handleEdit });
+  const columns = getColumnsConfig({
+    handleDelete,
+    handleEdit,
+    handleNavigate,
+  });
   const multipleSelectActionsProps = getMultipleSelectActionsProps({
     handleDeleteMultiple,
   });

@@ -1,4 +1,5 @@
 // Types
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import type { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import type { Client } from "../../types/clients.container.types";
@@ -6,6 +7,7 @@ import type { ClientSchema } from "../../schemas/types/client.schema.types";
 
 type ClientsHandlersProps = {
   form: UseFormReturn<ClientSchema>;
+  router: AppRouterInstance;
   selectedRow: Client | null;
   selectedRows: Client[];
   setData: Dispatch<SetStateAction<Client[]>>;
@@ -21,6 +23,7 @@ type ClientsHandlersReturn = {
   handleDelete: (row: Client) => void;
   handleDeleteMultiple: (rows: Client[]) => void;
   handleEdit: (row: Client) => void;
+  handleNavigate: (row: Client) => void;
   handleOpenChangeAlertDialog: (open: boolean) => void;
   handleOpenChangeDialog: (open: boolean) => void;
   handleSubmit: (values: ClientSchema) => void;
@@ -46,6 +49,10 @@ type EditHandlerProps = Pick<
   ClientsHandlersProps,
   "form" | "setSelectedRow" | "setOpenDialog"
 > & {
+  row: Client;
+};
+
+type NavigateHandlerProps = Pick<ClientsHandlersProps, "router"> & {
   row: Client;
 };
 
@@ -112,6 +119,7 @@ export type {
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
   EditHandlerProps,
+  NavigateHandlerProps,
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
   SubmitHandlerCreateProps,
