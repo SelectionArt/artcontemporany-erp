@@ -1413,8 +1413,8 @@ const BudgetEmail = ({ subject, message }: BudgetEmailProps) => {
             <Hr className="my-4 border-t border-slate-300" />
 
             <Section>
-              <Text className="text-sm text-slate-400">
-                Si tiene alguna consulta, no dude en ponerse en contacto con
+              <Text className="text-md text-slate-400">
+                No responda a este mensaje. Si tiene alguna consulta, no dude en ponerse en contacto con
                 nostros a traves de nuestro email info@artcontemporany.com
               </Text>
             </Section>
