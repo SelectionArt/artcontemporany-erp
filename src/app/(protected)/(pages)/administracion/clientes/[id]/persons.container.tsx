@@ -8,8 +8,7 @@ import { DialogWrapper } from "@/components/dialog-wrapper/dialog-wrapper.compon
 import { PersonsHook } from "./hooks/persons.hook";
 // Types
 import type { PersonsProps } from "./types/persons.container.types";
-
-const PersonsContainer = ({ initialData }: PersonsProps) => {
+const PersonsContainer = ({ client, initialData }: PersonsProps) => {
   const {
     columns,
     data,
@@ -27,6 +26,8 @@ const PersonsContainer = ({ initialData }: PersonsProps) => {
     selectedRow,
     selectedRows,
   } = PersonsHook({ initialData });
+
+  console.log("client", client);
 
   return (
     <div className="flex w-full grow p-4">

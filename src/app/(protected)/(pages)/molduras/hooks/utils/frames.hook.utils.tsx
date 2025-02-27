@@ -81,6 +81,13 @@ function getColumnsConfig({
       meta: "Fabricante",
     },
     {
+      accessorKey: "manufacturerReference",
+      header: ({ column }) => (
+        <ColumnSorter column={column} label="Ref. fabricante" />
+      ),
+      meta: "Ref. fabricante",
+    },
+    {
       accessorFn: (row) => row.material?.name || "",
       header: ({ column }) => <ColumnSorter column={column} label="Material" />,
       id: "material",

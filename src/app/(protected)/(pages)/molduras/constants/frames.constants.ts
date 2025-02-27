@@ -5,6 +5,7 @@ const constants = {
     height: 0,
     images: [] as File[],
     manufacturerId: "",
+    manufacturerReference: "",
     materialId: "",
     name: "",
     reference: "",

@@ -16,6 +16,7 @@ type ArtworksHookReturn = Omit<
   ArtworksHandlersReturn,
   | "handleDelete"
   | "handleDeleteMultiple"
+  | "handleDownload"
   | "handleEdit"
   | "handleFetch"
   | "handleNavigate"

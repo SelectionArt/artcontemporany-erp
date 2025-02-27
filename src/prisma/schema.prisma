@@ -139,17 +139,18 @@ model Support {
 }
 
 model Frame {
-  id             String   @id @default(cuid())
-  name           String
-  description    String?
-  reference      String   @unique
-  width          Int?
-  height         Int?
-  galce          Int?
-  manufacturerId String?
-  materialId     String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id                    String   @id @default(cuid())
+  name                  String
+  description           String?
+  reference             String   @unique
+  width                 Int?
+  height                Int?
+  galce                 Int?
+  manufacturerReference String?
+  manufacturerId        String?
+  materialId            String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 
   budgetItems BudgetItem[]
   images      FrameImage[]

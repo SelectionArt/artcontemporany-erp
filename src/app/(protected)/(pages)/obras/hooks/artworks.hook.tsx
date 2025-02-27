@@ -45,6 +45,7 @@ const ArtworksHook = ({ artworks }: ArtworksHookProps): ArtworksHookReturn => {
     handleCreate,
     handleDelete,
     handleDeleteMultiple,
+    handleDownload,
     handleEdit,
     handleNavigate,
     handleOpenChangeAlertDialog,
@@ -72,6 +73,7 @@ const ArtworksHook = ({ artworks }: ArtworksHookProps): ArtworksHookReturn => {
 
   const columns = getColumnsConfig({
     handleDelete,
+    handleDownload,
     handleEdit,
     handleNavigate,
   });

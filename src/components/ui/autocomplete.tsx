@@ -127,7 +127,7 @@ export function AutoComplete<T extends string>({
                     >
                       <div className="flex items-center gap-2">
                         {option.imageUrl && (
-                          <div className="relative size-10">
+                          <div className="relative size-10 shrink-0">
                             <Image
                               alt={option.label}
                               className="h-10 w-10 rounded-md object-cover"

@@ -63,6 +63,8 @@ const createFrame = async ({
           images: {
             create: validImages,
           },
+          manufacturerReference:
+            validatedFields.data.manufacturerReference || null,
           manufacturerId: validatedFields.data.manufacturerId || null,
           materialId: validatedFields.data.materialId || null,
           name: validatedFields.data.name,
@@ -173,6 +175,7 @@ const fetchFrames = async (): Promise<FetchFramesReturn> => {
       height: frame.height,
       galce: frame.galce,
       images: frame.images,
+      manufacturerReference: frame.manufacturerReference ?? "",
       manufacturer: frame.manufacturer,
       material: frame.material,
       createdAt: frame.createdAt,
@@ -272,6 +275,8 @@ const updateFrame = async ({
           width: validatedFields.data.width || null,
           height: validatedFields.data.height || null,
           galce: validatedFields.data.galce || null,
+          manufacturerReference:
+            validatedFields.data.manufacturerReference || null,
           manufacturerId: validatedFields.data.manufacturerId || null,
           materialId: validatedFields.data.materialId || null,
           images: {

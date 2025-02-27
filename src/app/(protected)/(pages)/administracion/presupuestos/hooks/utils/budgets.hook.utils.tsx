@@ -118,23 +118,23 @@ function getColumnsConfig({
             },
             {
               icon: FileDown,
-              label: "Descargar PDF Presupuesto",
+              label: "Descargar PDF presupuesto",
               onClick: (row) => handleDownloadPDF({ row, type: "budget" }),
             },
             {
               icon: FileDown,
-              label: "Descargar PDF Factura",
+              label: "Descargar PDF factura",
               onClick: (row) => handleDownloadPDF({ row, type: "invoice" }),
             },
             {
               icon: FileDown,
-              label: "Descargar PDF Albarán",
+              label: "Descargar PDF nota entrega",
               onClick: (row) =>
                 handleDownloadPDF({ row, type: "deliveryNote" }),
             },
             {
               icon: FileDown,
-              label: "Descargar PDF Confirmación de pedido",
+              label: "Descargar PDF confirmación de pedido",
               onClick: (row) =>
                 handleDownloadPDF({ row, type: "orderConfirmation" }),
             },

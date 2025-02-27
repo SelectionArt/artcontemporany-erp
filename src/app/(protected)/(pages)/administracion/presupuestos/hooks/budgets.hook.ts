@@ -24,11 +24,16 @@ import {
 } from "./utils/budgets.hook.utils";
 
 const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
+  const [sendEmails, setSendEmails] = useState<
+    Array<{ label: string; value: string }>
+  >([]);
   const [data, setData] = useState<Budget[]>(budgets);
   const [loading, setLoading] = useState<boolean>(false);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [openSignatureDialog, setOpenSignatureDialog] =
+    useState<boolean>(false);
+  const [openSendEmailDialog, setOpenSendEmailDialog] =
     useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<Budget | null>(null);
   const [selectedRows, setSelectedRows] = useState<Budget[]>([]);
@@ -72,6 +77,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     handleEdit,
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
+    handleOpenChangeSendEmailDialog,
     handleOpenChangeSignatureDialog,
     handleOpenSign,
     handlePreviewPDF,
@@ -88,7 +94,9 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     setLoading,
     setOpenAlert,
     setOpenDialog,
+    setOpenSendEmailDialog,
     setOpenSignatureDialog,
+    setSendEmails,
     setSelectedRow,
     setSelectedRows,
     setSignLoading,
@@ -115,6 +123,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     handleCreate,
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
+    handleOpenChangeSendEmailDialog,
     handleOpenChangeSignatureDialog,
     handleSign,
     handleSubmit,
@@ -124,6 +133,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     multipleSelectActionsProps,
     openAlert,
     openDialog,
+    openSendEmailDialog,
     openSignatureDialog,
     selectedRow,
     selectedRows,

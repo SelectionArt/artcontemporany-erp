@@ -1,4 +1,7 @@
 // Vendors
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+// Vendors
 import { toast } from "sonner";
 // Actions
 import {
@@ -15,6 +18,7 @@ import type {
   CreateHandlerProps,
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
+  DownloadHandlerProps,
   EditHandlerProps,
   NavigateHandlerProps,
   OpenChangeAlertDialogHandlerProps,
@@ -57,6 +61,29 @@ const deleteMultipleHandler = ({
 }: DeleteMultipleHandlerProps): void => {
   setSelectedRows(rows);
   setOpenAlert(true);
+};
+
+const downloadHandler = async ({
+  row,
+}: DownloadHandlerProps): Promise<void> => {
+  const zip = new JSZip();
+
+  const downloadPromises = row.images.map(async (image) => {
+    try {
+      const response = await fetch(image.url);
+      const blob = await response.blob();
+      const fileExtension = image.url.split(".").pop();
+      const filename = `${row.referenceNumber}-${row.referenceCode}_${image.id}.${fileExtension}`;
+      zip.file(filename, blob);
+    } catch (error) {
+      console.error(`Error descargando la imagen ${image.url}:`, error);
+    }
+  });
+
+  await Promise.all(downloadPromises);
+
+  const zipBlob = await zip.generateAsync({ type: "blob" });
+  saveAs(zipBlob, `${row.referenceNumber}.zip`);
 };
 
 const editHandler = ({
@@ -333,6 +360,7 @@ const ArtworksHandlers = ({
     handleDelete: (row) => deleteHandler({ row, setSelectedRow, setOpenAlert }),
     handleDeleteMultiple: (rows) =>
       deleteMultipleHandler({ rows, setSelectedRows, setOpenAlert }),
+    handleDownload: (row) => downloadHandler({ row }),
     handleEdit: (row) =>
       editHandler({
         form,

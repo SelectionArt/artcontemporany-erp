@@ -27,6 +27,7 @@ type ArtworksHandlersReturn = {
   handleCreate: () => void;
   handleDelete: (row: Artwork) => void;
   handleDeleteMultiple: (rows: Artwork[]) => void;
+  handleDownload: (row: Artwork) => void;
   handleEdit: (row: Artwork) => void;
   handleNavigate: (row: Artwork) => void;
   handleOpenChangeAlertDialog: (open: boolean) => void;
@@ -56,6 +57,8 @@ type DeleteMultipleHandlerProps = Pick<
 > & {
   rows: Artwork[];
 };
+
+type DownloadHandlerProps = { row: Artwork };
 
 type EditHandlerProps = Pick<
   ArtworksHandlersProps,
@@ -143,6 +146,7 @@ export type {
   CreateHandlerProps,
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
+  DownloadHandlerProps,
   EditHandlerProps,
   NavigateHandlerProps,
   OpenChangeAlertDialogHandlerProps,

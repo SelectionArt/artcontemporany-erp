@@ -107,14 +107,14 @@ const FrameContainer = ({ frame }: FrameProps) => {
                   <div>{frame.material.name}</div>
                 </>
               )}
-              <div>Dimensiones:</div>
-              <div>
-                {frame.width} x {frame.height} cm
-              </div>
+              <div>Ancho:</div>
+              <div>{frame.width} mm</div>
+              <div>Alto:</div>
+              <div>{frame.height} mm</div>
               {frame.galce && (
                 <>
                   <div>Galce:</div>
-                  <div>{frame.galce} cm</div>
+                  <div>{frame.galce} mm</div>
                 </>
               )}
             </div>

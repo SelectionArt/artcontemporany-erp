@@ -36,6 +36,10 @@ const frameSchema = z.object({
     .string()
     .optional()
     .transform((value) => value?.trim() ?? ""),
+  manufacturerReference: z
+    .string()
+    .optional()
+    .transform((value) => value?.trim() ?? ""),
   materialId: z
     .string()
     .optional()

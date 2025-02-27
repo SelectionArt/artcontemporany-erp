@@ -30,6 +30,7 @@ const BudgetsContainer = ({
     handleCreate,
     handleOpenChangeAlertDialog,
     handleOpenChangeDialog,
+    handleOpenChangeSendEmailDialog,
     handleOpenChangeSignatureDialog,
     handleSign,
     handleSubmit,
@@ -39,6 +40,7 @@ const BudgetsContainer = ({
     multipleSelectActionsProps,
     openAlert,
     openDialog,
+    openSendEmailDialog,
     openSignatureDialog,
     selectedRow,
     selectedRows,
@@ -105,6 +107,15 @@ const BudgetsContainer = ({
             onClick={handleSign}
           />
         </div>
+      </DialogWrapper>
+      <DialogWrapper
+        className="w-full max-w-[640px]"
+        description="Selecciona los emails a los que quieres enviar el presupuesto o añade uno nuevo."
+        onOpenChange={handleOpenChangeSendEmailDialog}
+        open={openSendEmailDialog}
+        title="Enviar por email"
+      >
+        <div>hola</div>
       </DialogWrapper>
       <AlertDialogWrapper
         action={{

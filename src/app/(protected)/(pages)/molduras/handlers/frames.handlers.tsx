@@ -83,7 +83,7 @@ const editHandler = ({
 };
 
 const navigateHandler = ({ row, router }: NavigateHandlerProps): void => {
-  router.push(`/galeria/${row.id}`);
+  router.push(`/molduras/${row.id}`);
 };
 
 const openChangeAlertDialogHandler = ({

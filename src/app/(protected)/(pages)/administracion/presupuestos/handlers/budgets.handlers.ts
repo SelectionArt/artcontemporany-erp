@@ -6,6 +6,7 @@ import {
   createBudget,
   deleteBudget,
   deleteMultipleBudgets,
+  fetchEmails,
   gneratePDF,
   generateUniqueRandomNumber,
   signBudget,
@@ -22,6 +23,7 @@ import type {
   EditHandlerProps,
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
+  OpenChangeSendEmailDialogHandlerProps,
   OpenChangeSignatureDialogHandlerProps,
   OpenSignHandlerProps,
   PreviewPDFHandlerProps,
@@ -125,6 +127,13 @@ const openChangeDialogHandler = ({
   }
 };
 
+const openChangeSendEmailDialogHandler = ({
+  open,
+  setOpenSendEmailDialog,
+}: OpenChangeSendEmailDialogHandlerProps): void => {
+  setOpenSendEmailDialog(open);
+};
+
 const openChangeSignatureDialogHandler = ({
   open,
   setOpenSignatureDialog,
@@ -182,8 +191,17 @@ const previewPDFHandler = async ({
 const sendEmailHandler = async ({
   row,
   type,
+  setOpenSendEmailDialog,
+  setSelectedRow,
+  setSendEmails,
 }: SendEmailHandlerProps): Promise<void> => {
-  console.log("sendEmailHandler", row, type);
+  const emails = await fetchEmails({ id: row.clientId });
+  console.log("emails", emails);
+  setOpenSendEmailDialog(true);
+  setSelectedRow(row);
+  setSendEmails(
+    emails.map((email) => ({ label: email.email, value: email.email })),
+  );
 };
 
 const signHandler = async ({
@@ -417,7 +435,9 @@ const BudgetsHandlers = ({
   setLoading,
   setOpenAlert,
   setOpenDialog,
+  setOpenSendEmailDialog,
   setOpenSignatureDialog,
+  setSendEmails,
   setSelectedRow,
   setSelectedRows,
   setSignLoading,
@@ -453,6 +473,11 @@ const BudgetsHandlers = ({
         setOpenDialog,
         setSelectedRow,
       }),
+    handleOpenChangeSendEmailDialog: (open) =>
+      openChangeSendEmailDialogHandler({
+        open,
+        setOpenSendEmailDialog,
+      }),
     handleOpenChangeSignatureDialog: (open) =>
       openChangeSignatureDialogHandler({
         open,
@@ -465,7 +490,14 @@ const BudgetsHandlers = ({
         setSelectedRow,
       }),
     handlePreviewPDF: ({ row, type }) => previewPDFHandler({ row, type }),
-    handleSendEmail: ({ row, type }) => sendEmailHandler({ row, type }),
+    handleSendEmail: ({ row, type }) =>
+      sendEmailHandler({
+        row,
+        type,
+        setOpenSendEmailDialog,
+        setSelectedRow,
+        setSendEmails,
+      }),
     handleSign: () =>
       signHandler({
         selectedRow,

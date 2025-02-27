@@ -124,8 +124,19 @@ type FetchBudgetsReturn = Array<
 
 type FetchClientsReturn = Pick<Client, "id" | "name" | "legalName" | "cif">[];
 
+type FetchEmailsProps = {
+  id: string;
+};
+
+type FetchEmailsReturn = Array<{
+  id: string;
+  email: string;
+  type: "client" | "person";
+}>;
+
 type FetchFramesReturn = Array<{
   id: string;
+  name: string;
   reference: string;
   imageUrl: string | null;
 }>;
@@ -214,6 +225,8 @@ export type {
   FetchArtworksReturn,
   FetchBudgetsReturn,
   FetchClientsReturn,
+  FetchEmailsProps,
+  FetchEmailsReturn,
   FetchFramesReturn,
   FetchPricingItemsProps,
   FetchPricingItemsReturn,

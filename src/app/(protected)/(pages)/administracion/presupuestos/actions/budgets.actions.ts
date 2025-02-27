@@ -18,6 +18,8 @@ import type {
   FetchArtworksReturn,
   FetchBudgetsReturn,
   FetchClientsReturn,
+  FetchEmailsProps,
+  FetchEmailsReturn,
   FetchFramesReturn,
   FetchPricingItemsProps,
   FetchPricingItemsReturn,
@@ -1092,12 +1094,52 @@ const fetchClients = async (): Promise<FetchClientsReturn> => {
   }
 };
 
+const fetchEmails = async ({
+  id,
+}: FetchEmailsProps): Promise<FetchEmailsReturn> => {
+  try {
+    const client = await prisma.client.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        persons: {
+          select: {
+            id: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!client) return [];
+
+    const emails: FetchEmailsReturn = [];
+
+    if (client.email) {
+      emails.push({ id: client.id, email: client.email, type: "client" });
+    }
+
+    client.persons.forEach((person) => {
+      if (person.email) {
+        emails.push({ id: person.id, email: person.email, type: "person" });
+      }
+    });
+
+    return emails;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
 const fetchFrames = async (): Promise<FetchFramesReturn> => {
   try {
     const frames = await prisma.frame.findMany({
       orderBy: { reference: "asc" },
       select: {
         id: true,
+        name: true,
         reference: true,
         images: {
           select: {
@@ -1110,6 +1152,7 @@ const fetchFrames = async (): Promise<FetchFramesReturn> => {
 
     return frames.map((frame) => ({
       id: frame.id,
+      name: frame.name,
       reference: frame.reference,
       imageUrl: frame.images.length > 0 ? frame.images[0].url : null,
     }));
@@ -1337,6 +1380,7 @@ export {
   fetchArtworks,
   fetchBudgets,
   fetchClients,
+  fetchEmails,
   fetchFrames,
   fetchPricings,
   fetchPricingItems,

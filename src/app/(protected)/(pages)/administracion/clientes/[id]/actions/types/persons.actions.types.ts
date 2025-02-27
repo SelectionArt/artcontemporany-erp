@@ -1,5 +1,5 @@
 // Types
-import type { Person } from "../../types/persons.container.types";
+import type { Client, Person } from "@prisma/client";
 import type { PersonSchema } from "../../schemas/types/person.schema.types";
 
 type CreatePersonProps = {
@@ -31,7 +31,17 @@ type DeleteMultiplePersonsReturn = {
   error?: string;
 };
 
+type FetchClientProps = {
+  id: string;
+};
+
+type FetchClientReturn = Client | null;
+
 type FetchPersonsReturn = Person[];
+
+type FetchPersonsProps = {
+  id: string;
+};
 
 type UpdatePersonProps = {
   id: string;
@@ -51,6 +61,9 @@ export type {
   DeletePersonReturn,
   DeleteMultiplePersonsProps,
   DeleteMultiplePersonsReturn,
+  FetchClientProps,
+  FetchClientReturn,
+  FetchPersonsProps,
   FetchPersonsReturn,
   UpdatePersonProps,
   UpdatePersonReturn,

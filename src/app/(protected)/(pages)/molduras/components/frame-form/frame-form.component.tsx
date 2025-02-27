@@ -171,27 +171,58 @@ const FrameForm = ({
           </div>
         )}
 
-        <FormField
-          control={form.control}
-          name={constants.INPUT_FIELDS.REFERENCE.inputProps.name}
-          render={({ field }) => (
-            <FormItem className="grow basis-1/2">
-              <FormLabel {...constants.INPUT_FIELDS.REFERENCE.labelProps}>
-                {constants.INPUT_FIELDS.REFERENCE.labelText}
-              </FormLabel>
-              <FormControl>
-                <Input
-                  {...{
-                    ...field,
-                    ...constants.INPUT_FIELDS.REFERENCE.inputProps,
-                    disabled: loading,
-                  }}
+        <div className="flex gap-4">
+          <FormField
+            control={form.control}
+            name={constants.INPUT_FIELDS.REFERENCE.inputProps.name}
+            render={({ field }) => (
+              <FormItem className="grow basis-1/2">
+                <FormLabel {...constants.INPUT_FIELDS.REFERENCE.labelProps}>
+                  {constants.INPUT_FIELDS.REFERENCE.labelText}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...{
+                      ...field,
+                      ...constants.INPUT_FIELDS.REFERENCE.inputProps,
+                      disabled: loading,
+                    }}
+                  />
+                </FormControl>
+                <FormMessage
+                  {...constants.INPUT_FIELDS.REFERENCE.messageProps}
                 />
-              </FormControl>
-              <FormMessage {...constants.INPUT_FIELDS.REFERENCE.messageProps} />
-            </FormItem>
-          )}
-        />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={constants.INPUT_FIELDS.MANUFACTURER_REFERENCE.inputProps.name}
+            render={({ field }) => (
+              <FormItem className="grow basis-1/2">
+                <FormLabel
+                  {...constants.INPUT_FIELDS.MANUFACTURER_REFERENCE.labelProps}
+                >
+                  {constants.INPUT_FIELDS.MANUFACTURER_REFERENCE.labelText}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...{
+                      ...field,
+                      ...constants.INPUT_FIELDS.MANUFACTURER_REFERENCE
+                        .inputProps,
+                      disabled: loading,
+                    }}
+                  />
+                </FormControl>
+                <FormMessage
+                  {...constants.INPUT_FIELDS.MANUFACTURER_REFERENCE
+                    .messageProps}
+                />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <div className="flex gap-4">
           <FormField

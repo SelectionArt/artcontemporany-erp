@@ -11,6 +11,9 @@ import type {
   DeletePersonReturn,
   DeleteMultiplePersonsProps,
   DeleteMultiplePersonsReturn,
+  FetchClientProps,
+  FetchClientReturn,
+  FetchPersonsProps,
   FetchPersonsReturn,
   UpdatePersonProps,
   UpdatePersonReturn,
@@ -81,9 +84,29 @@ const deleteMultiplePersons = async ({
   }
 };
 
-const fetchPersons = async (): Promise<FetchPersonsReturn> => {
+const fetchClient = async ({
+  id,
+}: FetchClientProps): Promise<FetchClientReturn> => {
+  try {
+    const person = await prisma.client.findUnique({
+      where: { id },
+    });
+    if (!person) {
+      return null;
+    }
+    return person;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const fetchPersons = async ({
+  id,
+}: FetchPersonsProps): Promise<FetchPersonsReturn> => {
   try {
     const persons = await prisma.person.findMany({
+      where: { clientId: id },
       orderBy: { name: "asc" },
     });
     return persons;
@@ -131,6 +154,7 @@ export {
   createPerson,
   deletePerson,
   deleteMultiplePersons,
+  fetchClient,
   fetchPersons,
   updatePerson,
 };

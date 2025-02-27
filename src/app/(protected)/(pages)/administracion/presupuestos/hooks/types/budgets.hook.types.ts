@@ -33,6 +33,7 @@ type BudgetsHookReturn = Omit<
   multipleSelectActionsProps: GetMultipleSelectActionsReturn<Budget>;
   openAlert: boolean;
   openDialog: boolean;
+  openSendEmailDialog: boolean;
   openSignatureDialog: boolean;
   selectedRow: Budget | null;
   selectedRows: Budget[];

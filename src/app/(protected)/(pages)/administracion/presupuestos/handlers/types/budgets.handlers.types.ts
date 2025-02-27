@@ -13,7 +13,12 @@ type BudgetsHandlersProps = {
   setLoading: Dispatch<SetStateAction<boolean>>;
   setOpenAlert: Dispatch<SetStateAction<boolean>>;
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
+  setOpenSendEmailDialog: Dispatch<SetStateAction<boolean>>;
   setOpenSignatureDialog: Dispatch<SetStateAction<boolean>>;
+  setSendEmails: Dispatch<
+    SetStateAction<Array<{ label: string; value: string }>>
+  >;
+
   setSelectedRow: Dispatch<SetStateAction<Budget | null>>;
   setSelectedRows: Dispatch<SetStateAction<Budget[]>>;
   setSignLoading: Dispatch<SetStateAction<boolean>>;
@@ -34,6 +39,7 @@ type BudgetsHandlersReturn = {
   handleEdit: (row: Budget) => void;
   handleOpenChangeAlertDialog: (open: boolean) => void;
   handleOpenChangeDialog: (open: boolean) => void;
+  handleOpenChangeSendEmailDialog: (open: boolean) => void;
   handleOpenChangeSignatureDialog: (open: boolean) => void;
   handleOpenSign: (row: Budget) => void;
   handlePreviewPDF: ({
@@ -100,6 +106,13 @@ type OpenChangeDialogHandlerProps = Pick<
   open: boolean;
 };
 
+type OpenChangeSendEmailDialogHandlerProps = Pick<
+  BudgetsHandlersProps,
+  "setOpenSendEmailDialog"
+> & {
+  open: boolean;
+};
+
 type OpenChangeSignatureDialogHandlerProps = Pick<
   BudgetsHandlersProps,
   "setOpenSignatureDialog"
@@ -122,6 +135,11 @@ type PreviewPDFHandlerProps = {
 type SendEmailHandlerProps = {
   row: Budget;
   type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
+  setOpenSendEmailDialog: Dispatch<SetStateAction<boolean>>;
+  setSelectedRow: Dispatch<SetStateAction<Budget | null>>;
+  setSendEmails: Dispatch<
+    SetStateAction<Array<{ label: string; value: string }>>
+  >;
 };
 
 type SignHandlerProps = Pick<
@@ -181,6 +199,7 @@ export type {
   EditHandlerProps,
   OpenChangeAlertDialogHandlerProps,
   OpenChangeDialogHandlerProps,
+  OpenChangeSendEmailDialogHandlerProps,
   OpenChangeSignatureDialogHandlerProps,
   OpenSignHandlerProps,
   PreviewPDFHandlerProps,

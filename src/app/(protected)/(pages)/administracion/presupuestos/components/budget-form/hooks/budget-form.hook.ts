@@ -87,7 +87,7 @@ const BudgetsHook = ({
       .slice(0, 10)
       .map((frame) => ({
         value: frame.id,
-        label: frame.reference,
+        label: `${frame.reference} ${frame.name}`,
         imageUrl: frame.imageUrl,
       }));
 

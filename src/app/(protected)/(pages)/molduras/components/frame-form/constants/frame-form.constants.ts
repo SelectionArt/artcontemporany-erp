@@ -81,6 +81,22 @@ const constants = {
         id: "height-helper",
       },
     },
+    MANUFACTURER_REFERENCE: {
+      labelProps: {
+        htmlFor: "manufacturerReference",
+      },
+      labelText: "Ref. Fabricante",
+      inputProps: {
+        id: "manufacturerReference",
+        name: "manufacturerReference",
+        placeholder: "Código de referencia del fabricante",
+        type: "text",
+        ["aria-describedby"]: "manufacturerReference-helper",
+      },
+      messageProps: {
+        id: "manufacturerReference-helper",
+      },
+    },
     WIDTH: {
       labelProps: {
         htmlFor: "width",

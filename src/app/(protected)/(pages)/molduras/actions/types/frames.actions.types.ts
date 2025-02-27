@@ -41,6 +41,7 @@ type FetchFramesReturn = {
   height: number | null;
   galce: number | null;
   images: FrameImage[];
+  manufacturerReference: string | null;
   manufacturer: Manufacturer | null;
   material: Material | null;
   createdAt: Date;
