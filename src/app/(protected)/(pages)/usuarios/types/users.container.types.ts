@@ -1,5 +1,3 @@
-import { User as PrismaUser } from "@prisma/client";
-
 type User = {
   id: string;
   name: string;
