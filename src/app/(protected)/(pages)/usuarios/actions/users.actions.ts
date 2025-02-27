@@ -45,7 +45,7 @@ const createUser = async ({
       success: "Usuario creado con éxito",
       user: {
         ...newUser,
-        name: newUser.name ?? "",
+        role: newUser.role ?? "",
       },
     };
   } catch (error) {
@@ -102,7 +102,7 @@ const fetchUsers = async (): Promise<FetchUsersReturn> => {
     });
     return users.map((user) => ({
       ...user,
-      name: user.name ?? "",
+      role: user.role ?? "",
     }));
   } catch (error) {
     console.error(error);
