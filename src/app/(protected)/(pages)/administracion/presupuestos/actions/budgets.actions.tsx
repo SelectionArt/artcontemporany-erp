@@ -1400,7 +1400,7 @@ const BudgetEmail = ({ subject, message }: BudgetEmailProps) => {
       <Head />
       <Preview>{subject}</Preview>
       <Tailwind>
-        <Body className="m-0 bg-slate-50 p-4 font-sans">
+        <Body className="m-0 flex gap-8 bg-slate-50 p-8 font-sans">
           <Img
             alt="Logo"
             className="mx-auto"
