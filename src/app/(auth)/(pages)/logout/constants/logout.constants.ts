@@ -1,6 +1,6 @@
 const constants = {
-  CARD_TITLE: "Logging out...",
-  CARD_DESCRIPTION: "Please wait while we log you out.",
+  CARD_TITLE: "Cerrando sesión...",
+  CARD_DESCRIPTION: "Por favor, espera mientras cerramos tu sesión",
 };
 
 export default constants;

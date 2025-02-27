@@ -1,6 +1,6 @@
 const constants = {
   CARD_TITLE: "Error",
-  CARD_DESCRIPTION: "Oops! Something went wrong!",
+  CARD_DESCRIPTION: "Ups! Algo salió mal",
   BUTTON_LINK: {
     fullWidth: true,
     href: "/login",

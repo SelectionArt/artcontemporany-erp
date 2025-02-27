@@ -2,10 +2,10 @@ const constants = {
   BUTTON_LINK: {
     fullWidth: true,
     href: "/login",
-    label: "Back to login",
+    label: "Volver a login",
   },
-  CARD_TITLE: "Verification",
-  CARD_DESCRIPTION: "Please wait while we verify your account",
+  CARD_TITLE: "Verificación",
+  CARD_DESCRIPTION: "Por favor, espera mientras verificamos tu cuenta",
 } as const;
 
 export default constants;

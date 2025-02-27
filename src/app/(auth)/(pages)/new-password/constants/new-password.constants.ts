@@ -1,10 +1,10 @@
 const constants = {
   CARD_TITLE: "Reset",
-  CARD_DESCRIPTION: "Enter a new password",
+  CARD_DESCRIPTION: "Introduce tu nueva contraseña",
   BUTTON_LINK: {
     fullWidth: true,
     href: "/login",
-    label: "Back to login",
+    label: "Volver a login",
   },
 };
 
