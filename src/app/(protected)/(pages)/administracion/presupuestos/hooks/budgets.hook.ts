@@ -137,6 +137,7 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
     openSignatureDialog,
     selectedRow,
     selectedRows,
+    sendEmails,
     signatureRef,
     signLoading,
   };

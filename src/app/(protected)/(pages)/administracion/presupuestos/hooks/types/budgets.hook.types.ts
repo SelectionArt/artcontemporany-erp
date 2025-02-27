@@ -37,6 +37,7 @@ type BudgetsHookReturn = Omit<
   openSignatureDialog: boolean;
   selectedRow: Budget | null;
   selectedRows: Budget[];
+  sendEmails: Array<{ label: string; value: string }>;
   signatureRef: React.RefObject<SignatureCanvas | null>;
   signLoading: boolean;
 };
