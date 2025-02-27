@@ -1,10 +1,10 @@
 const constants = {
-  CARD_TITLE: "Register",
-  CARD_DESCRIPTION: "Create an account",
+  CARD_TITLE: "Registro",
+  CARD_DESCRIPTION: "Crea tu cuenta",
   BUTTON_LINK: {
     fullWidth: true,
     href: "/login",
-    label: "Already have an account?",
+    label: "¿Ya tienes cuenta? Inicia sesión",
   },
 } as const;
 

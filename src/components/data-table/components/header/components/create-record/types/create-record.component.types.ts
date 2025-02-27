@@ -1,5 +1,5 @@
 type CreateRecordProps = {
-  onCreateRecord: () => void;
+  onCreateRecord?: () => void;
 };
 
 export type { CreateRecordProps };

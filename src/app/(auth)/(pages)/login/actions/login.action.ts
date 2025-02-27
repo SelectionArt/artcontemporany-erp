@@ -36,6 +36,10 @@ const loginAction = async ({
     return { error: "Invalid credentials" };
   }
 
+  if (!existingUser.isAuthorized) {
+    return { error: "User not authorized" };
+  }
+
   if (!existingUser.emailVerified) {
     const verificationToken = await generateVerificationToken(email);
 

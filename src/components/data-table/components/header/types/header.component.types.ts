@@ -11,7 +11,7 @@ type Action = {
 type HeaderProps<TData> = {
   actions?: Action[];
   globalFilter: string;
-  onCreateRecord: () => void;
+  onCreateRecord?: () => void;
   setGlobalFilter: Dispatch<SetStateAction<string>>;
   table: Table<TData>;
 };
