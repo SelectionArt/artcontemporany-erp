@@ -4,8 +4,8 @@ import { auth } from "@/auth";
 import { fetchPricings } from "./layouts/dashboard/actions/dashboard.actions";
 // Layout
 import { DashboardLayout } from "./layouts/dashboard/dashboard.layout";
-// Providers
-import { SidebarProvider } from "@/components/ui/sidebar";
+// // Providers
+// import { SidebarProvider } from "@/components/ui/sidebar";
 // Styles
 import "./layout.css";
 
@@ -17,11 +17,9 @@ async function ProtectedLayout({
   const session = await auth();
   const pricings = await fetchPricings();
   return (
-    <SidebarProvider defaultOpen={true}>
-      <DashboardLayout session={session} pricings={pricings}>
-        {children}
-      </DashboardLayout>
-    </SidebarProvider>
+    <DashboardLayout session={session} pricings={pricings}>
+      {children}
+    </DashboardLayout>
   );
 }
 
