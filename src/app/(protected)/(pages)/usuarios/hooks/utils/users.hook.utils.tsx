@@ -50,11 +50,11 @@ function getColumnsConfig({
     {
       accessorKey: "role",
       cell: ({ row }) => {
-        const roleMap = {
+        const roleMap: Record<'ADMIN' | 'USER', string> = {
           ADMIN: "Administrador",
           USER: "Usuario",
         };
-        return <div>{roleMap[row.original.role]}</div>;
+        return <div>{roleMap[row.original.role as 'ADMIN' | 'USER']}</div>;
       },
       header: ({ column }) => <ColumnSorter column={column} label="Rol" />,
       meta: "Rol",
