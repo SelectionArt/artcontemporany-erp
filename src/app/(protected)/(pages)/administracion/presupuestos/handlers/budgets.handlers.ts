@@ -467,10 +467,46 @@ const submitEmailHandler = async ({
 
     const pdfBlob = new Blob([pdf], { type: "application/pdf" });
 
+    const messageMap = {
+      budget: "el presupuesto solicitado",
+      invoice: "la factura proforma solicitada",
+      orderConfirmation: "la confirmación de pedido",
+      deliveryNote: "la hoja de entrega",
+    };
+
+    const subjectMap = {
+      budget: "Presupuesto",
+      invoice: "Factura proforma",
+      orderConfirmation: "Confirmación de pedido",
+      deliveryNote: "Hoja de entrega",
+    };
+
+    const finalMessage = values.message.replace(
+      /{{type}}/g,
+      messageMap[
+        values.type as
+          | "budget"
+          | "invoice"
+          | "deliveryNote"
+          | "orderConfirmation"
+      ],
+    );
+
+    const finalSubject = values.subject.replace(
+      /{{type}}/g,
+      subjectMap[
+        values.type as
+          | "budget"
+          | "invoice"
+          | "deliveryNote"
+          | "orderConfirmation"
+      ],
+    );
+
     const response = await sendEmail({
       emails: recipientEmails,
-      subject: values.subject,
-      message: values.message,
+      subject: finalSubject,
+      message: finalMessage,
       file: pdfBlob,
       fileName,
       type: values.type,

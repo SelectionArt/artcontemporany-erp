@@ -1390,41 +1390,10 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 type BudgetEmailProps = {
   subject: string;
-  type: string;
   message: string;
 };
 
-const BudgetEmail = ({ subject, type, message }: BudgetEmailProps) => {
-  const messageMap = {
-    budget: "el presupuesto solicitado",
-    invoice: "la factura proforma solicitada",
-    orderConfirmation: "la confirmación de pedido",
-    deliveryNote: "la hoja de entrega",
-  };
-
-  const subjectMap = {
-    budget: "Presupuesto",
-    invoice: "Factura proforma",
-    orderConfirmation: "Confirmación de pedido",
-    deliveryNote: "Hoja de entrega",
-  };
-
-  console.log("message", message);
-  const finalMessage = message.replace(
-    /{{type}}/g,
-    messageMap[
-      type as "budget" | "invoice" | "deliveryNote" | "orderConfirmation"
-    ],
-  );
-  console.log("finalMessage", finalMessage);
-
-  const finalSubject = subject.replace(
-    /{{type}}/g,
-    subjectMap[
-      type as "budget" | "invoice" | "deliveryNote" | "orderConfirmation"
-    ],
-  );
-
+const BudgetEmail = ({ subject, message }: BudgetEmailProps) => {
   return (
     <Html>
       <Head />
@@ -1434,10 +1403,10 @@ const BudgetEmail = ({ subject, type, message }: BudgetEmailProps) => {
           <Container className="max-w-lg rounded-lg bg-white p-8 shadow-lg">
             <Section>
               <Text className="text-3xl font-semibold text-slate-700">
-                {finalSubject}
+                {subject}
               </Text>
               <Text className="text-lg whitespace-pre-line text-slate-700">
-                {finalMessage}
+                {message}
               </Text>
             </Section>
 
@@ -1482,7 +1451,7 @@ const sendEmail = async ({
       from: "noreply@gesartcontemporany.com",
       to: emails,
       subject,
-      react: <BudgetEmail subject={subject} message={message} type={type} />,
+      react: <BudgetEmail subject={subject} message={message} />,
       attachments: [
         {
           filename: fileName,
