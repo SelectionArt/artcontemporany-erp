@@ -1404,7 +1404,7 @@ const BudgetEmail = ({ subject, message }: BudgetEmailProps) => {
           <Img
             alt="Logo"
             className="mx-auto"
-            height={200}
+            height={60}
             src="https://res.cloudinary.com/dpj6kupra/image/upload/v1740514863/uifwktt9tskfogjd97s4.png"
           />
 
