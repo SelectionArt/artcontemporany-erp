@@ -58,12 +58,12 @@ type FetchArtworksReturn = {
 }[];
 
 type FetchFiltersReturn = {
-  artists: Artist[];
-  colors: Color[];
-  finishes: Finish[];
-  formats: Format[];
-  styles: Style[];
-  supports: Support[];
+  artists: Pick<Artist, "id" | "name">[];
+  colors: Pick<Color, "id" | "name" | "hex">[];
+  finishes: Pick<Finish, "id" | "name">[];
+  formats: Pick<Format, "id" | "name">[];
+  styles: Pick<Style, "id" | "name">[];
+  supports: Pick<Support, "id" | "name">[];
 };
 
 type UpdateArtworkProps = {
