@@ -70,6 +70,7 @@ const editHandler = ({
     galce: row.galce || 0,
     height: row.height || 0,
     images: [],
+    manufacturerReference: row.manufacturerReference || "",
     manufacturerId: row.manufacturer?.id || "",
     materialId: row.material?.id || "",
     width: row.width || 0,
