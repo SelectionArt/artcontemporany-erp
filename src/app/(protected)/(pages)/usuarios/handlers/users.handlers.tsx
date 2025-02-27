@@ -166,7 +166,7 @@ const submitHandlerEdit = async ({
 
   try {
     const { user, error, success } = await updateUser({
-      // @ts-ignore
+      // @ts-expect-error
       id: selectedRow.id,
       values,
     });
