@@ -190,7 +190,7 @@ const previewPDFHandler = async ({
 
 const sendEmailHandler = async ({
   row,
-  type,
+  // type,
   setOpenSendEmailDialog,
   setSelectedRow,
   setSendEmails,
