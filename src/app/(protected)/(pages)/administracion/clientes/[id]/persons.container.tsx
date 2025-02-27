@@ -27,8 +27,6 @@ const PersonsContainer = ({ client, initialData }: PersonsProps) => {
     selectedRows,
   } = PersonsHook({ initialData });
 
-  console.log("client", client);
-
   return (
     <div className="flex w-full grow p-4">
       <DataTable

@@ -1409,15 +1409,17 @@ const BudgetEmail = ({ subject, type, message }: BudgetEmailProps) => {
     deliveryNote: "Hoja de entrega",
   };
 
+  console.log("message", message);
   const finalMessage = message.replace(
     /{{type}}/g,
     messageMap[
       type as "budget" | "invoice" | "deliveryNote" | "orderConfirmation"
     ],
   );
+  console.log("finalMessage", finalMessage);
 
   const finalSubject = subject.replace(
-    /{{subject}}/g,
+    /{{type}}/g,
     subjectMap[
       type as "budget" | "invoice" | "deliveryNote" | "orderConfirmation"
     ],

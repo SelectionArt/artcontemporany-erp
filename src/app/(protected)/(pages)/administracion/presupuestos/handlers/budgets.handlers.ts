@@ -198,7 +198,6 @@ const sendEmailHandler = async ({
   setSendEmails,
 }: SendEmailHandlerProps): Promise<void> => {
   const emails = await fetchEmails({ id: row.clientId });
-  console.log("emails", emails);
   setOpenSendEmailDialog(true);
   setSelectedRow(row);
   setSendEmails(
@@ -444,8 +443,6 @@ const submitEmailHandler = async ({
   try {
     setEmailLoading(true);
 
-    console.log("values", values);
-
     const recipientEmails: string[] = [
       ...(values.emails ?? []),
       values.email,
@@ -472,8 +469,8 @@ const submitEmailHandler = async ({
 
     const response = await sendEmail({
       emails: recipientEmails,
-      subject: values.subject.replace("{{type}}", values.type),
-      message: values.message.replace("{{type}}", values.type),
+      subject: values.subject,
+      message: values.message,
       file: pdfBlob,
       fileName,
       type: values.type,
