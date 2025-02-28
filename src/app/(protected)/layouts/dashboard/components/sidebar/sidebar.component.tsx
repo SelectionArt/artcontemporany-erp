@@ -10,7 +10,7 @@ import { ITEMS } from "./constants/sidebar.constants";
 // Types
 import type { SidebarProps } from "./types/sidebar.component.types";
 
-const Sidebar = ({ open, pricings }: SidebarProps) => {
+const Sidebar = ({ open, pricings, session }: SidebarProps) => {
   const items = ITEMS.navMain.map((item) => {
     if (item.title === "Tarifas") {
       return {
@@ -29,7 +29,7 @@ const Sidebar = ({ open, pricings }: SidebarProps) => {
 
   return (
     <SidebarComponent collapsible="icon">
-      <Header open={open} />
+      <Header open={open} session={session} />
       <Content items={items} />
       <SidebarRail />
     </SidebarComponent>

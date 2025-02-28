@@ -16,7 +16,7 @@ const DashboardLayout = ({ children, pricings, session }: DashboardProps) => {
   return (
     <SidebarProvider defaultOpen={true} open={open} onOpenChange={setOpen}>
       <div className="flex w-full flex-1">
-        <Sidebar open={open} pricings={pricings} />
+        <Sidebar open={open} pricings={pricings} session={session} />
 
         <div className="flex w-full flex-1 flex-col overflow-hidden">
           <header className="bg-background flex h-16 shrink-0 items-center justify-end border-b px-4">
