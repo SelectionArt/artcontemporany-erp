@@ -11,7 +11,7 @@ type DataTableProps<TData> = {
     MultipleSelectActionsProps<TData>,
     "button" | "actions"
   >;
-  onCreateRecord: () => void;
+  onCreateRecord?: () => void;
 };
 
 export type { DataTableProps };
