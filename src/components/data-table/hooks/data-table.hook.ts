@@ -46,6 +46,7 @@ const DataTableHook = <TData, TValue>({
       rowSelection,
       sorting,
     },
+    autoResetPageIndex: false,
   });
 
   return {
