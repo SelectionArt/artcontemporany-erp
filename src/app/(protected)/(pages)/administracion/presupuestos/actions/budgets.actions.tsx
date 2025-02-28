@@ -87,7 +87,7 @@ const addNewPage = ({
   const page = pdfDoc.addPage([595, 842]);
   const { height, width } = page.getSize();
 
-  const yPosition = height - margins.top;
+  const yPosition = height - margins.top - 80;
 
   return { height, page, yPosition, width };
 };
@@ -217,6 +217,72 @@ const ensureSpace = ({
   return { page, yPosition };
 };
 
+const addHeader = async ({
+  pdfDoc,
+  font,
+  logoURL,
+}: {
+  pdfDoc: PDFDocument;
+  font: PDFFont;
+  logoURL: string;
+}) => {
+  const pages = pdfDoc.getPages();
+
+  for (const page of pages) {
+    await drawImage({
+      page,
+      pdfDoc,
+      url: logoURL,
+      x: page.getWidth() / 2 - 60,
+      y: page.getHeight() - 60,
+      maxWidth: 120,
+      maxHeight: 40,
+    });
+
+    drawText({
+      page,
+      text: "CIF: B98511637",
+      fontSize: 8,
+      x: page.getWidth() / 2 - 40,
+      y: page.getHeight() - 80,
+      font,
+    });
+  }
+};
+
+const addFooter = ({
+  pdfDoc,
+  font,
+}: {
+  pdfDoc: PDFDocument;
+  font: PDFFont;
+}) => {
+  const totalPages = pdfDoc.getPageCount();
+  pdfDoc.getPages().forEach((page, index) => {
+    const pageNumber = index + 1;
+    const footerText = `Página ${pageNumber} / ${totalPages}`;
+
+    drawText({
+      page,
+      text: footerText,
+      x: page.getWidth() - 50,
+      y: 40,
+      font,
+      fontSize: 8,
+      align: "right",
+    });
+
+    drawText({
+      page,
+      fontSize: 8,
+      text: "Telf. +34 961 201 908 Camino Vereda (norte), 56 46469 Beniparrell (Valencia-España) info@artcontemporany.com",
+      x: 50,
+      y: 40,
+      font,
+    });
+  });
+};
+
 const gneratePDF = async ({
   id,
   type,
@@ -263,33 +329,6 @@ const gneratePDF = async ({
   const newPageData = addNewPage({ margins, pdfDoc });
   let { page, yPosition } = newPageData;
   const { width } = newPageData;
-
-  const logoURL =
-    "https://res.cloudinary.com/dpj6kupra/image/upload/v1740514863/uifwktt9tskfogjd97s4.png";
-
-  await drawImage({
-    page,
-    pdfDoc,
-    url: logoURL,
-    x: width / 2 - 60,
-    y: yPosition,
-    maxWidth: 120,
-    maxHeight: 120,
-  });
-
-  yPosition -= 20;
-
-  // CIF
-  drawText({
-    page,
-    text: "CIF: B98511637",
-    fontSize: 8,
-    x: width / 2 - 40,
-    y: yPosition,
-    font,
-  });
-
-  yPosition -= 20;
 
   // Cabecera
   const titleMap = {
@@ -379,17 +418,9 @@ const gneratePDF = async ({
   yPosition -= 40;
 
   // Tabla encabezados
-
-  const tableStartX = 50;
-  const tableEndX = width - 50;
-  const columnWidths = [
-    (tableEndX - tableStartX) * 0.2,
-    100,
-    (tableEndX - tableStartX) * 0.2,
-    (tableEndX - tableStartX) * 0.1,
-    (tableEndX - tableStartX) * 0.175,
-    (tableEndX - tableStartX) * 0.175,
-  ];
+  const tableStartX = margins.left;
+  const tableEndX = width - margins.right;
+  const columnWidths = [80, 90, 130, 45, 75, 75];
 
   drawText({
     page,
@@ -491,6 +522,7 @@ const gneratePDF = async ({
     // Descripción
     drawText({
       page,
+      maxWidth: 120,
       text: `${item.artwork.artist.name} ${item.width}x${item.height}`,
       x: tableStartX + columnWidths[0] + columnWidths[1],
       y: yPosition,
@@ -499,6 +531,7 @@ const gneratePDF = async ({
     if (item.frame) {
       drawText({
         page,
+        maxWidth: 120,
         text: `Moldura ${item.frame.name}`,
         x: tableStartX + columnWidths[0] + columnWidths[1],
         y: yPosition - 20,
@@ -539,7 +572,7 @@ const gneratePDF = async ({
       align: "right",
     });
 
-    if (item.frame) {
+    if (item.framePrice) {
       drawText({
         page,
         text: formatter.format(item.framePrice),
@@ -567,7 +600,7 @@ const gneratePDF = async ({
       align: "right",
     });
 
-    if (item.frame) {
+    if (item.framePrice) {
       drawText({
         page,
         text: formatter.format(item.framePrice * item.quantity),
@@ -586,7 +619,7 @@ const gneratePDF = async ({
     }
   }
 
-  yPosition -= 100;
+  yPosition -= 80;
 
   // Resumen final
   const subtotal = budgetData.budgetItems.reduce(
@@ -748,21 +781,23 @@ const gneratePDF = async ({
   drawText({
     page,
     text: `${budgetData.paymentMethod}`,
-    x: margins.left,
-    y: yPosition - lineSpacing,
+    x: margins.left + 115,
+    y: yPosition,
     font,
   });
+
+  yPosition -= 20;
 
   if (budgetData.showIBAN) {
     drawText({
       page,
-      text: `IBAN: ES8021001231231231231231`,
+      text: `IBAN: ES25 0081 1310 5100 0107 2411`,
       x: margins.left,
-      y: yPosition - lineSpacing * 2,
+      y: yPosition,
       font,
     });
   }
-  yPosition -= 56;
+  yPosition -= 40;
 
   drawText({
     page,
@@ -779,7 +814,7 @@ const gneratePDF = async ({
     font,
   });
 
-  yPosition -= 30;
+  yPosition -= 20;
 
   drawText({
     page,
@@ -820,23 +855,20 @@ const gneratePDF = async ({
       x: width - 50 - 200,
       y: 60,
       maxWidth: 300,
-      maxHeight: 200,
+      maxHeight: 100,
     });
   }
 
-  ({ page, yPosition } = ensureSpace({
-    neededSpace: 8,
-    yPosition,
-    margins,
+  // Pie de página
+  await addHeader({
     pdfDoc,
-    page,
-  }));
-  drawText({
-    page,
-    fontSize: 8,
-    text: "Telf. + 3496 120 1908 Camino Vereda (norte), 56 46469 Beniparrell (Valencia-España) info@artcontemporany.com",
-    x: 90,
-    y: margins.bottom,
+    font,
+    logoURL:
+      "https://res.cloudinary.com/dpj6kupra/image/upload/v1740514863/uifwktt9tskfogjd97s4.png",
+  });
+
+  addFooter({
+    pdfDoc,
     font,
   });
 

@@ -582,7 +582,7 @@ const BudgetForm = ({
                 <FormItem className="grow basis-1/5">
                   <FormLabel>{constants.SHOW_IBAN_FIELD.labelText}</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => field.onChange(value === "true")}
                     defaultValue={String(field.value)}
                   >
                     <FormControl>
