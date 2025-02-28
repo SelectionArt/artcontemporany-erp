@@ -275,7 +275,6 @@ const Item = ({
     if (artworkPricingId) {
       handleArtworkPricingsValueChange(artworkPricingId);
     }
-
     if (framePricingId) {
       handleFramePricingsValueChange(framePricingId);
     }
