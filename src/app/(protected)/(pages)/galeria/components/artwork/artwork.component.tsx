@@ -16,7 +16,11 @@ const Artwork = ({ artwork, onSelect }: ArtworkProps) => {
           className="h-6 w-6"
         />
       </div>
-      <Link className="relative h-60" href={`/galeria/${artwork.id}`}>
+      <Link
+        className="relative h-60"
+        href={`/galeria/${artwork.id}`}
+        target="_blank"
+      >
         <Image
           alt={artwork.title}
           className="w-full rounded-t-lg object-contain"

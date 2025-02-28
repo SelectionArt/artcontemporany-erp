@@ -27,15 +27,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import { Item } from "./components/item/item.component";
+import { Total } from "./components/total/total.component";
 // Constants
 import constants from "./constants/budget-form.constants";
 import { DEFAULT_ITEM } from "../../constants/budgets.constants";
 // Hooks
 import { BudgetsHook } from "./hooks/budget-form.hook";
 // Icons
-import { CalendarIcon, Plus, Trash2 } from "lucide-react";
+import { CalendarIcon, Plus } from "lucide-react";
 // Libs
 import { cn } from "@/lib/utils";
 // Types
@@ -52,20 +53,10 @@ const BudgetForm = ({
   loading,
   pricings,
 }: BudgetFormProps) => {
-  const {
-    artworksValues,
-    artworkTotalPrice,
-    clientsValues,
-    framesValues,
-    frameTotalPrice,
-    handleArtworkPricingsValueChange,
-    handleFramePricingsValueChange,
-    handleHeightValueChange,
-    handleWidthValueChange,
-    isCalendarOpen,
-    setIsCalendarOpen,
-    total,
-  } = BudgetsHook({ artworks, clients, form, frames });
+  const { clientsValues, isCalendarOpen, setIsCalendarOpen } = BudgetsHook({
+    clients,
+    form,
+  });
 
   return (
     <Form {...form}>
@@ -245,286 +236,15 @@ const BudgetForm = ({
               <div className="w-10" />
             </div>
             {fieldArray.fields.map((field, index) => (
-              <div
+              <Item
                 key={field.id}
-                className="grid grid-cols-[2fr_2fr_1fr_1fr_1fr_1fr_auto] gap-2"
-              >
-                <div className="flex flex-col gap-2">
-                  <FormField
-                    control={form.control}
-                    name={`items.${index}.artworkId`}
-                    render={({ field }) => (
-                      <FormItem className="min-w-[160px]">
-                        <FormControl>
-                          <AutoComplete
-                            {...constants.ARTWORK_FIELD.autocompleteProps}
-                            items={artworksValues(index)}
-                            onSelectedValueChange={field.onChange}
-                            selectedValue={field.value}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`items.${index}.frameId`}
-                    render={({ field }) => (
-                      <FormItem className="min-w-[160px]">
-                        <FormControl>
-                          <AutoComplete
-                            {...constants.FRAME_FIELD.autocompleteProps}
-                            items={framesValues(index)}
-                            onSelectedValueChange={field.onChange}
-                            selectedValue={field.value}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <FormField
-                    control={form.control}
-                    name={`items.${index}.artworkPricingId`}
-                    render={({ field }) => (
-                      <FormItem className="min-w-[160px]">
-                        <Select
-                          onValueChange={(value) =>
-                            handleArtworkPricingsValueChange({
-                              field,
-                              index,
-                              value,
-                            })
-                          }
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue
-                                placeholder={
-                                  constants.ARTWORK_PRICINGS_FIELD.placeholder
-                                }
-                              />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {pricings
-                              .filter((pricing) => pricing.type === "artwork")
-                              .map((pricing) => (
-                                <SelectItem key={pricing.id} value={pricing.id}>
-                                  {pricing.name}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`items.${index}.framePricingId`}
-                    render={({ field }) => (
-                      <FormItem className="min-w-[160px]">
-                        <Select
-                          onValueChange={(value) =>
-                            handleFramePricingsValueChange({
-                              field,
-                              index,
-                              value,
-                            })
-                          }
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue
-                                placeholder={
-                                  constants.FRAME_PRICINGS_FIELD.placeholder
-                                }
-                              />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {pricings
-                              .filter((pricing) => pricing.type === "frame")
-                              .map((pricing) => (
-                                <SelectItem key={pricing.id} value={pricing.id}>
-                                  {pricing.name}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <FormField
-                    control={form.control}
-                    name={`items.${index}.width`}
-                    render={({ field }) => (
-                      <FormItem className="min-w-[80px]">
-                        <FormControl>
-                          <Input
-                            {...{
-                              ...field,
-                              ...constants.WIDTH_FIELD.inputProps,
-                              disabled: loading,
-                              onChange: (event) => {
-                                handleWidthValueChange({
-                                  event,
-                                  field,
-                                  index,
-                                });
-                              },
-                            }}
-                          />
-                        </FormControl>
-                        <FormMessage {...constants.WIDTH_FIELD.messageProps} />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`items.${index}.height`}
-                    render={({ field }) => (
-                      <FormItem className="min-w-[80px]">
-                        <FormControl>
-                          <Input
-                            {...{
-                              ...field,
-                              ...constants.HEIGHT_FIELD.inputProps,
-                              disabled: loading,
-                              onChange: (event) => {
-                                handleHeightValueChange({
-                                  event,
-                                  field,
-                                  index,
-                                });
-                              },
-                            }}
-                          />
-                        </FormControl>
-                        <FormMessage {...constants.HEIGHT_FIELD.messageProps} />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <FormField
-                  control={form.control}
-                  name={`items.${index}.quantity`}
-                  render={({ field }) => (
-                    <FormItem className="min-w-[80px]">
-                      <FormControl>
-                        <Input
-                          {...{
-                            ...field,
-                            ...constants.QUANTITY_FIELD.inputProps,
-                            disabled: loading,
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage {...constants.QUANTITY_FIELD.messageProps} />
-                    </FormItem>
-                  )}
-                />
-                <div className="flex flex-col gap-2">
-                  <FormField
-                    control={form.control}
-                    name={`items.${index}.artworkPrice`}
-                    render={({ field }) => (
-                      <FormItem className="min-w-[80px]">
-                        <FormControl>
-                          <Input
-                            {...{
-                              ...field,
-                              ...constants.ARTWORK_PRICE_FIELD.inputProps,
-                              disabled: loading,
-                            }}
-                          />
-                        </FormControl>
-                        <FormMessage
-                          {...constants.ARTWORK_PRICE_FIELD.messageProps}
-                        />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`items.${index}.framePrice`}
-                    render={({ field }) => (
-                      <FormItem className="min-w-[80px]">
-                        <FormControl>
-                          <Input
-                            {...{
-                              ...field,
-                              ...constants.FRAME_PRICE_FIELD.inputProps,
-                              disabled: loading,
-                            }}
-                          />
-                        </FormControl>
-                        <FormMessage
-                          {...constants.FRAME_PRICE_FIELD.messageProps}
-                        />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="flex w-[80px] flex-col gap-2">
-                  <div className="flex grow items-center justify-end text-sm">
-                    {new Intl.NumberFormat("es-ES", {
-                      style: "currency",
-                      currency: "EUR",
-                    }).format(artworkTotalPrice(index))}
-                  </div>
-                  <div className="flex grow items-center justify-end text-sm">
-                    {new Intl.NumberFormat("es-ES", {
-                      style: "currency",
-                      currency: "EUR",
-                    }).format(frameTotalPrice(index))}
-                  </div>
-                </div>
-
-                <div className="flex items-end">
-                  <Button
-                    {...constants.REMOVE_BUTTON_PROPS}
-                    onClick={() => fieldArray.remove(index)}
-                  >
-                    <Trash2 />
-                  </Button>
-                </div>
-
-                <FormField
-                  control={form.control}
-                  name={`items.${index}.observations`}
-                  render={({ field }) => (
-                    <FormItem className="col-[1/6] grow">
-                      <FormControl>
-                        <Textarea
-                          {...{
-                            ...field,
-                            ...constants.OBSERVATIONS_ITEM_FIELD.inputProps,
-                            disabled: loading,
-                            rows: 1,
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage
-                        {...constants.OBSERVATIONS_ITEM_FIELD.messageProps}
-                      />
-                    </FormItem>
-                  )}
-                />
-
-                {index !== fieldArray.fields.length - 1 && (
-                  <Separator className="col-[1/8] my-2" />
-                )}
-              </div>
+                artworks={artworks}
+                fieldArray={fieldArray}
+                frames={frames}
+                index={index}
+                loading={loading}
+                pricings={pricings}
+              />
             ))}
 
             <div className="grid grid-cols-[2fr_2fr_1fr_1fr_1fr_1fr_auto] gap-2">
@@ -534,10 +254,7 @@ const BudgetForm = ({
               <div className="flex min-w-[80px] text-sm"></div>
               <div className="flex min-w-[80px] justify-end text-sm">Total</div>
               <div className="flex w-[80px] justify-end text-sm">
-                {new Intl.NumberFormat("es-ES", {
-                  style: "currency",
-                  currency: "EUR",
-                }).format(total)}
+                <Total />
               </div>
               <div className="w-10" />
             </div>

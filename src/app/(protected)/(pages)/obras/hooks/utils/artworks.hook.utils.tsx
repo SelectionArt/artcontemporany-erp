@@ -1,6 +1,7 @@
 // Vendors
 import Image from "next/image";
 import Link from "next/link";
+import { format } from "date-fns";
 // Components
 import { RowActions } from "@/components/data-table/components/row-actions/row-actions.component";
 import { SelectAllCheckbox } from "@/components/data-table/components/select-all-checkbox/select-all-checkbox.component";
@@ -32,7 +33,7 @@ function getColumnsConfig({
     },
     {
       cell: ({ row }) => (
-        <Link href={`/galeria/${row.original.id}`}>
+        <Link href={`/galeria/${row.original.id}`} target="_blank">
           <div className="relative m-2 size-16">
             <Image
               src={row.original.images[0].url}
@@ -128,6 +129,12 @@ function getColumnsConfig({
       header: ({ column }) => <ColumnSorter column={column} label="Tag" />,
       id: "tag",
       meta: "Tag",
+    },
+    {
+      accessorKey: "createdAt",
+      cell: ({ row }) => format(new Date(row.original.createdAt), "dd/MM/yyyy"),
+      header: ({ column }) => <ColumnSorter column={column} label="Fecha" />,
+      meta: "Fecha",
     },
     {
       cell: ({ row }) => (

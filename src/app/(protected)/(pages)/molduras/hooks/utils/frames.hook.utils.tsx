@@ -31,7 +31,7 @@ function getColumnsConfig({
     },
     {
       cell: ({ row }) => (
-        <Link href={`/molduras/${row.original.id}`}>
+        <Link href={`/molduras/${row.original.id}`} target="_blank">
           <div className="relative m-2 size-16">
             <Image
               src={row.original.images[0].url}
@@ -73,6 +73,19 @@ function getColumnsConfig({
       meta: "Galce",
     },
     {
+      accessorFn: (row) => row.material?.name || "",
+      header: ({ column }) => <ColumnSorter column={column} label="Material" />,
+      id: "material",
+      meta: "Material",
+    },
+    {
+      accessorKey: "description",
+      header: ({ column }) => (
+        <ColumnSorter column={column} label="Descripción" />
+      ),
+      meta: "Descripción",
+    },
+    {
       accessorFn: (row) => row.manufacturer?.name || "",
       header: ({ column }) => (
         <ColumnSorter column={column} label="Fabricante" />
@@ -86,19 +99,6 @@ function getColumnsConfig({
         <ColumnSorter column={column} label="Ref. fabricante" />
       ),
       meta: "Ref. fabricante",
-    },
-    {
-      accessorFn: (row) => row.material?.name || "",
-      header: ({ column }) => <ColumnSorter column={column} label="Material" />,
-      id: "material",
-      meta: "Material",
-    },
-    {
-      accessorKey: "description",
-      header: ({ column }) => (
-        <ColumnSorter column={column} label="Descripción" />
-      ),
-      meta: "Descripción",
     },
     {
       cell: ({ row }) => (

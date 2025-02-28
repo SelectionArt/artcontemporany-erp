@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 // Hooks
 import { GalleryHook } from "./hooks/gallery.hook";
 // Icons
-import { Ellipsis, LoaderCircle } from "lucide-react";
+import { Ellipsis, Eraser, LoaderCircle } from "lucide-react";
 // Types
 import type { GalleryProps } from "./types/gallery.container.types";
 
@@ -93,7 +93,7 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {filterConfig.map(({ key, title, options, mapOptions }) => (
           <Filter
             key={key}
@@ -105,6 +105,17 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
             }
           />
         ))}
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={() => {
+            filterConfig.forEach(({ key }) =>
+              handleFilterChange({ key, newValues: new Set() }),
+            );
+          }}
+        >
+          <Eraser />
+        </Button>
       </div>
 
       {paginatedArtworks.length > 0 ? (

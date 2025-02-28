@@ -158,7 +158,7 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
               <div>{artwork.referenceNumber}</div>
               {artwork.referenceCode && (
                 <>
-                  <div>Código de refernecia:</div>
+                  <div>Código de referencia:</div>
                   <div>{artwork.referenceCode}</div>
                 </>
               )}

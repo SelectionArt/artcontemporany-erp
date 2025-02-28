@@ -337,6 +337,7 @@ const gneratePDF = async ({
     orderConfirmation: "CONFIRMACIÓN DE PEDIDO",
     deliveryNote: "HOJA DE ENTREGA",
   };
+
   drawText({
     page,
     text: `${titleMap[type]}`,
@@ -358,6 +359,15 @@ const gneratePDF = async ({
     y: yPosition - lineSpacing * 2,
     font,
   });
+  if (budgetData.reference) {
+    drawText({
+      page,
+      text: `Referencia: ${budgetData.reference}`,
+      x: margins.left,
+      y: yPosition - lineSpacing * 3,
+      font,
+    });
+  }
 
   // Datos del cliente
   const maxTextWidth = 180;
@@ -366,7 +376,7 @@ const gneratePDF = async ({
     text: budgetData.client.name,
     x: width - maxTextWidth - margins.right,
     y: yPosition,
-    font,
+    font: boldFont,
   });
   if (budgetData.client.legalName) {
     yPosition -= drawText({
@@ -479,7 +489,7 @@ const gneratePDF = async ({
 
   for (const [index, item] of budgetData.budgetItems.entries()) {
     ({ page, yPosition } = ensureSpace({
-      neededSpace: 60,
+      neededSpace: 80,
       yPosition,
       margins,
       pdfDoc,
@@ -611,11 +621,26 @@ const gneratePDF = async ({
       });
     }
 
+    // Descripción
+    if (item.observations) {
+      drawText({
+        page,
+        maxWidth: columnWidths[0] + columnWidths[1] + columnWidths[2],
+        text: item.observations,
+        x: tableStartX,
+        y: yPosition - 80,
+        font,
+      });
+    }
+
+    if (item.observations) {
+      yPosition -= 20;
+    }
     if (artworkImageUrl) {
       yPosition -= 60;
     }
     if (index !== budgetData.budgetItems.length - 1) {
-      yPosition -= 30;
+      yPosition -= 40;
     }
   }
 
@@ -661,6 +686,25 @@ const gneratePDF = async ({
     font,
     align: "right",
   });
+
+  //Onservaciones
+  if (budgetData.observations) {
+    drawText({
+      page,
+      text: "OBSERVACIONES:",
+      x: margins.left,
+      y: yPosition,
+      font,
+    });
+    drawText({
+      page,
+      text: budgetData.observations,
+      x: margins.left,
+      y: yPosition - 16,
+      font,
+    });
+  }
+
   yPosition -= 16;
   if (budgetData.discount) {
     drawText({

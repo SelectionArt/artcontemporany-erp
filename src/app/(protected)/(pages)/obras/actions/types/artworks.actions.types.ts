@@ -43,6 +43,7 @@ type DeleteMultipleArtworksReturn = {
 type FetchArtworksReturn = {
   artist: Pick<Artist, "id" | "name">;
   colors: Pick<Color, "id" | "name" | "hex">[];
+  createdAt: Date;
   finish: Pick<Finish, "id" | "name"> | null;
   format: Pick<Format, "id" | "name"> | null;
   height: number;

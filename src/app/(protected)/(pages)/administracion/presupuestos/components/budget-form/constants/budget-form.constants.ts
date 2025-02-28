@@ -233,7 +233,7 @@ const constants = {
       { label: "Pendiente", value: "pending" },
       { label: "Aceptado", value: "accepted" },
       { label: "Rechazado", value: "rejected" },
-      { label: "Cerrado", value: "closed" },
+      { label: "Completado", value: "closed" },
     ],
   },
   SEND_ADDRESS_FIELD: {

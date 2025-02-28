@@ -4,40 +4,14 @@ import type {
   GetPriceReturn,
   GetRoundedItemProps,
   GetRoundedItemReturn,
-  UpdatePriceProps,
-} from "./types/budget-form.handlers.utils.types";
-
-const updatePrice = ({
-  form,
-  index,
-  pricingItems,
-  pricingId,
-  priceField,
-  width,
-  height,
-}: UpdatePriceProps): void => {
-  if (!pricingItems.length || !pricingId || !width || !height) return;
-
-  const newPrice = getPrice({
-    pricingItems,
-    width,
-    height,
-  });
-
-  const currentPrice = form.getValues(`items.${index}.${priceField}`);
-
-  if (currentPrice !== newPrice) {
-    form.setValue(`items.${index}.${priceField}`, newPrice, {
-      shouldValidate: true,
-    });
-  }
-};
+} from "./types/item.utils.types";
 
 const getPrice = ({
   pricingItems,
   width,
   height,
 }: GetPriceProps): GetPriceReturn => {
+  console.log({ pricingItems, width, height });
   const item = getRoundedItem({
     pricingItems,
     width,
@@ -82,4 +56,4 @@ const getRoundedItem = ({
   return sortedItems[0];
 };
 
-export { getPrice, updatePrice };
+export { getPrice };

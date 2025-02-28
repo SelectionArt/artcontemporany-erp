@@ -72,7 +72,7 @@ function getColumnsConfig({
               className: "bg-red-100 text-red-800",
             },
             closed: {
-              label: "Cerrado",
+              label: "Completado",
               className: "bg-orange-100 text-orange-800",
             },
           };

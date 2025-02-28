@@ -185,11 +185,12 @@ const fetchArtworks = async (): Promise<FetchArtworksReturn> => {
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
-        tag: true,
-        title: true,
+        createdAt: true,
+        height: true,
         referenceCode: true,
         referenceNumber: true,
-        height: true,
+        tag: true,
+        title: true,
         width: true,
         artist: {
           select: {
@@ -244,6 +245,7 @@ const fetchArtworks = async (): Promise<FetchArtworksReturn> => {
     return artworks.map((artwork) => ({
       artist: artwork.artist,
       colors: artwork.colors.map((color) => color.color),
+      createdAt: artwork.createdAt,
       finish: artwork.finish,
       format: artwork.format,
       height: artwork.height,
