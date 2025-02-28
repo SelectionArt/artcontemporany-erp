@@ -53,16 +53,21 @@ function getColumnsConfig({
       meta: "Título",
     },
     {
+      accessorFn: (row) =>
+        row.referenceCode
+          ? `${row.referenceNumber}-${row.referenceCode}`
+          : row.referenceNumber,
+      header: ({ column }) => (
+        <ColumnSorter column={column} label="Referencia" />
+      ),
+      id: "referenceNumber",
+      meta: "Referencia",
+    },
+    {
       accessorFn: (row) => row.artist.name,
       header: ({ column }) => <ColumnSorter column={column} label="Artista" />,
       id: "artist",
       meta: "Artista",
-    },
-    {
-      accessorFn: (row) => row.support?.name || "",
-      header: ({ column }) => <ColumnSorter column={column} label="Soporte" />,
-      id: "support",
-      meta: "Soporte",
     },
     {
       accessorKey: "width",
@@ -75,15 +80,16 @@ function getColumnsConfig({
       meta: "Alto",
     },
     {
-      accessorFn: (row) =>
-        row.referenceCode
-          ? `${row.referenceNumber}-${row.referenceCode}`
-          : row.referenceNumber,
-      header: ({ column }) => (
-        <ColumnSorter column={column} label="Referencia" />
-      ),
-      id: "referenceNumber",
-      meta: "Referencia",
+      accessorFn: (row) => row.support?.name || "",
+      header: ({ column }) => <ColumnSorter column={column} label="Soporte" />,
+      id: "support",
+      meta: "Soporte",
+    },
+    {
+      accessorFn: (row) => row.style?.name || "",
+      header: ({ column }) => <ColumnSorter column={column} label="Estilo" />,
+      id: "style",
+      meta: "Estilo",
     },
     {
       accessorFn: (row) => row.colors.map((color) => color.name).join(", "),
@@ -107,12 +113,6 @@ function getColumnsConfig({
       meta: "Color",
     },
     {
-      accessorFn: (row) => row.style?.name || "",
-      header: ({ column }) => <ColumnSorter column={column} label="Estilo" />,
-      id: "style",
-      meta: "Estilo",
-    },
-    {
       accessorFn: (row) => row.finish?.name || "",
       header: ({ column }) => <ColumnSorter column={column} label="Técnica" />,
       id: "finish",
@@ -128,7 +128,7 @@ function getColumnsConfig({
       accessorFn: (row) => row.tag,
       header: ({ column }) => <ColumnSorter column={column} label="Tag" />,
       id: "tag",
-      meta: "Tag",
+      meta: "Etiqueta",
     },
     {
       accessorKey: "createdAt",
