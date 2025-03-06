@@ -144,7 +144,9 @@ const deleteArtwork = async ({
       select: { publicId: true },
     });
 
-    await Promise.all(images.map((img) => deleteImage(img.publicId)));
+    if (images.length === 0) {
+      await Promise.all(images.map((img) => deleteImage(img.publicId)));
+    }
 
     await prisma.artwork.delete({ where: { id } });
 
@@ -166,7 +168,9 @@ const deleteMultipleArtworks = async ({
       select: { publicId: true },
     });
 
-    await Promise.all(images.map((img) => deleteImage(img.publicId)));
+    if (images.length === 0) {
+      await Promise.all(images.map((img) => deleteImage(img.publicId)));
+    }
 
     await prisma.artwork.deleteMany({ where: { id: { in: ids } } });
 

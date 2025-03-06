@@ -653,7 +653,7 @@ const gneratePDF = async ({
   );
   const discount = subtotal * (budgetData.discount / 100);
   const transport = budgetData.transport;
-  const iva = (subtotal - discount + transport) * 0.21;
+  const iva = (subtotal - discount + transport) * budgetData.tax;
   const total = subtotal - discount + transport + iva;
 
   ({ page, yPosition } = ensureSpace({
@@ -1050,6 +1050,14 @@ const deleteBudget = async ({
   id,
 }: DeleteBudgetProps): Promise<DeleteBudgetReturn> => {
   try {
+    const signature = await prisma.budgetSignature.findUnique({
+      where: { budgetId: id },
+    });
+
+    if (signature) {
+      await deleteImage(signature.publicId);
+    }
+
     await prisma.budget.delete({
       where: { id },
     });
@@ -1065,6 +1073,16 @@ const deleteBudget = async ({
 const deleteMultipleBudgets = async ({
   ids,
 }: DeleteMultipleBudgetsProps): Promise<DeleteMultipleBudgetsReturn> => {
+  const signatures = await prisma.budgetSignature.findMany({
+    where: { budgetId: { in: ids } },
+  });
+
+  if (signatures.length > 0) {
+    await Promise.all(
+      signatures.map((signature) => deleteImage(signature.publicId)),
+    );
+  }
+
   try {
     await prisma.budget.deleteMany({
       where: { id: { in: ids } },
