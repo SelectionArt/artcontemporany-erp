@@ -653,7 +653,7 @@ const gneratePDF = async ({
   );
   const discount = subtotal * (budgetData.discount / 100);
   const transport = budgetData.transport;
-  const iva = (subtotal - discount + transport) * budgetData.tax;
+  const iva = (subtotal - discount + transport) * (budgetData.tax / 100);
   const total = subtotal - discount + transport + iva;
 
   ({ page, yPosition } = ensureSpace({
