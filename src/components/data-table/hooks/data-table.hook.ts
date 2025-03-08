@@ -35,7 +35,7 @@ const DataTableHook = <TData, TValue>({
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase();
 
-  const customGlobalFilter: FilterFn<any> = (row, columnId, filterValue) => {
+  const customGlobalFilter: FilterFn<TData> = (row, columnId, filterValue) => {
     const cellValue = row.getValue(columnId);
     if (typeof cellValue !== "string") return false;
 
