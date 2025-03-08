@@ -1494,6 +1494,7 @@ const updateBudget = async ({
         client: budget.client,
         items: updatedItems.map((item) => ({
           ...item,
+          artworkPricingId: item.artworkPricingId ?? "",
           frameId: item.frameId ?? "",
           framePricingId: item.framePricingId ?? "",
           observations: item.observations ?? "",
