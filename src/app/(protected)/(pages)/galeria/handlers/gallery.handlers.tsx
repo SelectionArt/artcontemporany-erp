@@ -35,24 +35,32 @@ const downloadClickHandler = async ({
 }: DownloadClickHandlerProps): Promise<void> => {
   const zip = new JSZip();
 
-  const downloadPromises = selectedArtworks.flatMap((artwork) =>
-    artwork.images.map(async (image) => {
+  const downloadPromises = selectedArtworks.flatMap((artwork) => {
+    const totalImages = artwork.images.length;
+
+    return artwork.images.map(async (image, index) => {
       try {
         const response = await fetch(image.url);
         const blob = await response.blob();
         const fileExtension = image.url.split(".").pop();
-        const filename = `${artwork.referenceNumber}-${artwork.referenceCode}_${image.id}.${fileExtension}`;
+
+        const baseFilename = `${artwork.referenceNumber}-${artwork.referenceCode}_${artwork.width}x${artwork.height}_${artwork.artist.name}`;
+        const filename =
+          totalImages > 1
+            ? `${baseFilename}_${index + 1}.${fileExtension}`
+            : `${baseFilename}.${fileExtension}`;
+
         zip.file(filename, blob);
       } catch (error) {
         console.error(`Error descargando la imagen ${image.url}:`, error);
       }
-    }),
-  );
+    });
+  });
 
   await Promise.all(downloadPromises);
 
   const zipBlob = await zip.generateAsync({ type: "blob" });
-  saveAs(zipBlob, "artworks.zip");
+  saveAs(zipBlob, `${selectedArtworks[0].referenceNumber}.zip`);
 };
 
 const filterChangeHandler = ({

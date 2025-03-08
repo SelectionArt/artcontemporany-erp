@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 // Hooks
 import { GalleryHook } from "./hooks/gallery.hook";
 // Icons
-import { Ellipsis, Eraser, LoaderCircle } from "lucide-react";
+import { ArrowLeftRight, Ellipsis, Eraser, LoaderCircle } from "lucide-react";
 // Types
 import type { GalleryProps } from "./types/gallery.container.types";
 
@@ -33,6 +33,8 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
     paginatedArtworks,
     searchTerm,
     selectedArtworks,
+    setHeight,
+    setWidth,
     totalArtworks,
     width,
   } = GalleryHook({
@@ -65,6 +67,17 @@ const GalleryContainer = ({ gallery }: GalleryProps) => {
             onChange={handleWidthChange}
             className="w-full max-w-28 shrink-0"
           />
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => {
+              const temp = width;
+              setWidth(height);
+              setHeight(temp);
+            }}
+          >
+            <ArrowLeftRight />
+          </Button>
           <Input
             type="text"
             placeholder="Alto (cm)"

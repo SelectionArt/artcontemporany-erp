@@ -190,7 +190,7 @@ const BudgetForm = ({
                     {constants.REFERENCE_FIELD.labelText}
                   </FormLabel>
                   <FormControl>
-                    <Input
+                    <Textarea
                       {...{
                         ...field,
                         ...constants.REFERENCE_FIELD.inputProps,
@@ -226,7 +226,8 @@ const BudgetForm = ({
           </div>
 
           <div className="flex flex-col gap-2 overflow-y-auto rounded-md border p-4">
-            <div className="grid grid-cols-[2fr_2fr_1fr_1fr_1fr_1fr_auto] gap-2">
+            <div className="grid grid-cols-[auto_2fr_2fr_1fr_1fr_1fr_1fr_auto] gap-2">
+              <div className="w-10" />
               <div className="flex min-w-[160px] text-sm">Producto</div>
               <div className="flex min-w-[160px] text-sm">Tarifa</div>
               <div className="flex min-w-[80px] text-sm">Medidas</div>
@@ -247,7 +248,8 @@ const BudgetForm = ({
               />
             ))}
 
-            <div className="grid grid-cols-[2fr_2fr_1fr_1fr_1fr_1fr_auto] gap-2">
+            <div className="grid grid-cols-[auto_2fr_2fr_1fr_1fr_1fr_1fr_auto] gap-2">
+              <div className="w-10" />
               <div className="flex min-w-[160px] text-sm"></div>
               <div className="flex min-w-[160px] text-sm"></div>
               <div className="flex min-w-[80px] text-sm"></div>

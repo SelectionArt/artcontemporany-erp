@@ -11,12 +11,15 @@ const getPrice = ({
   width,
   height,
 }: GetPriceProps): GetPriceReturn => {
-  console.log({ pricingItems, width, height });
   const item = getRoundedItem({
     pricingItems,
     width,
     height,
   });
+
+  if (!item) {
+    return 0;
+  }
 
   return item.price;
 };
@@ -25,7 +28,7 @@ const getRoundedItem = ({
   pricingItems,
   width,
   height,
-}: GetRoundedItemProps): GetRoundedItemReturn => {
+}: GetRoundedItemProps): GetRoundedItemReturn | null => {
   const sortedItems = pricingItems.sort(
     (a, b) => a.width * a.height - b.width * b.height,
   );
@@ -50,7 +53,7 @@ const getRoundedItem = ({
     Number(width) > sortedItems[sortedItems.length - 1].width ||
     Number(height) > sortedItems[sortedItems.length - 1].height
   ) {
-    return sortedItems[sortedItems.length - 1];
+    return null;
   }
 
   return sortedItems[0];

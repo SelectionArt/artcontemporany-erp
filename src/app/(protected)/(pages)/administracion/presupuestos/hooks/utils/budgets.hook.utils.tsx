@@ -1,3 +1,5 @@
+// Vendors
+import { format } from "date-fns";
 // Components
 import { Badge } from "@/components/ui/badge";
 import { RowActions } from "@/components/data-table/components/row-actions/row-actions.component";
@@ -39,20 +41,25 @@ function getColumnsConfig({
       id: "selection",
     },
     {
-      accessorKey: "number",
+      accessorFn: (row) => String(row.number),
       header: ({ column }) => <ColumnSorter column={column} label="Número" />,
+      id: "number",
       meta: "Número",
     },
+
     {
-      accessorKey: "date",
+      accessorFn: (row) => format(new Date(row.date), "dd/MM/yyyy"),
+      cell: ({ row }) => format(new Date(row.original.date), "dd/MM/yyyy"),
       header: ({ column }) => <ColumnSorter column={column} label="Fecha" />,
+      id: "date",
       meta: "Fecha",
     },
     {
-      accessorKey: "client",
+      accessorFn: (row) => row.client.name,
       cell: ({ row }) => row.original.client.name,
       header: "Cliente",
       id: "client",
+      meta: "Cliente",
     },
     {
       accessorKey: "status",

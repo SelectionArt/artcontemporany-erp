@@ -106,6 +106,8 @@ const GalleryHook = ({ gallery }: GalleryHookProps): GalleryHookReturn => {
     paginatedArtworks,
     searchTerm,
     selectedArtworks,
+    setHeight,
+    setWidth,
     totalArtworks,
     width,
   };

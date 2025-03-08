@@ -2,6 +2,7 @@
 // Vendors
 import { useState } from "react";
 import {
+  FilterFn,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -28,6 +29,19 @@ const DataTableHook = <TData, TValue>({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [sorting, setSorting] = useState<SortingState>([]);
 
+  const normalizeText = (text: string) =>
+    text
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+  const customGlobalFilter: FilterFn<any> = (row, columnId, filterValue) => {
+    const cellValue = row.getValue(columnId);
+    if (typeof cellValue !== "string") return false;
+
+    return normalizeText(cellValue).includes(normalizeText(filterValue));
+  };
+
   const table = useReactTable({
     columns,
     data,
@@ -47,6 +61,7 @@ const DataTableHook = <TData, TValue>({
       sorting,
     },
     autoResetPageIndex: false,
+    globalFilterFn: customGlobalFilter,
   });
 
   return {

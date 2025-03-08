@@ -41,7 +41,10 @@ const FramesContainer = ({ frames, filters }: FramesProps) => {
       <DataTable
         columns={columns}
         data={data}
-        initialColumnVisibility={{}}
+        initialColumnVisibility={{
+          manufacturer: false,
+          reference: false,
+        }}
         multipleSelectActionsProps={multipleSelectActionsProps}
         onCreateRecord={handleCreate}
       />

@@ -33,13 +33,18 @@ function getColumnsConfig({
     },
     {
       cell: ({ row }) => (
-        <Link href={`/galeria/${row.original.id}`} target="_blank">
+        <Link
+          href={`/galeria/${row.original.id}`}
+          target="_blank"
+          prefetch={false}
+        >
           <div className="relative m-2 size-16">
             <Image
               src={row.original.images[0].url}
               alt="Imagen de la obra"
               fill={true}
               className="rounded-md border object-cover"
+              sizes="64px"
             />
           </div>
         </Link>

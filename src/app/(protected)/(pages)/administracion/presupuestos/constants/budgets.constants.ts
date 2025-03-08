@@ -19,7 +19,7 @@ const constants = {
     number: 0,
     observations: "",
     reference: "",
-    validity: 30,
+    validity: "30",
     discount: 0,
     transport: 0,
     tax: 21,

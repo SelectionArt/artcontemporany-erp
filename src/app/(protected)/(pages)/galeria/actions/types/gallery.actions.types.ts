@@ -21,6 +21,7 @@ type FetchGalleryReturn = {
     referenceNumber: number;
     style: Pick<Style, "id" | "name"> | null;
     support: Pick<Support, "id" | "name"> | null;
+    tag: string;
     title: string;
     width: number;
   }[];

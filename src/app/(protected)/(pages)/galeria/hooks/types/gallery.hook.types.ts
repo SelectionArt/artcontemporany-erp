@@ -1,4 +1,5 @@
 // Types
+import type { Dispatch, SetStateAction } from "react";
 import type { FetchGalleryReturn } from "../../actions/types/gallery.actions.types";
 import {
   GetFiltersConfigReturn,
@@ -19,6 +20,8 @@ type GalleryHookReturn = Omit<GalleryHandlersReturn, "handleLoadMore"> & {
   paginatedArtworks: GetFilteredArtworksReturn;
   searchTerm: string;
   selectedArtworks: FetchGalleryReturn["artworks"];
+  setHeight: Dispatch<SetStateAction<string>>;
+  setWidth: Dispatch<SetStateAction<string>>;
   totalArtworks: number;
   width: string;
 };

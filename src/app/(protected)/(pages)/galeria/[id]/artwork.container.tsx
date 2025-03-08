@@ -44,12 +44,20 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
   const handleDownload = async (): Promise<void> => {
     const zip = new JSZip();
 
-    const downloadPromises = artwork.images.map(async (image) => {
+    const totalImages = artwork.images.length;
+
+    const downloadPromises = artwork.images.map(async (image, index) => {
       try {
         const response = await fetch(image.url);
         const blob = await response.blob();
         const fileExtension = image.url.split(".").pop();
-        const filename = `${artwork.referenceNumber}-${artwork.referenceCode}_${image.id}.${fileExtension}`;
+
+        const baseFilename = `${artwork.referenceNumber}-${artwork.referenceCode}_${artwork.width}x${artwork.height}_${artwork.artist.name}`;
+        const filename =
+          totalImages > 1
+            ? `${baseFilename}_${index + 1}.${fileExtension}`
+            : `${baseFilename}.${fileExtension}`;
+
         zip.file(filename, blob);
       } catch (error) {
         console.error(`Error descargando la imagen ${image.url}:`, error);
@@ -74,7 +82,7 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
                   className="rounded-lg object-contain"
                   fill={true}
                   priority={true}
-                  sizes="300px"
+                  sizes="500px"
                   src={selectedImage}
                 />
               </div>
@@ -118,7 +126,7 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
                     alt="Miniatura"
                     className="rounded-lg object-cover"
                     fill={true}
-                    sizes="300px"
+                    sizes="125px"
                     src={image.url}
                   />
                 </button>

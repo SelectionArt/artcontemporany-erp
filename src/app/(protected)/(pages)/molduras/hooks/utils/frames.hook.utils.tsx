@@ -31,12 +31,17 @@ function getColumnsConfig({
     },
     {
       cell: ({ row }) => (
-        <Link href={`/molduras/${row.original.id}`} target="_blank">
+        <Link
+          href={`/molduras/${row.original.id}`}
+          target="_blank"
+          prefetch={false}
+        >
           <div className="relative m-2 size-16">
             <Image
               src={row.original.images[0].url}
               alt="Imagen de la moldura"
               fill={true}
+              sizes="64px"
               className="rounded-md border object-cover"
             />
           </div>

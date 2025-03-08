@@ -243,7 +243,7 @@ model Budget {
   number        Int
   observations  String?
   reference     String?
-  validity      Int
+  validity      String
   discount      Int
   transport     Int
   tax           Int
@@ -263,7 +263,7 @@ model BudgetItem {
   id               String   @id @default(cuid())
   artworkId        String
   artworkPrice     Int
-  artworkPricingId String
+  artworkPricingId String?
   frameId          String?
   framePrice       Int
   framePricingId   String?
@@ -276,7 +276,7 @@ model BudgetItem {
   updatedAt        DateTime @updatedAt
 
   artwork        Artwork  @relation(fields: [artworkId], references: [id])
-  artworkPricing Pricing  @relation(name: "ArtworkPricing", fields: [artworkPricingId], references: [id])
+  artworkPricing Pricing? @relation(name: "ArtworkPricing", fields: [artworkPricingId], references: [id])
   budget         Budget   @relation(fields: [budgetId], references: [id], onDelete: Cascade)
   frame          Frame?   @relation(fields: [frameId], references: [id])
   framePricing   Pricing? @relation(name: "FramePricing", fields: [framePricingId], references: [id])

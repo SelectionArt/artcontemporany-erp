@@ -492,16 +492,17 @@ const submitEmailHandler = async ({
       ],
     );
 
-    const finalSubject = values.subject.replace(
-      /{{type}}/g,
-      subjectMap[
-        values.type as
-          | "budget"
-          | "invoice"
-          | "deliveryNote"
-          | "orderConfirmation"
-      ],
-    );
+    const finalSubject =
+      values.subject.replace(
+        /{{type}}/g,
+        subjectMap[
+          values.type as
+            | "budget"
+            | "invoice"
+            | "deliveryNote"
+            | "orderConfirmation"
+        ],
+      ) + ` - ${selectedRow.number}`;
 
     const response = await sendEmail({
       emails: recipientEmails,

@@ -30,7 +30,7 @@ const generateMetadata = async ({
 
 const ArtworkPage = async ({ params }: ArtworkPageProps) => {
   const { id } = await params;
-  
+
   const artwork = await fetchArtwork({ id });
 
   if (!artwork) {

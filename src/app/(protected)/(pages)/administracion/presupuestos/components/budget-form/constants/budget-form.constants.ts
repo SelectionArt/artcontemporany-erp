@@ -138,12 +138,12 @@ const constants = {
     labelProps: {
       htmlFor: "validity",
     },
-    labelText: "Validez",
+    labelText: "Tiempo de entrega",
     inputProps: {
       id: "validity",
       name: "validity",
-      placeholder: "Validez del presupuesto",
-      type: "number",
+      placeholder: "Tiempo de entrega del presupuesto",
+      type: "text",
       ["aria-describedby"]: "validity-helper",
     },
     messageProps: {

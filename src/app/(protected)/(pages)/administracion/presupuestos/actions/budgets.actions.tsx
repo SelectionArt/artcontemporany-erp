@@ -158,30 +158,62 @@ const drawImage = async ({
   maxWidth,
   maxHeight,
 }: DrawImageProps) => {
-  const imageBytes = await fetch(url).then((res) => res.arrayBuffer());
-  const image = url.endsWith(".png")
-    ? await pdfDoc.embedPng(imageBytes)
-    : await pdfDoc.embedJpg(imageBytes);
+  try {
+    const response = await fetch(url);
 
-  const originalWidth = image.width;
-  const originalHeight = image.height;
+    if (!response.ok) {
+      console.error(`Error al descargar imagen (${response.status}): ${url}`);
+      return;
+    }
 
-  const aspectRatio = originalWidth / originalHeight;
+    const imageBytes = await response.arrayBuffer();
 
-  let width = maxWidth;
-  let height = maxWidth / aspectRatio;
+    if (imageBytes.byteLength === 0) {
+      console.error(`La imagen descargada está vacía: ${url}`);
+      return;
+    }
 
-  if (height > maxHeight) {
-    height = maxHeight;
-    width = maxHeight * aspectRatio;
+    let image;
+    if (url.endsWith(".png")) {
+      try {
+        image = await pdfDoc.embedPng(imageBytes);
+      } catch (e) {
+        console.error(`Error al procesar PNG: ${url}`, e);
+        return;
+      }
+    } else if (url.endsWith(".jpg") || url.endsWith(".jpeg")) {
+      try {
+        image = await pdfDoc.embedJpg(imageBytes);
+      } catch (e) {
+        console.error(`Error al procesar JPG: ${url}`, e);
+        return;
+      }
+    } else {
+      console.error(`Formato de imagen no soportado: ${url}`);
+      return;
+    }
+
+    const originalWidth = image.width;
+    const originalHeight = image.height;
+    const aspectRatio = originalWidth / originalHeight;
+
+    let width = maxWidth;
+    let height = maxWidth / aspectRatio;
+
+    if (height > maxHeight) {
+      height = maxHeight;
+      width = maxHeight * aspectRatio;
+    }
+
+    page.drawImage(image, {
+      x,
+      y,
+      width,
+      height,
+    });
+  } catch (error) {
+    console.error(`Error en drawImage(): ${url}`, error);
   }
-
-  page.drawImage(image, {
-    x,
-    y,
-    width,
-    height,
-  });
 };
 
 const formatter = new Intl.NumberFormat("es-ES", {
@@ -533,7 +565,7 @@ const gneratePDF = async ({
     drawText({
       page,
       maxWidth: 120,
-      text: `${item.artwork.artist.name} ${item.width}x${item.height}`,
+      text: `${item.artwork.artist.name} ${item.width}x${item.height} cm ${item.artwork.title}`,
       x: tableStartX + columnWidths[0] + columnWidths[1],
       y: yPosition,
       font,
@@ -989,7 +1021,7 @@ const createBudget = async ({
                 data: {
                   artworkId: item.artworkId,
                   artworkPrice: item.artworkPrice,
-                  artworkPricingId: item.artworkPricingId,
+                  artworkPricingId: item.artworkPricingId || null,
                   frameId: item.frameId || null,
                   framePrice: item.framePrice ?? 0,
                   framePricingId: item.framePricingId || null,
@@ -1029,6 +1061,7 @@ const createBudget = async ({
         client: budget.client,
         items: createdItems.map((item) => ({
           ...item,
+          artworkPricingId: item.artworkPricingId ?? "",
           frameId: item.frameId ?? "",
           framePricingId: item.framePricingId ?? "",
           observations: item.observations ?? "",
@@ -1177,6 +1210,7 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
       sendAddress: budget.sendAddress ?? "",
       items: budgetItems.map((item) => ({
         ...item,
+        artworkPricingId: item.artworkPricingId ?? "",
         frameId: item.frameId ?? "",
         framePricingId: item.framePricingId ?? "",
         observations: item.observations ?? "",
@@ -1550,10 +1584,11 @@ const sendEmail = async ({
     const buffer = Buffer.from(arrayBuffer);
 
     const emailResponse = await resend.emails.send({
-      from: "noreply@gesartcontemporany.com",
+      from: `"Art Contemporany" <noreply@gesartcontemporany.com>`,
       to: emails,
       subject,
       react: <BudgetEmail subject={subject} message={message} />,
+      replyTo: "info@artcontemporany.com",
       attachments: [
         {
           filename: fileName,

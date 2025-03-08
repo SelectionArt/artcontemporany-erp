@@ -7,7 +7,7 @@ import type { FetchGalleryReturn } from "./types/gallery.actions.types";
 const fetchGallery = async (): Promise<FetchGalleryReturn> => {
   try {
     const [artworks, artists, colors, finishes, formats, styles, supports] =
-      await Promise.all([
+      await prisma.$transaction([
         prisma.artwork.findMany({
           orderBy: { createdAt: "desc" },
           select: {
@@ -16,6 +16,7 @@ const fetchGallery = async (): Promise<FetchGalleryReturn> => {
             referenceCode: true,
             referenceNumber: true,
             height: true,
+            tag: true,
             width: true,
             artist: {
               select: {
@@ -71,6 +72,7 @@ const fetchGallery = async (): Promise<FetchGalleryReturn> => {
             id: true,
             name: true,
           },
+          orderBy: { name: "asc" },
         }),
         prisma.color.findMany({
           select: {
@@ -78,30 +80,35 @@ const fetchGallery = async (): Promise<FetchGalleryReturn> => {
             name: true,
             hex: true,
           },
+          orderBy: { name: "asc" },
         }),
         prisma.finish.findMany({
           select: {
             id: true,
             name: true,
           },
+          orderBy: { name: "asc" },
         }),
         prisma.format.findMany({
           select: {
             id: true,
             name: true,
           },
+          orderBy: { name: "asc" },
         }),
         prisma.style.findMany({
           select: {
             id: true,
             name: true,
           },
+          orderBy: { name: "asc" },
         }),
         prisma.support.findMany({
           select: {
             id: true,
             name: true,
           },
+          orderBy: { name: "asc" },
         }),
       ]);
 
@@ -118,6 +125,7 @@ const fetchGallery = async (): Promise<FetchGalleryReturn> => {
         referenceNumber: artwork.referenceNumber,
         style: artwork.style,
         support: artwork.support,
+        tag: artwork.tag ?? "",
         title: artwork.title ?? "",
         width: artwork.width,
       })),

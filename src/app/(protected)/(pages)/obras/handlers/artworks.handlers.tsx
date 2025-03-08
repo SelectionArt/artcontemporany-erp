@@ -68,12 +68,20 @@ const downloadHandler = async ({
 }: DownloadHandlerProps): Promise<void> => {
   const zip = new JSZip();
 
-  const downloadPromises = row.images.map(async (image) => {
+  const totalImages = row.images.length;
+
+  const downloadPromises = row.images.map(async (image, index) => {
     try {
       const response = await fetch(image.url);
       const blob = await response.blob();
       const fileExtension = image.url.split(".").pop();
-      const filename = `${row.referenceNumber}-${row.referenceCode}_${image.id}.${fileExtension}`;
+
+      const baseFilename = `${row.referenceNumber}-${row.referenceCode}_${row.width}x${row.height}_${row.artist.name}`;
+      const filename =
+        totalImages > 1
+          ? `${baseFilename}_${index + 1}.${fileExtension}`
+          : `${baseFilename}.${fileExtension}`;
+
       zip.file(filename, blob);
     } catch (error) {
       console.error(`Error descargando la imagen ${image.url}:`, error);

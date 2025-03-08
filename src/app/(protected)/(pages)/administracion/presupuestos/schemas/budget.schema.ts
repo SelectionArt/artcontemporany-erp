@@ -17,9 +17,7 @@ const budgetSchema = z.object({
         artworkPrice: z.coerce
           .number({ required_error: "El precio es requerido" })
           .positive("El precio debe ser un número positivo"),
-        artworkPricingId: z
-          .string({ required_error: "La tarifa de la obra es requerida" })
-          .min(1, "La tarifa de la obra es requerida"),
+        artworkPricingId: z.string().optional(),
         frameId: z.string().optional(),
         framePrice: z.coerce.number().optional(),
         framePricingId: z.string().optional(),
@@ -42,9 +40,9 @@ const budgetSchema = z.object({
     .positive("El número debe ser un número positivo"),
   observations: z.string().optional(),
   reference: z.string().optional(),
-  validity: z.coerce
-    .number({ required_error: "La validez es requerida" })
-    .positive("La validez debe ser un número positivo"),
+  validity: z
+    .string({ required_error: "La validez es requerida" })
+    .min(1, "La validez es requerida"),
   discount: z.coerce.number({ required_error: "El descuento es requerido" }),
   transport: z.coerce.number({ required_error: "El transporte es requerido" }),
   tax: z.coerce.number({ required_error: "El IVA es requerido" }),

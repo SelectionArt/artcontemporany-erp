@@ -31,7 +31,10 @@ function getColumnsConfig({
     {
       accessorKey: "name",
       cell: ({ row }) => (
-        <Link href={`/administracion/clientes/${row.original.id}`}>
+        <Link
+          href={`/administracion/clientes/${row.original.id}`}
+          prefetch={false}
+        >
           {row.original.name}
         </Link>
       ),

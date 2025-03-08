@@ -23,7 +23,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 // Icons
-import { Trash2 } from "lucide-react";
+import { Eraser, Trash2 } from "lucide-react";
 // Types
 import type {
   Artwork,
@@ -281,7 +281,29 @@ const Item = ({
   }, []);
 
   return (
-    <div className="grid grid-cols-[2fr_2fr_1fr_1fr_1fr_1fr_auto] gap-2">
+    <div className="grid grid-cols-[auto_2fr_2fr_1fr_1fr_1fr_1fr_auto] gap-2">
+      <div className="flex flex-col gap-2">
+        <Button
+          {...{ size: "icon", type: "button", variant: "ghost" }}
+          onClick={() => {
+            setValue(`items.${index}.artworkId`, "");
+            setValue(`items.${index}.artworkPricingId`, "");
+            setValue(`items.${index}.artworkPrice`, 0);
+          }}
+        >
+          <Eraser />
+        </Button>
+        <Button
+          {...{ size: "icon", type: "button", variant: "ghost" }}
+          onClick={() => {
+            setValue(`items.${index}.frameId`, "");
+            setValue(`items.${index}.framePricingId`, "");
+            setValue(`items.${index}.framePrice`, 0);
+          }}
+        >
+          <Eraser />
+        </Button>
+      </div>
       <div className="flex flex-col gap-2">
         <FormField
           control={control}
@@ -331,7 +353,7 @@ const Item = ({
                   field.onChange(value);
                   handleArtworkPricingsValueChange(value);
                 }}
-                defaultValue={field.value}
+                value={field.value}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -362,7 +384,7 @@ const Item = ({
                   field.onChange(value);
                   handleFramePricingsValueChange(value);
                 }}
-                defaultValue={field.value}
+                value={field.value}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -519,7 +541,7 @@ const Item = ({
         control={control}
         name={`items.${index}.observations`}
         render={({ field }) => (
-          <FormItem className="col-[1/6] grow">
+          <FormItem className="col-[2/7] grow">
             <FormControl>
               <Textarea
                 {...{

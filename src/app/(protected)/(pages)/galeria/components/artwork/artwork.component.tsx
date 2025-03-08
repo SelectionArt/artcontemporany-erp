@@ -20,6 +20,7 @@ const Artwork = ({ artwork, onSelect }: ArtworkProps) => {
         className="relative h-60"
         href={`/galeria/${artwork.id}`}
         target="_blank"
+        prefetch={false}
       >
         <Image
           alt={artwork.title}

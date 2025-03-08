@@ -39,7 +39,7 @@ const FrameContainer = ({ frame }: FrameProps) => {
                   className="rounded-lg object-contain"
                   fill={true}
                   priority={true}
-                  sizes="300px"
+                  sizes="500px"
                   src={selectedImage}
                 />
               </div>
@@ -52,7 +52,7 @@ const FrameContainer = ({ frame }: FrameProps) => {
                   alt={frame.name}
                   className="object-contain"
                   fill={true}
-                  sizes="300px"
+                  sizes="100vw"
                   src={selectedImage}
                 />
               </div>
@@ -71,7 +71,7 @@ const FrameContainer = ({ frame }: FrameProps) => {
                     alt="Miniatura"
                     className="rounded-lg object-cover"
                     fill={true}
-                    sizes="300px"
+                    sizes="125px"
                     src={image.url}
                   />
                 </button>
@@ -89,7 +89,7 @@ const FrameContainer = ({ frame }: FrameProps) => {
             </h1>
             {frame.manufacturer && (
               <p className="text-muted-foreground text-lg">
-                Fabricante: {frame.manufacturer.name}
+                {frame.description}
               </p>
             )}
           </div>

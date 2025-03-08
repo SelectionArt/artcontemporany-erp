@@ -272,12 +272,13 @@ const fetchArtworks = async (): Promise<FetchArtworksReturn> => {
 const fetchFilters = async () => {
   try {
     const [artists, colors, finishes, formats, styles, supports] =
-      await Promise.all([
+      await prisma.$transaction([
         prisma.artist.findMany({
           select: {
             id: true,
             name: true,
           },
+          orderBy: { name: "asc" },
         }),
         prisma.color.findMany({
           select: {
@@ -285,30 +286,35 @@ const fetchFilters = async () => {
             name: true,
             hex: true,
           },
+          orderBy: { name: "asc" },
         }),
         prisma.finish.findMany({
           select: {
             id: true,
             name: true,
           },
+          orderBy: { name: "asc" },
         }),
         prisma.format.findMany({
           select: {
             id: true,
             name: true,
           },
+          orderBy: { name: "asc" },
         }),
         prisma.style.findMany({
           select: {
             id: true,
             name: true,
           },
+          orderBy: { name: "asc" },
         }),
         prisma.support.findMany({
           select: {
             id: true,
             name: true,
           },
+          orderBy: { name: "asc" },
         }),
       ]);
 

@@ -189,9 +189,15 @@ const fetchFrames = async (): Promise<FetchFramesReturn> => {
 
 const fetchFilters = async () => {
   try {
-    const [manufacturers, materials] = await Promise.all([
-      prisma.manufacturer.findMany(),
-      prisma.material.findMany(),
+    const [manufacturers, materials] = await prisma.$transaction([
+      prisma.manufacturer.findMany({
+        select: { id: true, name: true },
+        orderBy: { name: "asc" },
+      }),
+      prisma.material.findMany({
+        select: { id: true, name: true },
+        orderBy: { name: "asc" },
+      }),
     ]);
 
     return {

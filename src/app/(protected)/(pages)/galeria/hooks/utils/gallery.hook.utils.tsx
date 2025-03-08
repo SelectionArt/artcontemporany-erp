@@ -97,7 +97,12 @@ const getFilteredArtworks = ({
       if (activeFilters.size === 0) return true;
       const artworkValue = artwork[artworkKey];
       if (key === "colors") {
-        return artwork.colors.some((color) => activeFilters.has(color.id));
+        const artworkColorIds = new Set(
+          artwork.colors.map((color) => color.id),
+        );
+        return [...activeFilters].every((selectedColor) =>
+          artworkColorIds.has(selectedColor),
+        );
       }
       if (
         artworkValue &&
@@ -122,6 +127,7 @@ const getFilteredArtworks = ({
           artwork.format?.name,
           artwork.style?.name,
           artwork.support?.name,
+          artwork.tag,
         ]
           .filter(Boolean)
           .some((field) => field?.toLowerCase().includes(lowerSearchTerm))
