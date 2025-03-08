@@ -49,8 +49,8 @@ type FetchFramesReturn = {
 }[];
 
 type FetchFiltersReturn = {
-  manufacturers: Manufacturer[];
-  materials: Material[];
+  manufacturers: Pick<Manufacturer, "id" | "name">[];
+  materials: Pick<Material, "id" | "name">[];
 };
 
 type UpdateFrameProps = {
