@@ -92,6 +92,40 @@ const addNewPage = ({
   return { height, page, yPosition, width };
 };
 
+const getTextHeight = ({
+  text,
+  maxWidth,
+  font,
+  fontSize = 10,
+  page,
+}: Omit<DrawTextProps, "x" | "y" | "align" | "color">): number => {
+  const lines = text.split("\n");
+  let yOffset = 0;
+
+  lines.forEach((lineText) => {
+    const words = lineText.split(" ");
+    let line = "";
+
+    words.forEach((word) => {
+      const testLine = line.length > 0 ? `${line} ${word}` : word;
+      const textWidth = font.widthOfTextAtSize(testLine, fontSize);
+
+      if (textWidth < (maxWidth ?? page.getWidth())) {
+        line = testLine;
+      } else {
+        line = word;
+        yOffset += fontSize * 1.5;
+      }
+    });
+
+    if (line.length > 0) {
+      yOffset += fontSize * 1.5;
+    }
+  });
+
+  return yOffset;
+};
+
 const drawText = ({
   page,
   text,
@@ -528,6 +562,21 @@ const gneratePDF = async ({
       page,
     }));
 
+    const description = [
+      item.artwork.artist?.name,
+      item.width && item.height ? `${item.width}x${item.height} cm` : null,
+      item.artwork.title,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    const secondItemYPosition = getTextHeight({
+      page,
+      text: description,
+      maxWidth: 120,
+      font,
+    });
+
     // Artículo
     drawText({
       page,
@@ -541,7 +590,7 @@ const gneratePDF = async ({
         page,
         text: `${item.frame.reference}`,
         x: tableStartX,
-        y: yPosition - 20,
+        y: yPosition - secondItemYPosition,
         font,
       });
     }
@@ -565,18 +614,19 @@ const gneratePDF = async ({
     drawText({
       page,
       maxWidth: 120,
-      text: `${item.artwork.artist.name} ${item.width}x${item.height} cm ${item.artwork.title}`,
+      text: description,
       x: tableStartX + columnWidths[0] + columnWidths[1],
       y: yPosition,
       font,
     });
+
     if (item.frame) {
       drawText({
         page,
         maxWidth: 120,
         text: `Moldura ${item.frame.name}`,
         x: tableStartX + columnWidths[0] + columnWidths[1],
-        y: yPosition - 20,
+        y: yPosition - secondItemYPosition,
         font,
       });
     }
@@ -593,7 +643,7 @@ const gneratePDF = async ({
       page,
       text: `${item.quantity}`,
       x: tableStartX + columnWidths[0] + columnWidths[1] + columnWidths[2],
-      y: yPosition - 20,
+      y: yPosition - secondItemYPosition,
       font,
     });
 
@@ -626,7 +676,7 @@ const gneratePDF = async ({
           columnWidths[3] +
           columnWidths[4] -
           5,
-        y: yPosition - 20,
+        y: yPosition - secondItemYPosition,
         font,
         align: "right",
       });
@@ -647,13 +697,13 @@ const gneratePDF = async ({
         page,
         text: formatter.format(item.framePrice * item.quantity),
         x: tableEndX,
-        y: yPosition - 20,
+        y: yPosition - secondItemYPosition,
         font,
         align: "right",
       });
     }
 
-    // Descripción
+    // Observaciones
     if (item.observations) {
       drawText({
         page,
@@ -882,9 +932,15 @@ const gneratePDF = async ({
     y: yPosition,
     font,
   });
+
+  const isNumber = typeof budgetData.validity === "number";
+  const validity = isNumber
+    ? `${budgetData.validity} días`
+    : budgetData.validity;
+
   drawText({
     page,
-    text: `${budgetData.validity} días`,
+    text: validity,
     x: 140,
     y: yPosition,
     font,
@@ -1459,7 +1515,7 @@ const updateBudget = async ({
                 data: {
                   artworkId: item.artworkId,
                   artworkPrice: item.artworkPrice,
-                  artworkPricingId: item.artworkPricingId,
+                  artworkPricingId: item.artworkPricingId || null,
                   frameId: item.frameId || null,
                   framePrice: item.framePrice ?? 0,
                   framePricingId: item.framePricingId || null,
@@ -1554,6 +1610,24 @@ const BudgetEmail = ({ subject, message }: BudgetEmailProps) => {
                 No responda a este mensaje. Si tiene alguna consulta, no dude en
                 ponerse en contacto con nostros a traves de nuestro email
                 info@artcontemporany.com
+              </Text>
+            </Section>
+
+            <Hr className="my-4 border-t border-slate-300" />
+
+            <Section>
+              <Text className="text-xs text-slate-500">
+                <strong>_________ ADVERTENCIA LEGAL _________________</strong>
+                <br />
+                La información contenida en este mensaje y/o archivo(s)
+                adjunto(s) es confidencial/privilegiada y está destinada a ser
+                leída sólo por la(s) persona(s) a la(s) que va dirigida. Si
+                usted lee este mensaje y no es el destinatario o ha recibido
+                esta comunicación por error, le informamos que está totalmente
+                prohibida, y puede ser ilegal, cualquier divulgación,
+                distribución o reproducción de esta comunicación, y le rogamos
+                que nos lo notifique inmediatamente y nos devuelva el mensaje
+                original a la dirección arriba mencionada. Gracias.
               </Text>
             </Section>
           </Container>

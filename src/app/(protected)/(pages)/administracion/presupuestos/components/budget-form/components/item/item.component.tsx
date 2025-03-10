@@ -313,7 +313,7 @@ const Item = ({
               <FormControl>
                 <AutoComplete
                   emptyMessage="No se han encontrado obras."
-                  placeholder="Referncia obra"
+                  placeholder="Referencia obra"
                   items={artworksValues()}
                   onSelectedValueChange={field.onChange}
                   selectedValue={field.value}
@@ -331,7 +331,7 @@ const Item = ({
               <FormControl>
                 <AutoComplete
                   emptyMessage="No se han encontrado molduras."
-                  placeholder="Referncia moldura"
+                  placeholder="Referencia moldura"
                   items={framesValues()}
                   onSelectedValueChange={field.onChange}
                   selectedValue={field.value}

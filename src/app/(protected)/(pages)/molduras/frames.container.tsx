@@ -42,7 +42,7 @@ const FramesContainer = ({ frames, filters }: FramesProps) => {
         columns={columns}
         data={data}
         initialColumnVisibility={{
-          manufacturer: false,
+          manufacturerReference: false,
           reference: false,
         }}
         multipleSelectActionsProps={multipleSelectActionsProps}
