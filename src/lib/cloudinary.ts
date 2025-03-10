@@ -39,9 +39,15 @@ const uploadImage = async ({
 
     return new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
-        { folder, tags: [reference] },
+        {
+          folder,
+          tags: [reference],
+          resource_type: "auto",
+          chunk_size: 10 * 1024 * 1024,
+        },
         (error, result) => {
           if (error) {
+            console.error("Error en la subida a Cloudinary:", error);
             reject(error);
           } else if (result) {
             resolve({
@@ -54,10 +60,15 @@ const uploadImage = async ({
         },
       );
 
+      uploadStream.on("error", (err) => {
+        console.error("Error en el stream de subida:", err);
+        reject(err);
+      });
+
       uploadStream.end(buffer);
     });
   } catch (error) {
-    console.error("Error en la subida de imagen:", error);
+    console.error("Error en la conversión del archivo:", error);
     return null;
   }
 };
