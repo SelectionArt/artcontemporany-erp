@@ -35,27 +35,19 @@ const uploadImage = async ({
 }: UploadImageToCloudinaryProps): Promise<UploadImageToCloudinaryReturn | null> => {
   try {
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
+    const base64 = Buffer.from(arrayBuffer).toString("base64");
+    const dataURI = `data:image/jpeg;base64,${base64}`; // Ajusta según el tipo de imagen
 
-    return new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        { folder, tags: [reference] },
-        (error, result) => {
-          if (error) {
-            reject(error);
-          } else if (result) {
-            resolve({
-              url: result.secure_url,
-              publicId: result.public_id,
-            });
-          } else {
-            reject(new Error("No se pudo subir la imagen"));
-          }
-        },
-      );
-
-      uploadStream.end(buffer);
+    const result = await cloudinary.uploader.upload(dataURI, {
+      folder,
+      tags: [reference],
+      resource_type: "image",
     });
+
+    return {
+      url: result.secure_url,
+      publicId: result.public_id,
+    };
   } catch (error) {
     console.error("Error en la subida de imagen:", error);
     return null;
