@@ -26,10 +26,10 @@ const Artwork = ({ artwork, onSelect }: ArtworkProps) => {
           alt={artwork.title}
           className="w-full rounded-t-lg object-contain"
           fill
-          sizes="288px"
+          unoptimized
           loading="lazy"
           priority={false}
-          src={artwork.images[0]?.url}
+          src={`https://res.cloudinary.com/dpj6kupra/image/upload/f_auto,q_auto,w_320,h_320,c_fit/v1/${artwork.images[0].publicId}`}
         />
       </Link>
       <div className="flex flex-1 flex-col gap-2 px-4 py-3">

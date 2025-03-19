@@ -8,6 +8,7 @@ import { AutoComplete } from "@/components/ui/autocomplete";
 import { Button } from "@/components/ui/button";
 import {
   FormField,
+  FormLabel,
   FormItem,
   FormControl,
   FormMessage,
@@ -411,7 +412,8 @@ const Item = ({
           control={control}
           name={`items.${index}.width`}
           render={({ field }) => (
-            <FormItem className="min-w-[80px]">
+            <FormItem className="min-w-[90px] grid-cols-[16px_1fr] items-center">
+              <FormLabel>An</FormLabel>
               <FormControl>
                 <Input
                   {...{
@@ -434,7 +436,8 @@ const Item = ({
           control={control}
           name={`items.${index}.height`}
           render={({ field }) => (
-            <FormItem className="min-w-[80px]">
+            <FormItem className="min-w-[90px] grid-cols-[16px_1fr] items-center">
+              <FormLabel>Al</FormLabel>
               <FormControl>
                 <Input
                   {...{

@@ -48,7 +48,7 @@ type FetchArtworksReturn = {
   format: Pick<Format, "id" | "name"> | null;
   height: number;
   id: string;
-  images: Pick<ArtworkImage, "id" | "url">[];
+  images: Pick<ArtworkImage, "id" | "url" | "publicId">[];
   referenceCode: string;
   referenceNumber: number;
   style: Pick<Style, "id" | "name"> | null;

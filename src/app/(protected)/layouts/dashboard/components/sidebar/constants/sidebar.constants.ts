@@ -90,8 +90,8 @@ const ITEMS = {
           url: "/administracion/clientes",
         },
         {
-          title: "Presupuestos",
-          url: "/administracion/presupuestos",
+          title: "Pedidos",
+          url: "/administracion/pedidos",
         },
       ],
     },

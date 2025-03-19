@@ -63,6 +63,7 @@ const fetchGallery = async (): Promise<FetchGalleryReturn> => {
               select: {
                 id: true,
                 url: true,
+                publicId: true,
               },
             },
           },

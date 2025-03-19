@@ -40,11 +40,11 @@ function getColumnsConfig({
         >
           <div className="relative m-2 size-16">
             <Image
-              src={row.original.images[0].url}
+              src={`https://res.cloudinary.com/dpj6kupra/image/upload/f_auto,q_auto,w_64,h_64,c_fill/v1/${row.original.images[0].publicId}`}
               alt="Imagen de la obra"
+              unoptimized
               fill={true}
-              className="rounded-md border object-cover"
-              sizes="64px"
+              className="rounded-md object-cover"
             />
           </div>
         </Link>

@@ -26,6 +26,17 @@ const createClient = async ({
   }
 
   try {
+    if (validatedFields.data.cif) {
+      const existingClient = await prisma.client.findUnique({
+        where: { cif: validatedFields.data.cif },
+      });
+      if (existingClient) {
+        return {
+          error: "El CIF ingresado ya está en uso. Introduce un CIF único.",
+        };
+      }
+    }
+
     const newClient = await prisma.client.create({
       data: validatedFields.data,
     });
@@ -94,6 +105,17 @@ const updateClient = async ({
   }
 
   try {
+    if (validatedFields.data.cif) {
+      const existingClient = await prisma.client.findUnique({
+        where: { cif: validatedFields.data.cif },
+      });
+      if (existingClient) {
+        return {
+          error: "El CIF ingresado ya está en uso. Introduce un CIF único.",
+        };
+      }
+    }
+
     const updatedClient = await prisma.client.update({
       where: { id },
       data: validatedFields.data,

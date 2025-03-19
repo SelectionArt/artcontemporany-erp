@@ -83,6 +83,9 @@ const getFiltersConfig = ({
   },
 ];
 
+const removeAccents = (str: string) =>
+  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
 const getFilteredArtworks = ({
   filterConfig,
   filters,
@@ -114,13 +117,12 @@ const getFilteredArtworks = ({
       return false;
     });
 
-    const lowerSearchTerm = searchTerm.toLowerCase();
+    const normalizedSearchTerm = removeAccents(searchTerm.toLowerCase());
 
     const passesSearch = searchTerm
       ? [
           artwork.title,
-          artwork.referenceNumber?.toString(),
-          artwork.referenceCode,
+          `${artwork.referenceNumber?.toString()}-${artwork.referenceCode}`,
           artwork.artist?.name,
           artwork.colors.map((color) => color.name).join(" "),
           artwork.finish?.name,
@@ -130,7 +132,11 @@ const getFilteredArtworks = ({
           artwork.tag,
         ]
           .filter(Boolean)
-          .some((field) => field?.toLowerCase().includes(lowerSearchTerm))
+          .some((field) =>
+            removeAccents(field?.toLowerCase() ?? "").includes(
+              normalizedSearchTerm,
+            ),
+          )
       : true;
 
     const numericWidth = width.trim() !== "" ? Number(width) : null;

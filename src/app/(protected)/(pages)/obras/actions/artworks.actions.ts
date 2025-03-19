@@ -241,6 +241,7 @@ const fetchArtworks = async (): Promise<FetchArtworksReturn> => {
           select: {
             id: true,
             url: true,
+            publicId: true,
           },
         },
       },
@@ -391,8 +392,8 @@ const updateArtwork = async ({
     }
 
     if (toDelete.length > 0) {
-      const imagesToDelete = await prisma.frameImage.findMany({
-        where: { frameId: id, url: { in: toDelete } },
+      const imagesToDelete = await prisma.artworkImage.findMany({
+        where: { artworkId: id, url: { in: toDelete } },
         select: { publicId: true },
       });
 
@@ -400,8 +401,8 @@ const updateArtwork = async ({
 
       await Promise.all(cloudinaryPublicIds.map(deleteImage));
 
-      await prisma.frameImage.deleteMany({
-        where: { frameId: id, url: { in: toDelete } },
+      await prisma.artworkImage.deleteMany({
+        where: { artworkId: id, url: { in: toDelete } },
       });
     }
 
@@ -413,7 +414,7 @@ const updateArtwork = async ({
       newImages.map((image) =>
         uploadImage({
           file: image,
-          folder: "frames",
+          folder: "artworks",
           reference,
         }),
       ),

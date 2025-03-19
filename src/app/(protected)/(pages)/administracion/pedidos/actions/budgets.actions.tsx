@@ -239,9 +239,11 @@ const drawImage = async ({
       width = maxHeight * aspectRatio;
     }
 
+    const yAdjusted = y + (maxHeight - height);
+
     page.drawImage(image, {
       x,
-      y,
+      y: yAdjusted,
       width,
       height,
     });
@@ -302,7 +304,7 @@ const addHeader = async ({
       x: page.getWidth() / 2 - 60,
       y: page.getHeight() - 60,
       maxWidth: 120,
-      maxHeight: 40,
+      maxHeight: 33,
     });
 
     drawText({
@@ -1661,6 +1663,7 @@ const sendEmail = async ({
     const emailResponse = await resend.emails.send({
       from: `"Art Contemporany" <noreply@gesartcontemporany.com>`,
       to: emails,
+      cc: "info@artcontemporany.com",
       subject,
       react: <BudgetEmail subject={subject} message={message} />,
       replyTo: "info@artcontemporany.com",

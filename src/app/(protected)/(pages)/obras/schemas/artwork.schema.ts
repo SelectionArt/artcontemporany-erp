@@ -24,9 +24,9 @@ const artworkSchema = z.object({
     .refine(
       (files) =>
         files.every(
-          (file) => typeof file === "string" || file.size < 10 * 1024 * 1024,
+          (file) => typeof file === "string" || file.size < 5 * 1024 * 1024,
         ),
-      "El tamaño máximo permitido por imagen es de 10MB",
+      "El tamaño máximo permitido por imagen es de 5MB",
     )
     .refine(
       (files) =>
