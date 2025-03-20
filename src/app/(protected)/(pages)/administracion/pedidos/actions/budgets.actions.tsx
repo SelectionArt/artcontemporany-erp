@@ -732,7 +732,9 @@ const gneratePDF = async ({
 
   // Resumen final
   const subtotal = budgetData.budgetItems.reduce(
-    (sum, item) => sum + item.artworkPrice * item.quantity,
+    (sum, item) =>
+      sum +
+      (item.artworkPrice * item.quantity + item.framePrice * item.quantity),
     0,
   );
   const discount = subtotal * (budgetData.discount / 100);
