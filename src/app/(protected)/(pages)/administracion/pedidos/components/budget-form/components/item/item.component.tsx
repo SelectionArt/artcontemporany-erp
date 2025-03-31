@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 // Actions
 import { fetchPricingItems } from "../../../../actions/budgets.actions";
@@ -53,6 +53,7 @@ const Item = ({
   loading,
   pricings,
 }: BudgetItemRowProps) => {
+  console.log("fieldArray", fieldArray.fields);
   const [artworkPricingItems, setArtworkPricingItems] = useState<PricingItem[]>(
     [],
   );
@@ -269,17 +270,6 @@ const Item = ({
     );
     return framePrice * quantity;
   };
-
-  useEffect(() => {
-    const { artworkPricingId, framePricingId } = getValues(`items.${index}`);
-
-    if (artworkPricingId) {
-      handleArtworkPricingsValueChange(artworkPricingId);
-    }
-    if (framePricingId) {
-      handleFramePricingsValueChange(framePricingId);
-    }
-  }, []);
 
   return (
     <div className="grid grid-cols-[auto_2fr_2fr_1fr_1fr_1fr_1fr_auto] gap-2">

@@ -641,13 +641,15 @@ const gneratePDF = async ({
       y: yPosition,
       font,
     });
-    drawText({
-      page,
-      text: `${item.quantity}`,
-      x: tableStartX + columnWidths[0] + columnWidths[1] + columnWidths[2],
-      y: yPosition - secondItemYPosition,
-      font,
-    });
+    if (item.frame || item.framePrice) {
+      drawText({
+        page,
+        text: `${item.quantity}`,
+        x: tableStartX + columnWidths[0] + columnWidths[1] + columnWidths[2],
+        y: yPosition - secondItemYPosition,
+        font,
+      });
+    }
 
     // Precio
     drawText({
@@ -709,9 +711,9 @@ const gneratePDF = async ({
     if (item.observations) {
       drawText({
         page,
-        maxWidth: columnWidths[0] + columnWidths[1] + columnWidths[2],
+        maxWidth: columnWidths[1] + columnWidths[2],
         text: item.observations,
-        x: tableStartX,
+        x: tableStartX + columnWidths[0],
         y: yPosition - 80,
         font,
       });
@@ -773,7 +775,7 @@ const gneratePDF = async ({
     align: "right",
   });
 
-  //Onservaciones
+  // Observaciones
   if (budgetData.observations) {
     drawText({
       page,

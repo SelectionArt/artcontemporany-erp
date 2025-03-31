@@ -108,8 +108,9 @@ const updateClient = async ({
     if (validatedFields.data.cif) {
       const existingClient = await prisma.client.findUnique({
         where: { cif: validatedFields.data.cif },
+        select: { id: true },
       });
-      if (existingClient) {
+      if (existingClient && existingClient.id !== id) {
         return {
           error: "El CIF ingresado ya está en uso. Introduce un CIF único.",
         };

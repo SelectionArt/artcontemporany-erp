@@ -36,8 +36,11 @@ const DataTableHook = <TData, TValue>({
       .toLowerCase();
 
   const customGlobalFilter: FilterFn<TData> = (row, columnId, filterValue) => {
-    const cellValue = row.getValue(columnId);
-    if (typeof cellValue !== "string") return false;
+    const raw = row.getValue(columnId);
+    const cellValue =
+      typeof raw === "object" && raw !== null
+        ? JSON.stringify(raw)
+        : String(raw);
 
     return normalizeText(cellValue).includes(normalizeText(filterValue));
   };

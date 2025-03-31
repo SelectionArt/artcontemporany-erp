@@ -1,6 +1,7 @@
 "use client";
 // Vendors
 import SignatureCanvas from "react-signature-canvas";
+import { useTheme } from "next-themes";
 // Components
 import { AlertDialogWrapper } from "@/components/alert-dialog-wrapper/alert-dialog-wrapper.component";
 import { BudgetForm } from "./components/budget-form/budget-form.component";
@@ -70,6 +71,8 @@ const BudgetsContainer = ({
     emailLoading,
   } = BudgetsHook({ budgets });
 
+  const { theme } = useTheme();
+
   return (
     <div className="flex w-full grow p-4">
       <DataTable
@@ -117,9 +120,10 @@ const BudgetsContainer = ({
             </Button>
             <SignatureCanvas
               canvasProps={{
-                className: "h-full w-full",
+                className: "h-full w-full min-h-[200px]",
                 height: 200,
               }}
+              penColor={theme === "dark" ? "white" : "black"}
               ref={signatureRef}
             />
           </div>
