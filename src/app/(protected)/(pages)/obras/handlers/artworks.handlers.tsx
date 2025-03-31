@@ -216,7 +216,7 @@ const submitHandlerCreate = async ({
     }
 
     if (success && artwork) {
-      setData((prev) => [...prev, artwork]);
+      setData((prev) => [artwork, ...prev]);
       form.reset();
       setOpenDialog(false);
       toast.success(success);

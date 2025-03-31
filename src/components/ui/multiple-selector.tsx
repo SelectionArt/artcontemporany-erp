@@ -120,12 +120,12 @@ export const MultiSelect = React.forwardRef<
       placeholder = "Select options",
       animation = 0,
       maxCount = 2,
-      modalPopover = false,
-      asChild = false,
+      // modalPopover = false,
+      // asChild = false,
       className,
-      ...props
+      // ...props
     },
-    ref,
+    // ref,
   ) => {
     const [selectedValues, setSelectedValues] =
       React.useState<string[]>(defaultValue);
