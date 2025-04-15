@@ -16,7 +16,7 @@ const budgetSchema = z.object({
           .min(1, "La obra es requerida"),
         artworkPrice: z.coerce
           .number({ required_error: "El precio es requerido" })
-          .positive("El precio debe ser un número positivo"),
+          .min(0, "El precio debe ser mayor o igual a 0"),
         artworkPricingId: z.string().optional(),
         frameId: z.string().optional(),
         framePrice: z.coerce.number().optional(),

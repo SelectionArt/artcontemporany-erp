@@ -72,14 +72,14 @@ const Item = ({
 
     const filteredArtworks = artworks
       .filter((artwork) =>
-        `${artwork.referenceNumber}-${artwork.referenceCode}`
+        `${artwork.referenceNumber}${artwork.referenceCode ? `-${artwork.referenceCode}` : ""}`
           .toLowerCase()
           .includes(searchValue.toLowerCase() || ""),
       )
       .slice(0, 10)
       .map((artwork) => ({
         value: artwork.id,
-        label: `${artwork.referenceNumber}-${artwork.referenceCode}`,
+        label: `${artwork.referenceNumber}${artwork.referenceCode ? `-${artwork.referenceCode}` : ""}`,
         imageUrl: artwork.imageUrl || "",
       }));
 
@@ -87,7 +87,7 @@ const Item = ({
       ? [
           {
             value: selectedArtwork.id,
-            label: `${selectedArtwork.referenceNumber}-${selectedArtwork.referenceCode}`,
+            label: `${selectedArtwork.referenceNumber}${selectedArtwork.referenceCode ? `-${selectedArtwork.referenceCode}` : ""}`,
             imageUrl: selectedArtwork.imageUrl || "",
           },
           ...filteredArtworks,

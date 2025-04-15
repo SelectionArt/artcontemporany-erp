@@ -582,7 +582,7 @@ const gneratePDF = async ({
     // Artículo
     drawText({
       page,
-      text: `${item.artwork.referenceNumber}-${item.artwork.referenceCode}`,
+      text: `${item.artwork.referenceNumber}${item.artwork.referenceCode ? ` - ${item.artwork.referenceCode}` : ""}`,
       x: tableStartX,
       y: yPosition,
       font,
@@ -706,10 +706,9 @@ const gneratePDF = async ({
         align: "right",
       });
     }
-
     // Observaciones
     if (item.observations) {
-      drawText({
+      yPosition -= drawText({
         page,
         maxWidth: columnWidths[1] + columnWidths[2],
         text: item.observations,
@@ -789,6 +788,8 @@ const gneratePDF = async ({
       text: budgetData.observations,
       x: margins.left,
       y: yPosition - 16,
+      maxWidth:
+        tableStartX + columnWidths[0] + columnWidths[1] + columnWidths[2],
       font,
     });
   }
