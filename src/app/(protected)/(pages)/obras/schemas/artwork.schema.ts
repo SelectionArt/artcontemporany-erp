@@ -8,12 +8,12 @@ const artworkSchema = z.object({
   colors: z.array(z.string()).max(10, "Máximo 10 imágenes permitidas"),
   finishId: z
     .string()
-    .optional()
-    .transform((value) => value?.trim() ?? ""),
+    .transform((value) => value?.trim() ?? "")
+    .optional(),
   formatId: z
     .string()
-    .optional()
-    .transform((value) => value?.trim() ?? ""),
+    .transform((value) => value?.trim() ?? "")
+    .optional(),
   height: z.coerce
     .number({ required_error: "El alto es requerido" })
     .positive("El alto debe ser un número positivo"),
@@ -45,24 +45,24 @@ const artworkSchema = z.object({
     .max(999999, "El número de referencia debe ser entre 1 y 999999"),
   referenceCode: z
     .string()
-    .optional()
-    .transform((value) => value?.trim() ?? ""),
+    .transform((value) => value?.trim() ?? "")
+    .optional(),
   styleId: z
     .string()
-    .optional()
-    .transform((value) => value?.trim() ?? ""),
+    .transform((value) => value?.trim() ?? "")
+    .optional(),
   supportId: z
     .string()
-    .optional()
-    .transform((value) => value?.trim() ?? ""),
+    .transform((value) => value?.trim() ?? "")
+    .optional(),
   tag: z
     .string()
-    .optional()
-    .transform((value) => value?.trim() ?? ""),
+    .transform((value) => value?.trim() ?? "")
+    .optional(),
   title: z
     .string()
-    .optional()
-    .transform((value) => value?.trim() ?? ""),
+    .transform((value) => value?.trim() ?? "")
+    .optional(),
   width: z.coerce
     .number({ required_error: "El ancho es requerido" })
     .positive("El ancho debe ser un número positivo"),
