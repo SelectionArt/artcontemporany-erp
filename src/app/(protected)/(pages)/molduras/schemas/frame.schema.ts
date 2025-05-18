@@ -4,8 +4,8 @@ import * as z from "zod";
 const frameSchema = z.object({
   description: z
     .string()
-    .optional()
-    .transform((value) => value?.trim() ?? ""),
+    .transform((value) => value?.trim() ?? "")
+    .optional(),
   height: z.coerce
     .number({ required_error: "El alto es requerido" })
     .optional(),
@@ -34,16 +34,16 @@ const frameSchema = z.object({
     ),
   manufacturerId: z
     .string()
-    .optional()
-    .transform((value) => value?.trim() ?? ""),
+    .transform((value) => value?.trim() ?? "")
+    .optional(),
   manufacturerReference: z
     .string()
-    .optional()
-    .transform((value) => value?.trim() ?? ""),
+    .transform((value) => value?.trim() ?? "")
+    .optional(),
   materialId: z
     .string()
-    .optional()
-    .transform((value) => value?.trim() ?? ""),
+    .transform((value) => value?.trim() ?? "")
+    .optional(),
   name: z
     .string({ required_error: "El nombre es requerido" })
     .min(1, "El nombre es requerido"),
