@@ -120,8 +120,7 @@ const BudgetsContainer = ({
             </Button>
             <SignatureCanvas
               canvasProps={{
-                className: "h-full w-full min-h-[200px]",
-                height: 200,
+                className: "h-56 w-full",
               }}
               penColor={theme === "dark" ? "white" : "black"}
               ref={signatureRef}

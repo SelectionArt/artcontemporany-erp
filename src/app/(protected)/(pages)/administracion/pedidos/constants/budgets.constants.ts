@@ -33,7 +33,8 @@ const constants = {
     emails: [] as string[],
     email: "",
     subject: "{{type}}",
-    message: "Estimado cliente.\n\nAdjunto envío {{type}}.\n\nSaludos",
+    message:
+      "Estimado cliente.\n\nAdjunto envío {{type}}.\nGracias.\n\nUn saludo.",
   },
 };
 
