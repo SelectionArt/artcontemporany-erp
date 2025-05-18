@@ -6,8 +6,8 @@ const DEFAULT_ITEM = {
   framePrice: 0,
   framePricingId: "",
   height: 0,
-  quantity: 1,
   observations: "",
+  quantity: 1,
   width: 0,
 };
 

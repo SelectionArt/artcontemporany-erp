@@ -8,33 +8,30 @@ const budgetSchema = z.object({
   date: z
     .string({ required_error: "La fecha es requerida" })
     .min(1, "La fecha es requerida"),
-  items: z
-    .array(
-      z.object({
-        artworkId: z
-          .string({ required_error: "La obra es requerida" })
-          .min(1, "La obra es requerida"),
-        artworkPrice: z.coerce
-          .number({ required_error: "El precio es requerido" })
-          .min(0, "El precio debe ser mayor o igual a 0"),
-        artworkPricingId: z.string().optional(),
-        frameId: z.string().optional(),
-        framePrice: z.coerce.number().optional(),
-        framePricingId: z.string().optional(),
-        height: z.coerce
-          .number({ required_error: "La altura es requerida" })
-          .positive("La altura debe ser un número positivo"),
-        observations: z.string().optional(),
-        quantity: z.coerce
-          .number({ required_error: "La cantidad es requerida" })
-          .positive("La cantidad debe ser un número positivo"),
-        width: z.coerce
-          .number({ required_error: "El ancho es requerido" })
-          .positive("El ancho debe ser un número positivo"),
-      }),
-    )
-    .optional()
-    .default([]),
+  items: z.array(
+    z.object({
+      artworkId: z
+        .string({ required_error: "La obra es requerida" })
+        .min(1, "La obra es requerida"),
+      artworkPrice: z.coerce
+        .number({ required_error: "El precio es requerido" })
+        .min(0, "El precio debe ser mayor o igual a 0"),
+      artworkPricingId: z.string().optional(),
+      frameId: z.string().optional(),
+      framePrice: z.coerce.number().optional(),
+      framePricingId: z.string().optional(),
+      height: z.coerce
+        .number({ required_error: "La altura es requerida" })
+        .positive("La altura debe ser un número positivo"),
+      observations: z.string().optional(),
+      quantity: z.coerce
+        .number({ required_error: "La cantidad es requerida" })
+        .positive("La cantidad debe ser un número positivo"),
+      width: z.coerce
+        .number({ required_error: "El ancho es requerido" })
+        .positive("El ancho debe ser un número positivo"),
+    }),
+  ),
   number: z.coerce
     .number({ required_error: "El número es requerido" })
     .positive("El número debe ser un número positivo"),
