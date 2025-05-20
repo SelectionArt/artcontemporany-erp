@@ -27,7 +27,7 @@ const createClient = async ({
 
   try {
     if (validatedFields.data.cif) {
-      const existingClient = await prisma.client.findUnique({
+      const existingClient = await prisma.client.findFirst({
         where: { cif: validatedFields.data.cif },
       });
       if (existingClient) {
@@ -106,7 +106,7 @@ const updateClient = async ({
 
   try {
     if (validatedFields.data.cif) {
-      const existingClient = await prisma.client.findUnique({
+      const existingClient = await prisma.client.findFirst({
         where: { cif: validatedFields.data.cif },
         select: { id: true },
       });
