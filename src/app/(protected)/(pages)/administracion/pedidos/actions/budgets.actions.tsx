@@ -1592,51 +1592,53 @@ const BudgetEmail = ({ subject, message }: BudgetEmailProps) => {
       <Head />
       <Preview>{subject}</Preview>
       <Tailwind>
-        <Body className="m-0 flex flex-col gap-8 bg-slate-50 p-8 font-sans">
-          <Img
-            alt="Logo"
-            className="mx-auto"
-            height={60}
-            src="https://res.cloudinary.com/dpj6kupra/image/upload/v1740514863/uifwktt9tskfogjd97s4.png"
-          />
+        <Body className="m-0 gap-8 bg-slate-50 p-8 font-sans">
+          <Container>
+            <Img
+              alt="Logo"
+              className="mx-auto"
+              height={60}
+              src="https://res.cloudinary.com/dpj6kupra/image/upload/v1740514863/uifwktt9tskfogjd97s4.png"
+            />
 
-          <Container className="max-w-lg rounded-lg bg-white p-8 shadow-lg">
-            <Section>
-              <Text className="text-3xl font-semibold text-slate-700">
-                {subject}
-              </Text>
-              <Text className="text-lg whitespace-pre-line text-slate-700">
-                {message}
-              </Text>
-            </Section>
+            <Container className="mt-8 max-w-lg rounded-lg bg-white p-8 shadow-lg">
+              <Section>
+                <Text className="text-3xl font-semibold text-slate-700">
+                  {subject}
+                </Text>
+                <Text className="text-lg whitespace-pre-line text-slate-700">
+                  {message}
+                </Text>
+              </Section>
 
-            <Hr className="my-4 border-t border-slate-300" />
+              <Hr className="my-4 border-t border-slate-300" />
 
-            <Section>
-              <Text className="text-md text-slate-400">
-                No responda a este mensaje. Si tiene alguna consulta, no dude en
-                ponerse en contacto con nostros a traves de nuestro email
-                info@artcontemporany.com
-              </Text>
-            </Section>
+              <Section>
+                <Text className="text-md text-slate-400">
+                  No responda a este mensaje. Si tiene alguna consulta, no dude
+                  en ponerse en contacto con nostros a traves de nuestro email
+                  info@artcontemporany.com
+                </Text>
+              </Section>
 
-            <Hr className="my-4 border-t border-slate-300" />
+              <Hr className="my-4 border-t border-slate-300" />
 
-            <Section>
-              <Text className="text-xs text-slate-500">
-                <strong>_________ ADVERTENCIA LEGAL _________________</strong>
-                <br />
-                La información contenida en este mensaje y/o archivo(s)
-                adjunto(s) es confidencial/privilegiada y está destinada a ser
-                leída sólo por la(s) persona(s) a la(s) que va dirigida. Si
-                usted lee este mensaje y no es el destinatario o ha recibido
-                esta comunicación por error, le informamos que está totalmente
-                prohibida, y puede ser ilegal, cualquier divulgación,
-                distribución o reproducción de esta comunicación, y le rogamos
-                que nos lo notifique inmediatamente y nos devuelva el mensaje
-                original a la dirección arriba mencionada. Gracias.
-              </Text>
-            </Section>
+              <Section>
+                <Text className="text-xs text-slate-500">
+                  <strong>_________ ADVERTENCIA LEGAL _________________</strong>
+                  <br />
+                  La información contenida en este mensaje y/o archivo(s)
+                  adjunto(s) es confidencial/privilegiada y está destinada a ser
+                  leída sólo por la(s) persona(s) a la(s) que va dirigida. Si
+                  usted lee este mensaje y no es el destinatario o ha recibido
+                  esta comunicación por error, le informamos que está totalmente
+                  prohibida, y puede ser ilegal, cualquier divulgación,
+                  distribución o reproducción de esta comunicación, y le rogamos
+                  que nos lo notifique inmediatamente y nos devuelva el mensaje
+                  original a la dirección arriba mencionada. Gracias.
+                </Text>
+              </Section>
+            </Container>
           </Container>
         </Body>
       </Tailwind>
