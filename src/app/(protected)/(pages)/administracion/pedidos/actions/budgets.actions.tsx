@@ -60,7 +60,7 @@ type DrawTextProps = {
 type DrawImageProps = {
   page: PDFPage;
   pdfDoc: PDFDocument;
-  id: string;
+  publicId: string;
   x: number;
   y: number;
   maxWidth: number;
@@ -191,15 +191,7 @@ const drawImage = async ({
   y,
   maxWidth,
   maxHeight,
-}: {
-  page: any;
-  pdfDoc: any;
-  publicId: string;
-  x: number;
-  y: number;
-  maxWidth: number;
-  maxHeight: number;
-}) => {
+}: DrawImageProps) => {
   const RESOLUTION_MULTIPLIER = 3;
 
   const url = `https://res.cloudinary.com/dpj6kupra/image/upload/f_auto,q_auto,w_${maxWidth * RESOLUTION_MULTIPLIER},h_${maxHeight * RESOLUTION_MULTIPLIER},c_fit/${publicId}`;
