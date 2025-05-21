@@ -60,7 +60,7 @@ type DrawTextProps = {
 type DrawImageProps = {
   page: PDFPage;
   pdfDoc: PDFDocument;
-  url: string;
+  id: string;
   x: number;
   y: number;
   maxWidth: number;
@@ -186,45 +186,54 @@ const drawText = ({
 const drawImage = async ({
   page,
   pdfDoc,
-  url,
+  publicId,
   x,
   y,
   maxWidth,
   maxHeight,
-}: DrawImageProps) => {
+}: {
+  page: any;
+  pdfDoc: any;
+  publicId: string;
+  x: number;
+  y: number;
+  maxWidth: number;
+  maxHeight: number;
+}) => {
+  const RESOLUTION_MULTIPLIER = 3;
+
+  const url = `https://res.cloudinary.com/dpj6kupra/image/upload/f_auto,q_auto,w_${maxWidth * RESOLUTION_MULTIPLIER},h_${maxHeight * RESOLUTION_MULTIPLIER},c_fit/${publicId}`;
+
   try {
     const response = await fetch(url);
 
     if (!response.ok) {
-      console.error(`Error al descargar imagen (${response.status}): ${url}`);
+      console.error(
+        `Error al descargar imagen (${response.status}): ${publicId}`,
+      );
       return;
     }
 
     const imageBytes = await response.arrayBuffer();
 
     if (imageBytes.byteLength === 0) {
-      console.error(`La imagen descargada está vacía: ${url}`);
+      console.error(`La imagen descargada está vacía: ${publicId}`);
       return;
     }
 
     let image;
-    if (url.endsWith(".png")) {
+    try {
+      image = await pdfDoc.embedJpg(imageBytes);
+    } catch {
       try {
         image = await pdfDoc.embedPng(imageBytes);
       } catch (e) {
-        console.error(`Error al procesar PNG: ${url}`, e);
+        console.error(
+          `No se pudo procesar la imagen como JPG ni PNG: ${publicId}`,
+          e,
+        );
         return;
       }
-    } else if (url.endsWith(".jpg") || url.endsWith(".jpeg")) {
-      try {
-        image = await pdfDoc.embedJpg(imageBytes);
-      } catch (e) {
-        console.error(`Error al procesar JPG: ${url}`, e);
-        return;
-      }
-    } else {
-      console.error(`Formato de imagen no soportado: ${url}`);
-      return;
     }
 
     const originalWidth = image.width;
@@ -248,7 +257,7 @@ const drawImage = async ({
       height,
     });
   } catch (error) {
-    console.error(`Error en drawImage(): ${url}`, error);
+    console.error(`Error en drawImage(): ${publicId}`, error);
   }
 };
 
@@ -288,11 +297,11 @@ const ensureSpace = ({
 const addHeader = async ({
   pdfDoc,
   font,
-  logoURL,
+  imageLogoPublicId,
 }: {
   pdfDoc: PDFDocument;
   font: PDFFont;
-  logoURL: string;
+  imageLogoPublicId: string;
 }) => {
   const pages = pdfDoc.getPages();
 
@@ -300,7 +309,7 @@ const addHeader = async ({
     await drawImage({
       page,
       pdfDoc,
-      url: logoURL,
+      publicId: imageLogoPublicId,
       x: page.getWidth() / 2 - 60,
       y: page.getHeight() - 60,
       maxWidth: 120,
@@ -597,14 +606,14 @@ const gneratePDF = async ({
       });
     }
 
-    const artworkImageUrl =
-      item.artwork.images.length > 0 ? item.artwork.images[0].url : null;
+    const artworkImagePublicId =
+      item.artwork.images.length > 0 ? item.artwork.images[0].publicId : null;
 
-    if (artworkImageUrl) {
+    if (artworkImagePublicId) {
       await drawImage({
         page,
         pdfDoc,
-        url: artworkImageUrl,
+        publicId: artworkImagePublicId,
         x: tableStartX + columnWidths[0],
         y: yPosition - 60,
         maxWidth: 70,
@@ -721,7 +730,7 @@ const gneratePDF = async ({
     if (item.observations) {
       yPosition -= 20;
     }
-    if (artworkImageUrl) {
+    if (artworkImagePublicId) {
       yPosition -= 60;
     }
     if (index !== budgetData.budgetItems.length - 1) {
@@ -990,7 +999,7 @@ const gneratePDF = async ({
     await drawImage({
       page,
       pdfDoc,
-      url: budgetData.budgetSignature.imageUrl,
+      publicId: budgetData.budgetSignature.publicId,
       x: width - 50 - 200,
       y: 60,
       maxWidth: 300,
@@ -1002,8 +1011,7 @@ const gneratePDF = async ({
   await addHeader({
     pdfDoc,
     font,
-    logoURL:
-      "https://res.cloudinary.com/dpj6kupra/image/upload/v1740514863/uifwktt9tskfogjd97s4.png",
+    imageLogoPublicId: "uifwktt9tskfogjd97s4",
   });
 
   addFooter({
