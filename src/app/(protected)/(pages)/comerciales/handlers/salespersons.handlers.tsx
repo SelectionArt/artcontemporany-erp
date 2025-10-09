@@ -55,13 +55,9 @@ const editHandler = ({
 }: EditHandlerProps): void => {
   const transformedRow = {
     ...row,
-    legalName: row.legalName ?? "",
     email: row.email ?? "",
     phone: row.phone ?? "",
-    address: row.address ?? "",
-    sendAddress: row.sendAddress ?? "",
-    cif: row.cif ?? "",
-    iban: row.iban ?? "",
+    area: row.area ?? "",
   };
   form.reset(transformedRow, { keepDefaultValues: true });
   setSelectedRow(row);
