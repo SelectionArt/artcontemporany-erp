@@ -1,4 +1,4 @@
-import { Salesperson as PrismaSalesperson } from "@prisma/salesperson";
+import { Salesperson as PrismaSalesperson } from "@prisma/client";
 
 type Salesperson = Omit<
   PrismaSalesperson,
