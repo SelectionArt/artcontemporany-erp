@@ -25,6 +25,7 @@ import type {
   FetchPricingItemsProps,
   FetchPricingItemsReturn,
   FetchPricingsReturn,
+  FetchSalespersonsReturn,
   GeneratePDFProps,
   GeneratePDFReturn,
   SignBudgetProps,
@@ -1430,6 +1431,19 @@ const fetchPricings = async (): Promise<FetchPricingsReturn> => {
   }
 };
 
+const fetchSalespersons = async (): Promise<FetchSalespersonsReturn> => {
+  try {
+    const salespersons = await prisma.salesperson.findMany({
+      orderBy: { name: "asc" },
+      select: { id: true, email: true },
+    });
+    return salespersons;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
 const generateUniqueRandomNumber = async (): Promise<number> => {
   const existingNumbers = await prisma.budget.findMany({
     select: { number: true },
@@ -1763,6 +1777,7 @@ export {
   fetchFrames,
   fetchPricings,
   fetchPricingItems,
+  fetchSalespersons,
   gneratePDF,
   generateUniqueRandomNumber,
   signBudget,

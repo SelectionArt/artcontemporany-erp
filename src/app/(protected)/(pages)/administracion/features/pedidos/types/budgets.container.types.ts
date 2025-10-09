@@ -5,6 +5,7 @@ import {
   FetchFramesReturn,
   FetchPricingItemsReturn,
   FetchPricingsReturn,
+  FetchSalespersonsReturn,
 } from "../actions/types/budgets.actions.types";
 
 type Artwork = FetchArtworksReturn[number];
@@ -19,12 +20,15 @@ type PricingItem = FetchPricingItemsReturn[number];
 
 type Pricing = FetchPricingsReturn[number];
 
+type Salesperson = FetchSalespersonsReturn[number];
+
 type BudgetsProps = {
   artworks: Artwork[];
   budgets: Budget[];
   clients: Client[];
   frames: Frame[];
   pricings: Pricing[];
+  salespersons: Salesperson[];
 };
 
 export type {

@@ -41,6 +41,7 @@ const BudgetsContainer = ({
   clients,
   frames,
   pricings,
+  salespersons,
 }: BudgetsProps) => {
   const {
     columns,
@@ -71,6 +72,8 @@ const BudgetsContainer = ({
     signLoading,
     emailLoading,
   } = BudgetsHook({ budgets });
+
+  console.log({ salespersons });
 
   const { theme } = useTheme();
 
@@ -192,6 +195,32 @@ const BudgetsContainer = ({
                     <MultiSelect
                       {...field}
                       options={sendEmails}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      placeholder="Selecciona los emails"
+                      variant="inverted"
+                      disabled={emailLoading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={sendEmailForm.control}
+              name="salespersonsEmails"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Emails comerciales</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      {...field}
+                      options={salespersons
+                        .filter((s) => s.email)
+                        .map((s) => ({
+                          label: s.email as string,
+                          value: s.email as string,
+                        }))}
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       placeholder="Selecciona los emails"

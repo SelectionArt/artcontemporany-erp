@@ -4,6 +4,7 @@ import {
   fetchClients,
   fetchFrames,
   fetchPricings,
+  fetchSalespersons,
 } from "../../features/pedidos/actions/budgets.actions";
 import { fetchBudgets } from "./actions/budgets.actions";
 // Components
@@ -17,13 +18,15 @@ export const metadata: Metadata = {
 };
 
 const BudgetsPage = async () => {
-  const [artworks, budgets, clients, frames, pricings] = await Promise.all([
-    fetchArtworks(),
-    fetchBudgets(),
-    fetchClients(),
-    fetchFrames(),
-    fetchPricings(),
-  ]);
+  const [artworks, budgets, clients, frames, pricings, salespersons] =
+    await Promise.all([
+      fetchArtworks(),
+      fetchBudgets(),
+      fetchClients(),
+      fetchFrames(),
+      fetchPricings(),
+      fetchSalespersons(),
+    ]);
   return (
     <BudgetsContainer
       artworks={artworks}
@@ -31,6 +34,7 @@ const BudgetsPage = async () => {
       clients={clients}
       frames={frames}
       pricings={pricings}
+      salespersons={salespersons}
     />
   );
 };

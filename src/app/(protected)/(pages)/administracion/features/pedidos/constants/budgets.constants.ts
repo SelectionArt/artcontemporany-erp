@@ -32,6 +32,7 @@ const constants = {
   DEFAULT_SEND_EMAIL_FORM_VALUES: {
     type: "budget",
     emails: [] as string[],
+    salespersonsEmails: [] as string[],
     freeEmails: [] as string[],
     subject: "{{type}}",
     message:

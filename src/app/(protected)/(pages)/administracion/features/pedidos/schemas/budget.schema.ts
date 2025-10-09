@@ -63,6 +63,9 @@ const sendEmailSchema = z.object({
     .string({ required_error: "El tipo es requerido" })
     .min(1, "El tipo es requerido"),
   emails: z.array(z.string()).max(10, "Máximo 10 emails permitidas"),
+  salespersonsEmails: z
+    .array(z.string())
+    .max(10, "Máximo 10 emails permitidas"),
   freeEmails: z
     .array(z.string().email("Email no válido"))
     .max(10, "Máximo 10 emails permitidas"),

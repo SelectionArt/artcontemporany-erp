@@ -447,7 +447,11 @@ const submitEmailHandler = async ({
   try {
     setEmailLoading(true);
 
-    const all = [...(values.emails ?? []), ...(values.freeEmails ?? [])]
+    const all = [
+      ...(values.emails ?? []),
+      ...(values.salespersonsEmails ?? []),
+      ...(values.freeEmails ?? []),
+    ]
       .map((e) => e.trim().toLowerCase())
       .filter(Boolean);
 

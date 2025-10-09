@@ -6,6 +6,7 @@ import type {
   Client,
   Pricing,
   PricingItem,
+  Salesperson,
 } from "@prisma/client";
 import type { BudgetSchema } from "../../schemas/types/budget.schema.types";
 
@@ -155,6 +156,8 @@ type FetchPricingItemsReturn = Pick<
 
 type FetchPricingsReturn = Pick<Pricing, "id" | "name" | "type">[];
 
+type FetchSalespersonsReturn = Pick<Salesperson, "id" | "email">[];
+
 type GeneratePDFProps = {
   id: string;
   type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
@@ -253,6 +256,7 @@ export type {
   FetchPricingItemsProps,
   FetchPricingItemsReturn,
   FetchPricingsReturn,
+  FetchSalespersonsReturn,
   GeneratePDFProps,
   GeneratePDFReturn,
   SignBudgetProps,
