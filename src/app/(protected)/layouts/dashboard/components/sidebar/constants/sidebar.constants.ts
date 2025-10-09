@@ -8,6 +8,7 @@ import {
   ImagePlus,
   Settings,
   Settings2,
+  Users,
 } from "lucide-react";
 
 const ITEMS = {
@@ -81,13 +82,23 @@ const ITEMS = {
       ],
     },
     {
+      title: "Clientes",
+      url: "/clientes",
+      icon: Users,
+    },
+    {
+      title: "Comerciales",
+      url: "/comerciales",
+      icon: Users,
+    },
+    {
       title: "Administración",
       url: "#",
       icon: ChartLine,
       items: [
         {
-          title: "Clientes",
-          url: "/administracion/clientes",
+          title: "Presupuestos",
+          url: "/administracion/presupuestos",
         },
         {
           title: "Pedidos",

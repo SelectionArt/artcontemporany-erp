@@ -42,22 +42,42 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
   );
 
   const handleDownload = async (): Promise<void> => {
-    const zip = new JSZip();
-
     const totalImages = artwork.images.length;
+
+    if (totalImages === 0) return;
+
+    const getBaseFilename = (index?: number) => {
+      const image = artwork.images[index ?? 0];
+      const fileExtension = image.url.split(".").pop();
+      const baseFilename = `${artwork.referenceNumber}-${artwork.referenceCode}_${artwork.width}x${artwork.height}_${artwork.artist.name}`;
+      return totalImages > 1
+        ? `${baseFilename}_${index! + 1}.${fileExtension}`
+        : `${baseFilename}.${fileExtension}`;
+    };
+
+    if (totalImages === 1) {
+      try {
+        const image = artwork.images[0];
+        const response = await fetch(image.url);
+        const blob = await response.blob();
+        const filename = getBaseFilename();
+        saveAs(blob, filename);
+      } catch (error) {
+        console.error(
+          `Error descargando la imagen ${artwork.images[0].url}:`,
+          error,
+        );
+      }
+      return;
+    }
+
+    const zip = new JSZip();
 
     const downloadPromises = artwork.images.map(async (image, index) => {
       try {
         const response = await fetch(image.url);
         const blob = await response.blob();
-        const fileExtension = image.url.split(".").pop();
-
-        const baseFilename = `${artwork.referenceNumber}-${artwork.referenceCode}_${artwork.width}x${artwork.height}_${artwork.artist.name}`;
-        const filename =
-          totalImages > 1
-            ? `${baseFilename}_${index + 1}.${fileExtension}`
-            : `${baseFilename}.${fileExtension}`;
-
+        const filename = getBaseFilename(index);
         zip.file(filename, blob);
       } catch (error) {
         console.error(`Error descargando la imagen ${image.url}:`, error);
@@ -67,7 +87,11 @@ const ArtworkContainer = ({ artwork }: ArtworkProps) => {
     await Promise.all(downloadPromises);
 
     const zipBlob = await zip.generateAsync({ type: "blob" });
-    saveAs(zipBlob, `${artwork.referenceNumber}.zip`);
+
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("es-ES").replace(/\//g, "-");
+
+    saveAs(zipBlob, `${artwork.referenceNumber}_${formattedDate}.zip`);
   };
 
   return (

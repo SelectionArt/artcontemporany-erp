@@ -33,6 +33,61 @@ const artworkSelectHandler = ({
 const downloadClickHandler = async ({
   selectedArtworks,
 }: DownloadClickHandlerProps): Promise<void> => {
+  if (!selectedArtworks.length) return;
+
+  if (selectedArtworks.length === 1) {
+    const artwork = selectedArtworks[0];
+    const totalImages = artwork.images.length;
+
+    if (totalImages === 0) return;
+
+    const getBaseFilename = (index?: number) => {
+      const image = artwork.images[index ?? 0];
+      const fileExtension = image.url.split(".").pop();
+      const baseFilename = `${artwork.referenceNumber}-${artwork.referenceCode}_${artwork.width}x${artwork.height}_${artwork.artist.name}`;
+      return totalImages > 1
+        ? `${baseFilename}_${index! + 1}.${fileExtension}`
+        : `${baseFilename}.${fileExtension}`;
+    };
+
+    if (totalImages === 1) {
+      try {
+        const image = artwork.images[0];
+        const response = await fetch(image.url);
+        const blob = await response.blob();
+        const filename = getBaseFilename();
+        saveAs(blob, filename);
+      } catch (error) {
+        console.error(
+          `Error descargando la imagen ${artwork.images[0].url}:`,
+          error,
+        );
+      }
+      return;
+    }
+
+    const zip = new JSZip();
+    const downloadPromises = artwork.images.map(async (image, index) => {
+      try {
+        const response = await fetch(image.url);
+        const blob = await response.blob();
+        const filename = getBaseFilename(index);
+        zip.file(filename, blob);
+      } catch (error) {
+        console.error(`Error descargando la imagen ${image.url}:`, error);
+      }
+    });
+
+    await Promise.all(downloadPromises);
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("es-ES").replace(/\//g, "-");
+
+    saveAs(zipBlob, `${artwork.referenceNumber}_${formattedDate}.zip`);
+    return;
+  }
+
   const zip = new JSZip();
 
   const downloadPromises = selectedArtworks.flatMap((artwork) => {
@@ -50,7 +105,7 @@ const downloadClickHandler = async ({
             ? `${baseFilename}_${index + 1}.${fileExtension}`
             : `${baseFilename}.${fileExtension}`;
 
-        zip.file(filename, blob);
+        zip.folder(`${artwork.referenceNumber}`)?.file(filename, blob);
       } catch (error) {
         console.error(`Error descargando la imagen ${image.url}:`, error);
       }
@@ -60,7 +115,11 @@ const downloadClickHandler = async ({
   await Promise.all(downloadPromises);
 
   const zipBlob = await zip.generateAsync({ type: "blob" });
-  saveAs(zipBlob, `${selectedArtworks[0].referenceNumber}.zip`);
+
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString("es-ES").replace(/\//g, "-");
+
+  saveAs(zipBlob, `obras_${formattedDate}.zip`);
 };
 
 const filterChangeHandler = ({

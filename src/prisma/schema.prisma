@@ -188,19 +188,30 @@ model Material {
 }
 
 model Client {
-  id          String   @id @default(cuid())
-  name        String
-  legalName   String?
-  email       String?
-  phone       String?
-  address     String?
-  sendAddress String?
-  cif         String?
-  iban        String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  budgets     Budget[]
-  persons     Person[]
+  id           String   @id @default(cuid())
+  name         String
+  legalName    String?
+  email        String?
+  phone        String?
+  address      String?
+  sendAddress  String?
+  cif          String?
+  iban         String?
+  observations String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  budgets      Budget[]
+  persons      Person[]
+}
+
+model Salesperson {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  area      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Person {
@@ -248,6 +259,7 @@ model Budget {
   transport     Int
   tax           Int
   paymentMethod String
+  surcharge     Int
   status        String
   sendAddress   String?
   showIBAN      Boolean

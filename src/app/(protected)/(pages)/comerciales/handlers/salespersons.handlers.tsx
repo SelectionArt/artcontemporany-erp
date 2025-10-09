@@ -1,24 +1,19 @@
 // Vendors
-import JSZip from "jszip";
-import { saveAs } from "file-saver";
-// Vendors
 import { toast } from "sonner";
 // Actions
 import {
-  createArtwork,
-  deleteArtwork,
-  deleteMultipleArtworks,
-  generateUniqueReferenceNumber,
-  updateArtwork,
-} from "../actions/artworks.actions";
+  createSalesperson,
+  deleteSalesperson,
+  deleteMultipleSalespersons,
+  updateSalesperson,
+} from "../actions/salespersons.actions";
 // Types
 import type {
-  ArtworksHandlersProps,
-  ArtworksHandlersReturn,
+  SalespersonsHandlersProps,
+  SalespersonsHandlersReturn,
   CreateHandlerProps,
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,
-  DownloadHandlerProps,
   EditHandlerProps,
   NavigateHandlerProps,
   OpenChangeAlertDialogHandlerProps,
@@ -28,21 +23,10 @@ import type {
   SubmitHandlerDeleteProps,
   SubmitHandlerEditProps,
   SubmitHandlerProps,
-} from "./types/artworks.handlers.types";
+} from "./types/salespersons.handlers.types";
 
-const createHandler = async ({
-  form,
-  setExistingImages,
-  setNewImages,
-  setOpenDialog,
-  setToDelete,
-}: CreateHandlerProps): Promise<void> => {
-  const randomReferenceNumber = await generateUniqueReferenceNumber();
-  form.setValue("referenceNumber", randomReferenceNumber);
-  setExistingImages([]);
-  setNewImages([]);
+const createHandler = ({ setOpenDialog }: CreateHandlerProps): void => {
   setOpenDialog(true);
-  setToDelete([]);
 };
 
 const deleteHandler = ({
@@ -63,87 +47,29 @@ const deleteMultipleHandler = ({
   setOpenAlert(true);
 };
 
-const downloadHandler = async ({
-  row,
-}: DownloadHandlerProps): Promise<void> => {
-  const totalImages = row.images.length;
-
-  if (totalImages === 0) return;
-
-  const getBaseFilename = (index?: number) => {
-    const image = row.images[index ?? 0];
-    const fileExtension = image.url.split(".").pop();
-    const baseFilename = `${row.referenceNumber}-${row.referenceCode}_${row.width}x${row.height}_${row.artist.name}`;
-    return totalImages > 1
-      ? `${baseFilename}_${index! + 1}.${fileExtension}`
-      : `${baseFilename}.${fileExtension}`;
-  };
-
-  if (totalImages === 1) {
-    try {
-      const image = row.images[0];
-      const response = await fetch(image.url);
-      const blob = await response.blob();
-      const filename = getBaseFilename();
-      saveAs(blob, filename);
-    } catch (error) {
-      console.error(`Error descargando la imagen ${row.images[0].url}:`, error);
-    }
-    return;
-  }
-
-  const zip = new JSZip();
-
-  const downloadPromises = row.images.map(async (image, index) => {
-    try {
-      const response = await fetch(image.url);
-      const blob = await response.blob();
-      const filename = getBaseFilename(index);
-      zip.file(filename, blob);
-    } catch (error) {
-      console.error(`Error descargando la imagen ${image.url}:`, error);
-    }
-  });
-
-  await Promise.all(downloadPromises);
-
-  const zipBlob = await zip.generateAsync({ type: "blob" });
-
-  const today = new Date();
-  const formattedDate = today.toLocaleDateString("es-ES").replace(/\//g, "-");
-
-  saveAs(zipBlob, `${row.referenceNumber}_${formattedDate}.zip`);
-};
-
 const editHandler = ({
   form,
   row,
-  setExistingImages,
-  setNewImages,
-  setOpenDialog,
   setSelectedRow,
-  setToDelete,
+  setOpenDialog,
 }: EditHandlerProps): void => {
   const transformedRow = {
     ...row,
-    artistId: row.artist.id,
-    colors: row.colors.map((color) => color.id),
-    finishId: row.finish?.id || "",
-    formatId: row.format?.id || "",
-    styleId: row.style?.id || "",
-    supportId: row.support?.id || "",
-    images: [],
+    legalName: row.legalName ?? "",
+    email: row.email ?? "",
+    phone: row.phone ?? "",
+    address: row.address ?? "",
+    sendAddress: row.sendAddress ?? "",
+    cif: row.cif ?? "",
+    iban: row.iban ?? "",
   };
   form.reset(transformedRow, { keepDefaultValues: true });
-  setExistingImages(row.images.map((image) => image.url) || []);
-  setNewImages([]);
-  setOpenDialog(true);
   setSelectedRow(row);
-  setToDelete([]);
+  setOpenDialog(true);
 };
 
 const navigateHandler = ({ row, router }: NavigateHandlerProps): void => {
-  router.push(`/galeria/${row.id}`);
+  router.push(`/administracion/comerciales/${row.id}`);
 };
 
 const openChangeAlertDialogHandler = ({
@@ -168,45 +94,40 @@ const openChangeAlertDialogHandler = ({
 const openChangeDialogHandler = ({
   form,
   open,
-  setExistingImages,
-  setNewImages,
+  selectedRow,
   setOpenDialog,
   setSelectedRow,
 }: OpenChangeDialogHandlerProps): void => {
-  form.reset();
-  setExistingImages([]);
-  setNewImages([]);
-  setSelectedRow(null);
   setOpenDialog(open);
+
+  if (!open && selectedRow) {
+    form.reset();
+    setSelectedRow(null);
+  }
 };
 
 const submitHandler = ({
   form,
-  newImages,
   selectedRow,
   setData,
   setLoading,
   setOpenDialog,
   setSelectedRow,
-  toDelete,
   values,
 }: SubmitHandlerProps): void => {
   if (selectedRow) {
     submitHandlerEdit({
-      form,
-      newImages,
       selectedRow,
+      form,
       setData,
       setLoading,
       setOpenDialog,
       setSelectedRow,
-      toDelete,
       values,
     });
   } else {
     submitHandlerCreate({
       form,
-      newImages,
       setData,
       setLoading,
       setOpenDialog,
@@ -217,7 +138,6 @@ const submitHandler = ({
 
 const submitHandlerCreate = async ({
   form,
-  newImages,
   setData,
   setLoading,
   setOpenDialog,
@@ -226,25 +146,24 @@ const submitHandlerCreate = async ({
   setLoading(true);
 
   try {
-    const { artwork, error, success } = await createArtwork({
-      newImages,
-      values,
-    });
+    const { salesperson, error, success } = await createSalesperson({ values });
 
     if (error) {
       toast.error(error);
       return;
     }
 
-    if (success && artwork) {
-      setData((prev) => [artwork, ...prev]);
+    if (success && salesperson) {
+      setData((prev) =>
+        [...prev, salesperson].sort((a, b) => a.name.localeCompare(b.name)),
+      );
       form.reset();
       setOpenDialog(false);
       toast.success(success);
     }
   } catch (error) {
     console.error(error);
-    toast.error("Error al crear la obra. Por favor, inténtalo de nuevo");
+    toast.error("Error al crear el comercial. Por favor, inténtalo de nuevo");
   } finally {
     setLoading(false);
   }
@@ -252,13 +171,11 @@ const submitHandlerCreate = async ({
 
 const submitHandlerEdit = async ({
   form,
-  newImages,
   selectedRow,
   setData,
   setLoading,
   setOpenDialog,
   setSelectedRow,
-  toDelete,
   values,
 }: SubmitHandlerEditProps): Promise<void> => {
   if (!selectedRow) {
@@ -268,10 +185,8 @@ const submitHandlerEdit = async ({
   setLoading(true);
 
   try {
-    const { artwork, error, success } = await updateArtwork({
+    const { salesperson, error, success } = await updateSalesperson({
       id: selectedRow.id,
-      newImages,
-      toDelete,
       values,
     });
 
@@ -280,9 +195,11 @@ const submitHandlerEdit = async ({
       return;
     }
 
-    if (success && artwork) {
+    if (success && salesperson) {
       setData((prev) =>
-        prev.map((item) => (item.id === artwork.id ? artwork : item)),
+        prev
+          .map((item) => (item.id === salesperson.id ? salesperson : item))
+          .sort((a, b) => a.name.localeCompare(b.name)),
       );
       form.reset();
       setOpenDialog(false);
@@ -291,7 +208,9 @@ const submitHandlerEdit = async ({
     }
   } catch (error) {
     console.error(error);
-    toast.error("Error al actualizar la obra. Por favor, inténtalo de nuevo");
+    toast.error(
+      "Error al actualizar el comercial. Por favor, inténtalo de nuevo",
+    );
   } finally {
     setLoading(false);
   }
@@ -309,7 +228,7 @@ const submitHandlerDelete = async ({
   setLoading(true);
 
   try {
-    const { success, error } = await deleteArtwork({ id: selectedRow.id });
+    const { success, error } = await deleteSalesperson({ id: selectedRow.id });
 
     if (error) {
       toast.error(error);
@@ -322,7 +241,9 @@ const submitHandlerDelete = async ({
     }
   } catch (error) {
     console.error(error);
-    toast.error("Error al eliminar la obra. Por favor, inténtalo de nuevo");
+    toast.error(
+      "Error al eliminar el comercial. Por favor, inténtalo de nuevo",
+    );
   } finally {
     setLoading(false);
   }
@@ -336,7 +257,7 @@ const submitHandlerDeleteMultiple = async ({
 }: SubmitHandlerDeleteMultipleProps): Promise<void> => {
   setLoading(true);
   try {
-    const { success, error } = await deleteMultipleArtworks({
+    const { success, error } = await deleteMultipleSalespersons({
       ids: selectedRows.map((row) => row.id),
     });
 
@@ -354,51 +275,37 @@ const submitHandlerDeleteMultiple = async ({
     }
   } catch (error) {
     console.error(error);
-    toast.error("Error al eliminar las obras. Por favor, inténtalo de nuevo");
+    toast.error(
+      "Error al eliminar los comerciales. Por favor, inténtalo de nuevo",
+    );
   } finally {
     setLoading(false);
   }
 };
 
-const ArtworksHandlers = ({
+const SalespersonsHandlers = ({
   form,
-  newImages,
   router,
   selectedRow,
   selectedRows,
   setData,
-  setExistingImages,
   setLoading,
-  setNewImages,
   setOpenAlert,
   setOpenDialog,
   setSelectedRow,
   setSelectedRows,
-  setToDelete,
-  toDelete,
-}: ArtworksHandlersProps): ArtworksHandlersReturn => {
+}: SalespersonsHandlersProps): SalespersonsHandlersReturn => {
   return {
-    handleCreate: () =>
-      createHandler({
-        form,
-        setExistingImages,
-        setNewImages,
-        setOpenDialog,
-        setToDelete,
-      }),
+    handleCreate: () => createHandler({ setOpenDialog }),
     handleDelete: (row) => deleteHandler({ row, setSelectedRow, setOpenAlert }),
     handleDeleteMultiple: (rows) =>
       deleteMultipleHandler({ rows, setSelectedRows, setOpenAlert }),
-    handleDownload: (row) => downloadHandler({ row }),
     handleEdit: (row) =>
       editHandler({
         form,
         row,
-        setExistingImages,
-        setNewImages,
-        setOpenDialog,
         setSelectedRow,
-        setToDelete,
+        setOpenDialog,
       }),
     handleNavigate: (row) => navigateHandler({ row, router }),
     handleOpenChangeAlertDialog: (open) =>
@@ -414,21 +321,18 @@ const ArtworksHandlers = ({
       openChangeDialogHandler({
         form,
         open,
-        setExistingImages,
-        setNewImages,
+        selectedRow,
         setOpenDialog,
         setSelectedRow,
       }),
     handleSubmit: (values) =>
       submitHandler({
         form,
-        newImages,
         selectedRow,
         setData,
         setLoading,
         setOpenDialog,
         setSelectedRow,
-        toDelete,
         values,
       }),
     handleSubmitDelete: () =>
@@ -443,4 +347,4 @@ const ArtworksHandlers = ({
   };
 };
 
-export { ArtworksHandlers };
+export { SalespersonsHandlers };
