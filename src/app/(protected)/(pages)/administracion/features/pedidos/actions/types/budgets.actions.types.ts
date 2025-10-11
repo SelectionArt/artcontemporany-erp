@@ -156,7 +156,7 @@ type FetchPricingItemsReturn = Pick<
 
 type FetchPricingsReturn = Pick<Pricing, "id" | "name" | "type">[];
 
-type FetchSalespersonsReturn = Pick<Salesperson, "id" | "email">[];
+type FetchSalespersonsReturn = Pick<Salesperson, "id" | "name" | "email">[];
 
 type GeneratePDFProps = {
   id: string;

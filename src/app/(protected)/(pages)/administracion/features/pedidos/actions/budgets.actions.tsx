@@ -1435,7 +1435,7 @@ const fetchSalespersons = async (): Promise<FetchSalespersonsReturn> => {
   try {
     const salespersons = await prisma.salesperson.findMany({
       orderBy: { name: "asc" },
-      select: { id: true, email: true },
+      select: { id: true, name: true, email: true },
     });
     return salespersons;
   } catch (error) {

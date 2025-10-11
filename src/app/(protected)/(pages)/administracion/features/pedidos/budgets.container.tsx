@@ -73,8 +73,6 @@ const BudgetsContainer = ({
     emailLoading,
   } = BudgetsHook({ budgets });
 
-  console.log({ salespersons });
-
   const { theme } = useTheme();
 
   return (
@@ -218,7 +216,7 @@ const BudgetsContainer = ({
                       options={salespersons
                         .filter((s) => s.email)
                         .map((s) => ({
-                          label: s.email as string,
+                          label: `${s.name} <${s.email}>`,
                           value: s.email as string,
                         }))}
                       onValueChange={field.onChange}
