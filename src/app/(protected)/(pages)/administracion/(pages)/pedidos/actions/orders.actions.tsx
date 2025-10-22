@@ -2,7 +2,7 @@
 // Libs
 import { prisma } from "@/lib/prisma";
 // Types
-import type { FetchBudgetsReturn } from "./types/budgets.actions.types";
+import type { FetchBudgetsReturn } from "./types/orders.actions.types";
 
 const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
   try {

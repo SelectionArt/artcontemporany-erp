@@ -26,7 +26,10 @@ import {
   getMultipleSelectActionsProps,
 } from "./utils/budgets.hook.utils";
 
-const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
+const BudgetsHook = ({
+  budgets,
+  page,
+}: BudgetsHookProps): BudgetsHookReturn => {
   const [sendEmails, setSendEmails] = useState<
     Array<{ label: string; value: string }>
   >([]);
@@ -45,7 +48,10 @@ const BudgetsHook = ({ budgets }: BudgetsHookProps): BudgetsHookReturn => {
 
   const form = useForm<BudgetSchema>({
     resolver: zodResolver(budgetSchema),
-    defaultValues: constants.DEFAULT_FORM_VALUES,
+    defaultValues: {
+      ...constants.DEFAULT_FORM_VALUES,
+      status: page === "orders" ? "accepted" : "pending",
+    },
   });
 
   const sendEmailForm = useForm<SendEmailSchema>({

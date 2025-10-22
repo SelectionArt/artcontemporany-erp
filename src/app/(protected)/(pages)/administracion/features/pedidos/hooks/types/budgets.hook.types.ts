@@ -14,6 +14,7 @@ import type SignatureCanvas from "react-signature-canvas";
 
 type BudgetsHookProps = {
   budgets: Budget[];
+  page: "budgets" | "orders";
 };
 
 type BudgetsHookReturn = Omit<

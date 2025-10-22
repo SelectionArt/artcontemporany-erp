@@ -30,7 +30,7 @@ const BudgetsHook = ({
     .slice(0, 10)
     .map((client) => ({
       value: client.id,
-      label: client.name,
+      label: `${client.name} ${client.legalName ?? ""} ${client.cif ?? ""}`,
     }));
 
   useEffect(() => {

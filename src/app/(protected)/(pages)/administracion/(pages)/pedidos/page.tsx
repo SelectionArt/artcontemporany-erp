@@ -6,18 +6,18 @@ import {
   fetchPricings,
   fetchSalespersons,
 } from "../../features/pedidos/actions/budgets.actions";
-import { fetchBudgets } from "./actions/budgets.actions";
+import { fetchBudgets } from "./actions/orders.actions";
 // Components
 import { BudgetsContainer } from "../../features/pedidos/budgets.container";
 // Types
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Presupuestos",
-  description: "Página de presupuestos",
+  title: "Pedidos",
+  description: "Página de pedidos",
 };
 
-const BudgetsPage = async () => {
+const OrdersPage = async () => {
   const [artworks, budgets, clients, frames, pricings, salespersons] =
     await Promise.all([
       fetchArtworks(),
@@ -33,10 +33,11 @@ const BudgetsPage = async () => {
       budgets={budgets}
       clients={clients}
       frames={frames}
+      page="orders"
       pricings={pricings}
       salespersons={salespersons}
     />
   );
 };
 
-export default BudgetsPage;
+export default OrdersPage;

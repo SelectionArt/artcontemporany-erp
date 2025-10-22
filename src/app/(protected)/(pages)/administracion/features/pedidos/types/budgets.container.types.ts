@@ -27,6 +27,7 @@ type BudgetsProps = {
   budgets: Budget[];
   clients: Client[];
   frames: Frame[];
+  page: "budgets" | "orders";
   pricings: Pricing[];
   salespersons: Salesperson[];
 };

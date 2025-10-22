@@ -40,6 +40,7 @@ const BudgetsContainer = ({
   budgets,
   clients,
   frames,
+  page,
   pricings,
   salespersons,
 }: BudgetsProps) => {
@@ -71,7 +72,7 @@ const BudgetsContainer = ({
     signatureRef,
     signLoading,
     emailLoading,
-  } = BudgetsHook({ budgets });
+  } = BudgetsHook({ budgets, page });
 
   const { theme } = useTheme();
 

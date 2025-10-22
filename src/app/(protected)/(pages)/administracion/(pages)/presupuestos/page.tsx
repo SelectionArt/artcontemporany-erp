@@ -33,6 +33,7 @@ const BudgetsPage = async () => {
       budgets={budgets}
       clients={clients}
       frames={frames}
+      page="budgets"
       pricings={pricings}
       salespersons={salespersons}
     />
