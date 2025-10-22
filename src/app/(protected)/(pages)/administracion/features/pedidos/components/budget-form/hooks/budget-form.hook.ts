@@ -19,10 +19,8 @@ const BudgetsHook = ({
   const clientsValues = (() => {
     const search = searchValueClient.toLowerCase().trim();
 
-    // Cliente actualmente seleccionado (si existe)
     const selectedClient = clients.find((c) => c.id === clientId);
 
-    // Filtro de coincidencias de búsqueda
     const filtered = clients
       .filter((client) => {
         if (!search) return true;
@@ -40,7 +38,6 @@ const BudgetsHook = ({
         }${client.cif ? ` · ${client.cif}` : ""}`,
       }));
 
-    // Si hay un cliente seleccionado, antepónlo a la lista (y evita duplicarlo)
     return selectedClient
       ? [
           {
