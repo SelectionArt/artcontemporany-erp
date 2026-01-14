@@ -19,6 +19,7 @@ type BudgetsHookProps = {
 
 type BudgetsHookReturn = Omit<
   BudgetsHandlersReturn,
+  | "handleClone"
   | "handleDelete"
   | "handleDeleteMultiple"
   | "handleDownloadPDF"

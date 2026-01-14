@@ -31,6 +31,7 @@ type BudgetsHandlersProps = {
 };
 
 type BudgetsHandlersReturn = {
+  handleClone: (row: Budget) => void;
   handleCreate: () => void;
   handleDelete: (row: Budget) => void;
   handleDeleteMultiple: (rows: Budget[]) => void;
@@ -67,6 +68,11 @@ type BudgetsHandlersReturn = {
   handleSubmitDeleteMultiple: () => void;
   handleSubmitEmail: (values: SendEmailSchema) => void;
   handleStatusChange: (props: { id: string; newStatus: string }) => void;
+};
+
+type CloneHandlerProps = {
+  row: Budget;
+  setData: Dispatch<SetStateAction<Budget[]>>;
 };
 
 type CreateHandlerProps = Pick<BudgetsHandlersProps, "form" | "setOpenDialog">;
@@ -219,6 +225,7 @@ type StatusChangeHandlerProps = Pick<
 export type {
   BudgetsHandlersProps,
   BudgetsHandlersReturn,
+  CloneHandlerProps,
   CreateHandlerProps,
   DeleteHandlerProps,
   DeleteMultipleHandlerProps,

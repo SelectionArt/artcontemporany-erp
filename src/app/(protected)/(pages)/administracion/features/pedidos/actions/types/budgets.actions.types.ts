@@ -10,6 +10,49 @@ import type {
 } from "@prisma/client";
 import type { BudgetSchema } from "../../schemas/types/budget.schema.types";
 
+type CloneBudgetReturn = {
+  budget?: Pick<
+    Budget,
+    | "id"
+    | "date"
+    | "number"
+    | "validity"
+    | "clientId"
+    | "discount"
+    | "transport"
+    | "tax"
+    | "paymentMethod"
+    | "status"
+    | "surcharge"
+    | "showIBAN"
+    | "createdAt"
+    | "updatedAt"
+  > & {
+    client: Pick<Client, "id" | "name">;
+    observations: string;
+    reference: string;
+    sendAddress: string;
+    items: Array<
+      Pick<
+        BudgetItem,
+        | "artworkId"
+        | "artworkPrice"
+        | "framePrice"
+        | "height"
+        | "width"
+        | "quantity"
+      > & {
+        artworkPricingId: string;
+        frameId: string;
+        framePricingId: string;
+        observations: string;
+      }
+    >;
+    signature: Pick<BudgetSignature, "imageUrl"> | null;
+  };
+  error?: string;
+  success?: string;
+};
 type CreateBudgetProps = {
   values: BudgetSchema;
 };
@@ -241,6 +284,7 @@ type SendEmailProps = {
 };
 
 export type {
+  CloneBudgetReturn,
   CreateBudgetProps,
   CreateBudgetReturn,
   DeleteBudgetProps,

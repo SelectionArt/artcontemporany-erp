@@ -7,6 +7,13 @@ import type {
   BudgetsHookReturn,
 } from "./types/budgets.hook.types";
 
+const normalizeText = (text: string) =>
+  text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+
 const BudgetsHook = ({
   clients,
   form,
@@ -17,7 +24,7 @@ const BudgetsHook = ({
   const clientId = form.watch("clientId");
 
   const clientsValues = (() => {
-    const search = searchValueClient.toLowerCase().trim();
+    const search = normalizeText(searchValueClient);
 
     const selectedClient = clients.find((c) => c.id === clientId);
 
@@ -25,9 +32,9 @@ const BudgetsHook = ({
       .filter((client) => {
         if (!search) return true;
         return (
-          client.name.toLowerCase().includes(search) ||
-          client.legalName?.toLowerCase().includes(search) ||
-          client.cif?.toLowerCase().includes(search)
+          normalizeText(client.name).includes(search) ||
+          normalizeText(client.legalName ?? "").includes(search) ||
+          normalizeText(client.cif ?? "").includes(search)
         );
       })
       .slice(0, 10)

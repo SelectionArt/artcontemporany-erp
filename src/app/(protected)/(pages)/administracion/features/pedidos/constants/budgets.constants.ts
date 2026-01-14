@@ -30,13 +30,13 @@ const constants = {
     showIBAN: false,
   },
   DEFAULT_SEND_EMAIL_FORM_VALUES: {
-    type: "budget",
+    type: "orderConfirmation",
     emails: [] as string[],
     salespersonsEmails: [] as string[],
     freeEmails: [] as string[],
     subject: "{{type}}",
     message:
-      "Estimado cliente.\n\nAdjunto envío {{type}}.\nGracias.\n\nUn saludo.",
+      "Estimado cliente:\n\nAdjunto envío {{type}} solicitado.\nQuedo a su disposición para cualquier aclaración o ajuste que considere necesario.\n\nAtentamente,\nArt Contemporany.",
   },
 };
 

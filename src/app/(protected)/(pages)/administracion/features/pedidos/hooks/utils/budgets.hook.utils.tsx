@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 // Icons
 import {
+  Copy,
   Ellipsis,
   Eye,
   FileDown,
@@ -32,6 +33,7 @@ import type {
 } from "./types/budgets.hook.utils.types";
 
 function getColumnsConfig({
+  handleClone,
   handleDelete,
   handleDownloadPDF,
   handleEdit,
@@ -167,6 +169,7 @@ function getColumnsConfig({
             },
             { icon: Signature, label: "Firmar", onClick: handleOpenSign },
             { icon: SquarePen, label: "Editar", onClick: handleEdit },
+            { icon: Copy, label: "Clonar", onClick: handleClone },
             { icon: Trash2, label: "Eliminar", onClick: handleDelete },
           ]}
         />

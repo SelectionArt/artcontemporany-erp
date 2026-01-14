@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import { toast } from "sonner";
 // Actions
 import {
+  cloneBudget,
   createBudget,
   deleteBudget,
   deleteMultipleBudgets,
@@ -16,6 +17,7 @@ import {
 } from "../actions/budgets.actions";
 // Types
 import type {
+  CloneHandlerProps,
   BudgetsHandlersProps,
   BudgetsHandlersReturn,
   CreateHandlerProps,
@@ -39,6 +41,33 @@ import type {
   SubmitEmailHandlerProps,
   StatusChangeHandlerProps,
 } from "./types/budgets.handlers.types";
+
+const cloneHandler = async ({
+  row,
+  setData,
+}: CloneHandlerProps): Promise<void> => {
+  try {
+    const { budget, error, success } = await cloneBudget({ id: row.id });
+    if (error) {
+      toast.error(error);
+      return;
+    }
+    if (success && budget) {
+      toast.success(success);
+      setData((prev) =>
+        [...prev, budget].sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        ),
+      );
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error(
+      "Error al clonar el presupuesto. Por favor, inténtalo de nuevo",
+    );
+  }
+};
 
 const createHandler = async ({
   form,
@@ -598,6 +627,7 @@ const BudgetsHandlers = ({
   setEmailLoading,
 }: BudgetsHandlersProps): BudgetsHandlersReturn => {
   return {
+    handleClone: (row) => cloneHandler({ row, setData }),
     handleCreate: () => createHandler({ form, setOpenDialog }),
     handleDelete: (row) => deleteHandler({ row, setSelectedRow, setOpenAlert }),
     handleDeleteMultiple: (rows) =>

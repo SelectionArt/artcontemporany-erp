@@ -10,6 +10,7 @@ import { uploadImage, deleteImage } from "@/lib/cloudinary";
 import { budgetSchema } from "../schemas/budget.schema";
 // Types
 import type {
+  CloneBudgetReturn,
   CreateBudgetProps,
   CreateBudgetReturn,
   DeleteBudgetProps,
@@ -443,54 +444,62 @@ const gneratePDF = async ({
 
   // Datos del cliente
   const maxTextWidth = 180;
+  const clientName = budgetData.clientName ?? budgetData.client.name;
+  const clientLegalName =
+    budgetData.clientLegalName ?? budgetData.client.legalName ?? "";
+  const clientCif = budgetData.clientCif ?? budgetData.client.cif ?? "";
+  const clientPhone = budgetData.clientPhone ?? budgetData.client.phone ?? "";
+  const clientAddress =
+    budgetData.clientAddress ?? budgetData.client.address ?? "";
+  const clientEmail = budgetData.clientEmail ?? budgetData.client.email ?? "";
   yPosition -= drawText({
     page,
-    text: budgetData.client.name,
+    text: clientName,
     x: width - maxTextWidth - margins.right,
     y: yPosition,
     font: boldFont,
   });
-  if (budgetData.client.legalName) {
+  if (clientLegalName) {
     yPosition -= drawText({
       page,
-      text: budgetData.client.legalName,
+      text: clientLegalName,
       x: width - maxTextWidth - margins.right,
       y: yPosition,
       font,
     });
   }
-  if (budgetData.client.cif) {
+  if (clientCif) {
     yPosition -= drawText({
       page,
-      text: budgetData.client.cif,
+      text: clientCif,
       x: width - maxTextWidth - margins.right,
       y: yPosition,
       font,
     });
   }
-  if (budgetData.client.phone) {
+  if (clientPhone) {
     yPosition -= drawText({
       page,
-      text: budgetData.client.phone,
+      text: clientPhone,
       x: width - maxTextWidth - margins.right,
       y: yPosition,
       font,
     });
   }
-  if (budgetData.client.address) {
+  if (clientAddress) {
     yPosition -= drawText({
       page,
-      text: budgetData.client.address,
+      text: clientAddress,
       x: width - maxTextWidth - margins.right,
       y: yPosition,
       maxWidth: maxTextWidth,
       font,
     });
   }
-  if (budgetData.client.email) {
+  if (clientEmail) {
     yPosition -= drawText({
       page,
-      text: budgetData.client.email,
+      text: clientEmail,
       x: width - maxTextWidth - margins.right,
       y: yPosition,
       font,
@@ -953,7 +962,7 @@ const gneratePDF = async ({
 
   yPosition -= 20;
 
-  if (budgetData.showIBAN && type === "invoice") {
+  if (type === "invoice" || budgetData.showIBAN) {
     drawText({
       page,
       text: `IBAN: ES25 0081 1310 5100 0107 2411`,
@@ -994,11 +1003,12 @@ const gneratePDF = async ({
     y: yPosition,
     font,
   });
-  const address = budgetData.sendAddress
-    ? budgetData.sendAddress
-    : budgetData.client.sendAddress
-      ? budgetData.client.sendAddress
-      : budgetData.client.address;
+  const address =
+    budgetData.sendAddress ??
+    budgetData.clientSendAddress ??
+    budgetData.client.sendAddress ??
+    budgetData.clientAddress ??
+    budgetData.client.address;
   drawText({
     page,
     text: `${address}`,
@@ -1058,6 +1068,135 @@ const gneratePDF = async ({
   };
 };
 
+const cloneBudget = async ({
+  id,
+}: {
+  id: string;
+}): Promise<CloneBudgetReturn> => {
+  const budgetToClone = await prisma.budget.findUnique({
+    where: { id },
+    include: {
+      budgetItems: true,
+      client: { select: { id: true, name: true } },
+      budgetSignature: { select: { imageUrl: true } },
+    },
+  });
+
+  if (!budgetToClone) return { error: "Presupuesto no encontrado" };
+
+  try {
+    const newBudget = await prisma.$transaction(async (tx) => {
+      const client = await tx.client.findUnique({
+        where: { id: budgetToClone.clientId },
+        select: {
+          name: true,
+          legalName: true,
+          email: true,
+          phone: true,
+          address: true,
+          sendAddress: true,
+          cif: true,
+          iban: true,
+        },
+      });
+
+      if (!client) {
+        throw new Error("Cliente no encontrado");
+      }
+
+      const newNumber = await generateUniqueRandomNumber();
+
+      const budget = await tx.budget.create({
+        data: {
+          clientId: budgetToClone.clientId,
+          clientName: budgetToClone.clientName ?? client?.name ?? "",
+          clientLegalName: budgetToClone.clientLegalName ?? client?.legalName,
+          clientEmail: budgetToClone.clientEmail ?? client?.email,
+          clientPhone: budgetToClone.clientPhone ?? client?.phone,
+          clientAddress: budgetToClone.clientAddress ?? client?.address,
+          clientSendAddress:
+            budgetToClone.clientSendAddress ?? client?.sendAddress,
+          clientCif: budgetToClone.clientCif ?? client?.cif,
+          clientIban: budgetToClone.clientIban ?? client?.iban,
+          date: format(new Date(), "yyyy-MM-dd"),
+          discount: budgetToClone.discount,
+          number: newNumber,
+          observations: budgetToClone.observations,
+          paymentMethod: budgetToClone.paymentMethod,
+          reference: budgetToClone.reference,
+          sendAddress: budgetToClone.sendAddress,
+          showIBAN: budgetToClone.showIBAN,
+          status: "pending",
+          surcharge: budgetToClone.surcharge,
+          tax: budgetToClone.tax,
+          transport: budgetToClone.transport,
+          validity: budgetToClone.validity,
+        },
+        include: {
+          client: { select: { id: true, name: true } },
+          budgetSignature: { select: { imageUrl: true } },
+        },
+      });
+
+      const createdItems = budgetToClone.budgetItems.length
+        ? await tx.budgetItem.createMany({
+            data: budgetToClone.budgetItems.map((item) => ({
+              artworkId: item.artworkId,
+              artworkPrice: item.artworkPrice,
+              artworkPricingId: item.artworkPricingId,
+              budgetId: budget.id,
+              frameId: item.frameId,
+              framePrice: item.framePrice,
+              framePricingId: item.framePricingId,
+              height: item.height,
+              observations: item.observations,
+              quantity: item.quantity,
+              width: item.width,
+            })),
+          })
+        : null;
+
+      const items = await tx.budgetItem.findMany({
+        where: { budgetId: budget.id },
+        select: {
+          artworkId: true,
+          artworkPrice: true,
+          artworkPricingId: true,
+          frameId: true,
+          framePrice: true,
+          framePricingId: true,
+          height: true,
+          observations: true,
+          quantity: true,
+          width: true,
+        },
+      });
+
+      return {
+        ...budget,
+        observations: budget.observations ?? "",
+        reference: budget.reference ?? "",
+        sendAddress: budget.sendAddress ?? "",
+        items: items.map((it) => ({
+          ...it,
+          artworkPricingId: it.artworkPricingId ?? "",
+          frameId: it.frameId ?? "",
+          framePricingId: it.framePricingId ?? "",
+          observations: it.observations ?? "",
+        })),
+        signature: budget.budgetSignature ?? null,
+      };
+    });
+
+    return { success: "Presupuesto clonado con éxito", budget: newBudget };
+  } catch (error) {
+    console.error(error);
+    return {
+      error: "Error al clonar el presupuesto. Por favor, inténtalo de nuevo",
+    };
+  }
+};
+
 const createBudget = async ({
   values,
 }: CreateBudgetProps): Promise<CreateBudgetReturn> => {
@@ -1087,22 +1226,48 @@ const createBudget = async ({
 
   try {
     const newBudget = await prisma.$transaction(async (prisma) => {
+      const client = await prisma.client.findUnique({
+        where: { id: clientId },
+        select: {
+          name: true,
+          legalName: true,
+          email: true,
+          phone: true,
+          address: true,
+          sendAddress: true,
+          cif: true,
+          iban: true,
+        },
+      });
+
+      if (!client) {
+        throw new Error("Cliente no encontrado");
+      }
+
       const budget = await prisma.budget.create({
         data: {
           clientId,
+          clientName: client.name,
+          clientLegalName: client.legalName,
+          clientEmail: client.email,
+          clientPhone: client.phone,
+          clientAddress: client.address,
+          clientSendAddress: client.sendAddress,
+          clientCif: client.cif,
+          clientIban: client.iban,
           date,
+          discount,
           number,
           observations,
-          reference,
-          validity,
-          discount,
-          transport,
-          tax,
           paymentMethod,
-          surcharge,
-          status,
+          reference,
           sendAddress,
           showIBAN,
+          status,
+          surcharge,
+          tax,
+          transport,
+          validity,
         },
         include: {
           client: { select: { id: true, name: true } },
@@ -1118,14 +1283,14 @@ const createBudget = async ({
                   artworkId: item.artworkId,
                   artworkPrice: item.artworkPrice,
                   artworkPricingId: item.artworkPricingId || null,
+                  budgetId: budget.id,
                   frameId: item.frameId || null,
                   framePrice: item.framePrice ?? 0,
                   framePricingId: item.framePricingId || null,
                   height: item.height,
-                  width: item.width,
-                  quantity: item.quantity,
                   observations: item.observations || null,
-                  budgetId: budget.id,
+                  quantity: item.quantity,
+                  width: item.width,
                 },
                 select: {
                   artworkId: true,
@@ -1135,9 +1300,9 @@ const createBudget = async ({
                   framePrice: true,
                   framePricingId: true,
                   height: true,
-                  width: true,
-                  quantity: true,
                   observations: true,
+                  quantity: true,
+                  width: true,
                 },
               });
 
@@ -1264,6 +1429,14 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
       select: {
         id: true,
         clientId: true,
+        clientName: true,
+        clientLegalName: true,
+        clientEmail: true,
+        clientPhone: true,
+        clientAddress: true,
+        clientSendAddress: true,
+        clientCif: true,
+        clientIban: true,
         client: { select: { id: true, name: true } },
         date: true,
         number: true,
@@ -1540,10 +1713,34 @@ const updateBudget = async ({
 
   try {
     const updatedBudget = await prisma.$transaction(async (prisma) => {
+      const client = await prisma.client.findUnique({
+        where: { id: clientId },
+        select: {
+          name: true,
+          legalName: true,
+          email: true,
+          phone: true,
+          address: true,
+          sendAddress: true,
+          cif: true,
+          iban: true,
+        },
+      });
+      if (!client) {
+        throw new Error("Cliente no encontrado");
+      }
       const budget = await prisma.budget.update({
         where: { id },
         data: {
           clientId,
+          clientName: client.name,
+          clientLegalName: client.legalName,
+          clientEmail: client.email,
+          clientPhone: client.phone,
+          clientAddress: client.address,
+          clientSendAddress: client.sendAddress,
+          clientCif: client.cif,
+          clientIban: client.iban,
           date,
           number,
           observations,
@@ -1767,6 +1964,7 @@ const sendEmail = async ({
 };
 
 export {
+  cloneBudget,
   createBudget,
   deleteBudget,
   deleteMultipleBudgets,

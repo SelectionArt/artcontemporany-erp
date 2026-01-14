@@ -85,6 +85,7 @@ const BudgetsHook = ({
   }, [openSignatureDialog]);
 
   const {
+    handleClone,
     handleCreate,
     handleDelete,
     handleDeleteMultiple,
@@ -123,6 +124,7 @@ const BudgetsHook = ({
   });
 
   const columns = getColumnsConfig({
+    handleClone,
     handleDelete,
     handleDownloadPDF,
     handleEdit,

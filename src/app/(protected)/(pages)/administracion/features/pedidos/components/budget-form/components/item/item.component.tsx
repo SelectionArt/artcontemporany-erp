@@ -45,6 +45,12 @@ type BudgetItemRowProps = {
   pricings: Pricing[];
 };
 
+const normalizeText = (text: string) =>
+  text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+
 const Item = ({
   artworks,
   fieldArray,
@@ -89,7 +95,7 @@ const Item = ({
   }, [items?.artworkId, artworks]);
 
   const artworksValues = (selectedId?: string) => {
-    const searchValue = searchValueArtwork.toLowerCase();
+    const searchValue = normalizeText(searchValueArtwork).toLowerCase();
 
     if (!artworks?.length) return [];
 
@@ -108,15 +114,18 @@ const Item = ({
 
     const filteredArtworks = artworks
       .filter((a) => {
-        const ref =
-          `${a.referenceNumber}${a.referenceCode ? `-${a.referenceCode}` : ""}`.toLowerCase();
-        const name = a.title?.toLowerCase() || "";
-        return ref.includes(searchValue) || name.includes(searchValue);
+        const ref = normalizeText(
+          `${a.referenceNumber}${a.referenceCode ? `-${a.referenceCode}` : ""}`,
+        ).toLowerCase();
+        const title = normalizeText(a.title ?? "").toLowerCase();
+        return ref.includes(searchValue) || title.includes(searchValue);
       })
       .slice(0, 10)
       .map((a) => ({
         value: a.id,
-        label: `${a.referenceNumber}${a.referenceCode ? `-${a.referenceCode}` : ""}${a.title ? ` · ${a.title}` : ""}`,
+        label: normalizeText(
+          `${a.referenceNumber}${a.referenceCode ? `-${a.referenceCode}` : ""}${a.title ? ` · ${a.title}` : ""}`,
+        ),
         imageUrl: a.imageUrl || "",
       }));
 
@@ -124,7 +133,7 @@ const Item = ({
   };
 
   const framesValues = (selectedId?: string) => {
-    const searchValue = searchValueFrame.toLowerCase();
+    const searchValue = normalizeText(searchValueFrame).toLowerCase();
 
     if (!frames?.length) return [];
 
@@ -133,13 +142,13 @@ const Item = ({
     const filteredFrames = frames
       .filter(
         (frame) =>
-          frame.reference.toLowerCase().includes(searchValue) ||
-          frame.name.toLowerCase().includes(searchValue),
+          normalizeText(frame.reference).toLowerCase().includes(searchValue) ||
+          normalizeText(frame.name).toLowerCase().includes(searchValue),
       )
       .slice(0, 10)
       .map((frame) => ({
         value: frame.id,
-        label: `${frame.reference} ${frame.name}`,
+        label: normalizeText(`${frame.reference} ${frame.name}`),
         imageUrl: frame.imageUrl || "",
       }));
 
@@ -147,7 +156,9 @@ const Item = ({
       ? [
           {
             value: selectedFrame.id,
-            label: `${selectedFrame.reference} ${selectedFrame.name}`,
+            label: normalizeText(
+              `${selectedFrame.reference} ${selectedFrame.name}`,
+            ),
             imageUrl: selectedFrame.imageUrl || "",
           },
           ...filteredFrames.filter((f) => f.value !== selectedFrame.id),
