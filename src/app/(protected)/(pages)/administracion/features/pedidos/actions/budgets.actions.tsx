@@ -1143,7 +1143,7 @@ const cloneBudget = async ({
         },
       });
 
-      const createdItems = budgetToClone.budgetItems.length
+      budgetToClone.budgetItems.length
         ? await tx.budgetItem.createMany({
             data: budgetToClone.budgetItems.map((item) => ({
               artworkId: item.artworkId,
@@ -1849,7 +1849,7 @@ const updateStatus = async ({
       return { error: "Presupuesto no encontrado" };
     }
 
-    const data: Record<string, any> = { status: newStatus };
+    const data: Record<string, unknown> = { status: newStatus };
     const now = new Date();
 
     if (newStatus === "accepted" && current.status !== "accepted") {
