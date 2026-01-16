@@ -332,8 +332,7 @@ const submitHandlerCreate = async ({
     if (success && budget) {
       setData((prev) =>
         [...prev, budget].sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          (a, b) => new Date(b.sortAt).getTime() - new Date(a.sortAt).getTime(),
         ),
       );
       form.reset();
@@ -380,7 +379,7 @@ const submitHandlerEdit = async ({
           .map((item) => (item.id === budget.id ? budget : item))
           .sort(
             (a, b) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+              new Date(b.sortAt).getTime() - new Date(a.sortAt).getTime(),
           ),
       );
       form.reset();
@@ -599,7 +598,7 @@ const statusChangeHandler = async ({
           )
           .sort(
             (a, b) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+              new Date(b.sortAt).getTime() - new Date(a.sortAt).getTime(),
           ),
       );
       toast.success(success);
