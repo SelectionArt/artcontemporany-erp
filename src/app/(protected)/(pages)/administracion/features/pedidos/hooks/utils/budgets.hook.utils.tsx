@@ -1,5 +1,5 @@
 // Vendors
-import { format } from "date-fns";
+import { format, isValid } from "date-fns";
 // Components
 import { RowActions } from "@/components/data-table/components/row-actions/row-actions.component";
 import { SelectAllCheckbox } from "@/components/data-table/components/select-all-checkbox/select-all-checkbox.component";
@@ -32,6 +32,12 @@ import type {
   GetMultipleSelectActionsReturn,
 } from "./types/budgets.hook.utils.types";
 
+const formatDate = (value?: string | Date | null) => {
+  if (!value) return "-";
+  const d = value instanceof Date ? value : new Date(value);
+  return isValid(d) ? format(d, "dd/MM/yyyy") : "-";
+};
+
 function getColumnsConfig({
   handleClone,
   handleDelete,
@@ -62,6 +68,24 @@ function getColumnsConfig({
       header: ({ column }) => <ColumnSorter column={column} label="Fecha" />,
       id: "date",
       meta: "Fecha",
+    },
+    {
+      accessorFn: (row) => row.acceptedAt ?? null,
+      cell: ({ row }) => formatDate(row.original.acceptedAt),
+      header: ({ column }) => (
+        <ColumnSorter column={column} label="Fecha aceptado" />
+      ),
+      id: "acceptedAt",
+      meta: "Fecha aceptado",
+    },
+    {
+      accessorFn: (row) => row.closedAt ?? null,
+      cell: ({ row }) => formatDate(row.original.closedAt),
+      header: ({ column }) => (
+        <ColumnSorter column={column} label="Fecha completado" />
+      ),
+      id: "closedAt",
+      meta: "Fecha completado",
     },
     {
       accessorFn: (row) => row.client.name,
@@ -143,7 +167,7 @@ function getColumnsConfig({
             {
               icon: Mail,
               label: "Enviar por correo",
-              onClick: (row) => handleSendEmail({ row, type: "budget" }),
+              onClick: (row) => handleSendEmail({ row }),
             },
             {
               icon: FileDown,

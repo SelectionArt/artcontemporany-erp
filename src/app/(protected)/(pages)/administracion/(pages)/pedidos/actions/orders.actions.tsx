@@ -12,7 +12,7 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
           in: ["accepted", "closed"],
         },
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ sortAt: "desc" }],
       select: {
         id: true,
         clientId: true,
@@ -38,6 +38,7 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
         surcharge: true,
         sendAddress: true,
         showIBAN: true,
+        acceptedAt: true,
         createdAt: true,
         updatedAt: true,
         budgetItems: {

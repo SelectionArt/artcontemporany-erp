@@ -225,7 +225,7 @@ const previewPDFHandler = async ({
 
 const sendEmailHandler = async ({
   row,
-  // type,
+  sendEmailForm,
   setOpenSendEmailDialog,
   setSelectedRow,
   setSendEmails,
@@ -236,6 +236,11 @@ const sendEmailHandler = async ({
   setSendEmails(
     emails.map((email) => ({ label: email.email, value: email.email })),
   );
+  const type =
+    row.status === "accepted" || row.status === "closed"
+      ? "orderConfirmation"
+      : "budget";
+  sendEmailForm.setValue("type", type);
 };
 
 const signHandler = async ({
@@ -674,10 +679,10 @@ const BudgetsHandlers = ({
         setSelectedRow,
       }),
     handlePreviewPDF: ({ row, type }) => previewPDFHandler({ row, type }),
-    handleSendEmail: ({ row, type }) =>
+    handleSendEmail: ({ row }) =>
       sendEmailHandler({
         row,
-        type,
+        sendEmailForm,
         setOpenSendEmailDialog,
         setSelectedRow,
         setSendEmails,

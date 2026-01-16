@@ -21,13 +21,7 @@ type GetColumnsConfigProps<TData> = {
   }) => void;
   handleEdit: (row: TData) => void;
   handleOpenSign: (row: TData) => void;
-  handleSendEmail: ({
-    row,
-    type,
-  }: {
-    row: TData;
-    type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
-  }) => void;
+  handleSendEmail: ({ row }: { row: TData }) => void;
   handleStatusChange: (props: { id: string; newStatus: string }) => void;
 };
 

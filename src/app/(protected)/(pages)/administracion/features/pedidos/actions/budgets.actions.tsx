@@ -425,9 +425,12 @@ const gneratePDF = async ({
     y: yPosition - lineSpacing,
     font,
   });
+  const displayDate = budgetData.acceptedAt
+    ? budgetData.acceptedAt
+    : new Date(budgetData.date);
   drawText({
     page,
-    text: `Fecha: ${format(new Date(budgetData.date), "dd/MM/yyyy")}`,
+    text: `Fecha: ${format(displayDate, "dd/MM/yyyy")}`,
     x: margins.left,
     y: yPosition - lineSpacing * 2,
     font,
@@ -1004,11 +1007,13 @@ const gneratePDF = async ({
     font,
   });
   const address =
-    budgetData.sendAddress ??
-    budgetData.clientSendAddress ??
-    budgetData.client.sendAddress ??
-    budgetData.clientAddress ??
+    budgetData.sendAddress ||
+    budgetData.clientSendAddress ||
+    budgetData.client.sendAddress ||
+    budgetData.clientAddress ||
     budgetData.client.address;
+  console.log("budgetData", budgetData);
+  console.log("address", address);
   drawText({
     page,
     text: `${address}`,
@@ -1453,6 +1458,9 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
         showIBAN: true,
         createdAt: true,
         updatedAt: true,
+        closedAt: true,
+        acceptedAt: true,
+        sortAt: true,
         budgetItems: {
           select: {
             artworkId: true,
@@ -1832,10 +1840,34 @@ const updateStatus = async ({
   newStatus,
 }: UpdateStatusProps): Promise<UpdateStatusReturn> => {
   try {
+    const current = await prisma.budget.findUnique({
+      where: { id },
+      select: { status: true, acceptedAt: true, closedAt: true },
+    });
+
+    if (!current) {
+      return { error: "Presupuesto no encontrado" };
+    }
+
+    const data: Record<string, any> = { status: newStatus };
+    const now = new Date();
+
+    if (newStatus === "accepted" && current.status !== "accepted") {
+      data.acceptedAt = now;
+      data.sortAt = now;
+      data.closedAt = null;
+    }
+
+    if (newStatus === "closed" && current.status !== "closed") {
+      data.closedAt = now;
+      data.sortAt = now;
+    }
+
     await prisma.budget.update({
       where: { id },
-      data: { status: newStatus },
+      data,
     });
+
     return { success: "Estado del presupuesto actualizado con éxito" };
   } catch (error) {
     console.error("Error updating budget status:", error);

@@ -55,13 +55,7 @@ type BudgetsHandlersReturn = {
     row: Budget;
     type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
   }) => void;
-  handleSendEmail: ({
-    row,
-    type,
-  }: {
-    row: Budget;
-    type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
-  }) => void;
+  handleSendEmail: ({ row }: { row: Budget }) => void;
   handleSign: () => void;
   handleSubmit: (values: BudgetSchema) => void;
   handleSubmitDelete: () => void;
@@ -147,7 +141,7 @@ type PreviewPDFHandlerProps = {
 
 type SendEmailHandlerProps = {
   row: Budget;
-  type: "budget" | "invoice" | "deliveryNote" | "orderConfirmation";
+  sendEmailForm: UseFormReturn<SendEmailSchema>;
   setOpenSendEmailDialog: Dispatch<SetStateAction<boolean>>;
   setSelectedRow: Dispatch<SetStateAction<Budget | null>>;
   setSendEmails: Dispatch<

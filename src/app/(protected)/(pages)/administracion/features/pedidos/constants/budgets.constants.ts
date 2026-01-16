@@ -30,7 +30,7 @@ const constants = {
     showIBAN: false,
   },
   DEFAULT_SEND_EMAIL_FORM_VALUES: {
-    type: "orderConfirmation",
+    type: "budget",
     emails: [] as string[],
     salespersonsEmails: [] as string[],
     freeEmails: [] as string[],
