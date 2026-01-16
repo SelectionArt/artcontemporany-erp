@@ -61,7 +61,13 @@ function getColumnsConfig({
       id: "number",
       meta: "Número",
     },
-
+    {
+      accessorFn: (row) => row.client.name,
+      cell: ({ row }) => row.original.client.name,
+      header: "Cliente",
+      id: "client",
+      meta: "Cliente",
+    },
     {
       accessorFn: (row) => format(new Date(row.date), "dd/MM/yyyy"),
       cell: ({ row }) => format(new Date(row.original.date), "dd/MM/yyyy"),
@@ -86,13 +92,6 @@ function getColumnsConfig({
       ),
       id: "closedAt",
       meta: "Fecha completado",
-    },
-    {
-      accessorFn: (row) => row.client.name,
-      cell: ({ row }) => row.original.client.name,
-      header: "Cliente",
-      id: "client",
-      meta: "Cliente",
     },
     {
       accessorKey: "status",
