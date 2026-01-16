@@ -23,6 +23,9 @@ type FetchBudgetsReturn = Array<
     | "surcharge"
     | "createdAt"
     | "updatedAt"
+    | "acceptedAt"
+    | "closedAt"
+    | "sortAt"
   > & {
     client: Pick<Client, "id" | "name">;
     observations: string;

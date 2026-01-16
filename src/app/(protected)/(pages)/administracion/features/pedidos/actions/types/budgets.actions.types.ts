@@ -27,6 +27,9 @@ type CloneBudgetReturn = {
     | "showIBAN"
     | "createdAt"
     | "updatedAt"
+    | "acceptedAt"
+    | "closedAt"
+    | "sortAt"
   > & {
     client: Pick<Client, "id" | "name">;
     observations: string;
@@ -74,6 +77,9 @@ type CreateBudgetReturn = {
     | "showIBAN"
     | "createdAt"
     | "updatedAt"
+    | "acceptedAt"
+    | "closedAt"
+    | "sortAt"
   > & {
     client: Pick<Client, "id" | "name">;
     observations: string;
@@ -241,6 +247,9 @@ type UpdateBudgetReturn = {
     | "showIBAN"
     | "createdAt"
     | "updatedAt"
+    | "acceptedAt"
+    | "closedAt"
+    | "sortAt"
   > & {
     client: Pick<Client, "id" | "name">;
     observations: string;

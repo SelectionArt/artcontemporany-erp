@@ -40,6 +40,9 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
         showIBAN: true,
         createdAt: true,
         updatedAt: true,
+        acceptedAt: true,
+        closedAt: true,
+        sortAt: true,
         budgetItems: {
           select: {
             artworkId: true,

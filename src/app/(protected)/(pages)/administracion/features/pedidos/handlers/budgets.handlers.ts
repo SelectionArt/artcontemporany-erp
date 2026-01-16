@@ -56,8 +56,7 @@ const cloneHandler = async ({
       toast.success(success);
       setData((prev) =>
         [...prev, budget].sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          (a, b) => new Date(b.sortAt).getTime() - new Date(a.sortAt).getTime(),
         ),
       );
     }
