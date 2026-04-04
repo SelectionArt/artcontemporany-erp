@@ -36,7 +36,7 @@ const constants = {
     freeEmails: [] as string[],
     subject: "{{type}}",
     message:
-      "Estimado cliente:\n\nAdjunto envío {{type}} solicitado.\nQuedo a su disposición para cualquier aclaración o ajuste que considere necesario.\n\nAtentamente,\nArt Contemporany.",
+      "Estimado cliente:\n\nAdjunto envío {{type}}.\nQuedo a su disposición para cualquier aclaración o ajuste que considere necesario.\n\nAtentamente,\nArt Contemporany.",
   },
 };
 

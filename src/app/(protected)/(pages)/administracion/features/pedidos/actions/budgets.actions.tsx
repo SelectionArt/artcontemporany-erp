@@ -761,25 +761,37 @@ const gneratePDF = async ({
     (subtotal - discount + transport) * (budgetData.surcharge / 100);
   const total = subtotal - discount + transport + iva + surcharge;
 
+  const summaryRightX =
+    tableStartX +
+    columnWidths[0] +
+    columnWidths[1] +
+    columnWidths[2] +
+    columnWidths[3] +
+    columnWidths[4] -
+    5;
+
+  const leftColumnWidth = 250;
+  const rowSpacing = 16;
+
   ({ page, yPosition } = ensureSpace({
-    neededSpace: 80,
+    neededSpace: 220,
     yPosition,
     margins,
     pdfDoc,
     page,
   }));
+
+  let leftY = yPosition;
+  let rightY = yPosition;
+
+  // -------------------
+  // Columna derecha
+  // -------------------
   drawText({
     page,
     text: "SUBTOTAL",
-    x:
-      tableStartX +
-      columnWidths[0] +
-      columnWidths[1] +
-      columnWidths[2] +
-      columnWidths[3] +
-      columnWidths[4] -
-      5,
-    y: yPosition,
+    x: summaryRightX,
+    y: rightY,
     font,
     align: "right",
   });
@@ -787,71 +799,37 @@ const gneratePDF = async ({
     page,
     text: formatter.format(subtotal),
     x: tableEndX,
-    y: yPosition,
+    y: rightY,
     font,
     align: "right",
   });
+  rightY -= rowSpacing;
 
-  // Observaciones
-  if (budgetData.observations) {
-    drawText({
-      page,
-      text: "OBSERVACIONES:",
-      x: margins.left,
-      y: yPosition,
-      font,
-    });
-    drawText({
-      page,
-      text: budgetData.observations,
-      x: margins.left,
-      y: yPosition - 16,
-      maxWidth:
-        tableStartX + columnWidths[0] + columnWidths[1] + columnWidths[2],
-      font,
-    });
-  }
-
-  yPosition -= 16;
   if (budgetData.discount) {
     drawText({
       page,
       text: `DESCUENTO ${budgetData.discount}%`,
-      x:
-        tableStartX +
-        columnWidths[0] +
-        columnWidths[1] +
-        columnWidths[2] +
-        columnWidths[3] +
-        columnWidths[4] -
-        5,
-      y: yPosition,
+      x: summaryRightX,
+      y: rightY,
       font,
       align: "right",
     });
     drawText({
       page,
-      text: `${formatter.format(discount)}`,
+      text: formatter.format(discount),
       x: tableEndX,
-      y: yPosition,
+      y: rightY,
       font,
       align: "right",
     });
-    yPosition -= 16;
+    rightY -= rowSpacing;
   }
 
   drawText({
     page,
     text: "TRANSPORTE",
-    x:
-      tableStartX +
-      columnWidths[0] +
-      columnWidths[1] +
-      columnWidths[2] +
-      columnWidths[3] +
-      columnWidths[4] -
-      5,
-    y: yPosition,
+    x: summaryRightX,
+    y: rightY,
     font,
     align: "right",
   });
@@ -859,23 +837,17 @@ const gneratePDF = async ({
     page,
     text: formatter.format(transport),
     x: tableEndX,
-    y: yPosition,
+    y: rightY,
     font,
     align: "right",
   });
-  yPosition -= 16;
+  rightY -= rowSpacing;
+
   drawText({
     page,
     text: `IVA ${budgetData.tax}%`,
-    x:
-      tableStartX +
-      columnWidths[0] +
-      columnWidths[1] +
-      columnWidths[2] +
-      columnWidths[3] +
-      columnWidths[4] -
-      5,
-    y: yPosition,
+    x: summaryRightX,
+    y: rightY,
     font,
     align: "right",
   });
@@ -883,24 +855,18 @@ const gneratePDF = async ({
     page,
     text: formatter.format(iva),
     x: tableEndX,
-    y: yPosition,
+    y: rightY,
     font,
     align: "right",
   });
-  yPosition -= 16;
+  rightY -= rowSpacing;
+
   if (budgetData.surcharge > 0) {
     drawText({
       page,
       text: `RE ${budgetData.surcharge}%`,
-      x:
-        tableStartX +
-        columnWidths[0] +
-        columnWidths[1] +
-        columnWidths[2] +
-        columnWidths[3] +
-        columnWidths[4] -
-        5,
-      y: yPosition,
+      x: summaryRightX,
+      y: rightY,
       font,
       align: "right",
     });
@@ -908,24 +874,18 @@ const gneratePDF = async ({
       page,
       text: formatter.format(surcharge),
       x: tableEndX,
-      y: yPosition,
+      y: rightY,
       font,
       align: "right",
     });
-    yPosition -= 16;
+    rightY -= rowSpacing;
   }
+
   drawText({
     page,
     text: "TOTAL",
-    x:
-      tableStartX +
-      columnWidths[0] +
-      columnWidths[1] +
-      columnWidths[2] +
-      columnWidths[3] +
-      columnWidths[4] -
-      5,
-    y: yPosition,
+    x: summaryRightX,
+    y: rightY,
     font: boldFont,
     align: "right",
   });
@@ -933,54 +893,71 @@ const gneratePDF = async ({
     page,
     text: formatter.format(total),
     x: tableEndX,
-    y: yPosition,
+    y: rightY,
     font: boldFont,
     align: "right",
   });
+  rightY -= 20;
 
-  yPosition -= 20;
+  // -------------------
+  // Columna izquierda
+  // -------------------
+  if (budgetData.observations) {
+    drawText({
+      page,
+      text: "OBSERVACIONES:",
+      x: margins.left,
+      y: leftY,
+      font,
+    });
+    leftY -= rowSpacing;
 
-  // Información extra
-  ({ page, yPosition } = ensureSpace({
-    neededSpace: 160,
-    yPosition,
-    margins,
-    pdfDoc,
-    page,
-  }));
+    const observationsHeight = drawText({
+      page,
+      text: budgetData.observations,
+      x: margins.left,
+      y: leftY,
+      maxWidth: leftColumnWidth,
+      font,
+    });
+
+    leftY -= observationsHeight + 10;
+  }
+
   drawText({
     page,
     text: "CONDICIONES VENTA:",
     x: margins.left,
-    y: yPosition,
+    y: leftY,
     font,
   });
   drawText({
     page,
     text: `${budgetData.paymentMethod}`,
     x: margins.left + 115,
-    y: yPosition,
+    y: leftY,
     font,
   });
-
-  yPosition -= 20;
+  leftY -= 20;
 
   if (type === "invoice" || budgetData.showIBAN) {
     drawText({
       page,
       text: `IBAN: ES25 0081 1310 5100 0107 2411`,
       x: margins.left,
-      y: yPosition,
+      y: leftY,
       font,
     });
+    leftY -= 40;
+  } else {
+    leftY -= 20;
   }
-  yPosition -= 40;
 
   drawText({
     page,
     text: "FECHA ENTREGA:",
     x: margins.left,
-    y: yPosition,
+    y: leftY,
     font,
   });
 
@@ -993,34 +970,39 @@ const gneratePDF = async ({
     page,
     text: validity,
     x: 140,
-    y: yPosition,
+    y: leftY,
     font,
   });
-
-  yPosition -= 20;
+  leftY -= 20;
 
   drawText({
     page,
     text: "DIRECCIÓN ENTREGA:",
     x: margins.left,
-    y: yPosition,
+    y: leftY,
     font,
   });
+
   const address =
     budgetData.sendAddress ||
     budgetData.clientSendAddress ||
     budgetData.client.sendAddress ||
     budgetData.clientAddress ||
     budgetData.client.address;
-  console.log("budgetData", budgetData);
-  console.log("address", address);
-  drawText({
+
+  const addressHeight = drawText({
     page,
     text: `${address}`,
     x: margins.left,
-    y: yPosition - lineSpacing,
+    y: leftY - lineSpacing,
+    maxWidth: leftColumnWidth,
     font,
   });
+
+  leftY -= lineSpacing + addressHeight;
+
+  // Continuar desde la columna que haya llegado más abajo
+  yPosition = Math.min(leftY, rightY);
 
   // Firma
   if (
@@ -1203,6 +1185,7 @@ const cloneBudget = async ({
 };
 
 const createBudget = async ({
+  page,
   values,
 }: CreateBudgetProps): Promise<CreateBudgetReturn> => {
   const validatedFields = budgetSchema.safeParse(values);
@@ -1249,17 +1232,20 @@ const createBudget = async ({
         throw new Error("Cliente no encontrado");
       }
 
+      const acceptedAt = page === "orders" ? new Date() : null;
+
       const budget = await prisma.budget.create({
         data: {
-          clientId,
-          clientName: client.name,
-          clientLegalName: client.legalName,
-          clientEmail: client.email,
-          clientPhone: client.phone,
+          acceptedAt,
           clientAddress: client.address,
-          clientSendAddress: client.sendAddress,
           clientCif: client.cif,
+          clientEmail: client.email,
           clientIban: client.iban,
+          clientId,
+          clientLegalName: client.legalName,
+          clientName: client.name,
+          clientPhone: client.phone,
+          clientSendAddress: client.sendAddress,
           date,
           discount,
           number,

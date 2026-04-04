@@ -227,7 +227,7 @@ const updateFrame = async ({
 
   try {
     const existingFrame = await prisma.frame.findUnique({
-      where: { reference: validatedFields.data.reference },
+      where: { id },
     });
 
     if (!existingFrame) {

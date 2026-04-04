@@ -121,6 +121,7 @@ const BudgetsHook = ({
     setSignLoading,
     signatureRef,
     setEmailLoading,
+    page,
   });
 
   const columns = getColumnsConfig({

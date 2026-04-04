@@ -22,12 +22,12 @@ type BudgetsHandlersProps = {
   setSendEmails: Dispatch<
     SetStateAction<Array<{ label: string; value: string }>>
   >;
-
   setSelectedRow: Dispatch<SetStateAction<Budget | null>>;
   setSelectedRows: Dispatch<SetStateAction<Budget[]>>;
   setSignLoading: Dispatch<SetStateAction<boolean>>;
   signatureRef: React.RefObject<SignatureCanvas | null>;
   setEmailLoading: Dispatch<SetStateAction<boolean>>;
+  page: "budgets" | "orders";
 };
 
 type BudgetsHandlersReturn = {
@@ -160,7 +160,7 @@ type SignHandlerProps = Pick<
 
 type SubmitHandlerCreateProps = Pick<
   SubmitHandlerProps,
-  "form" | "setData" | "setLoading" | "setOpenDialog" | "values"
+  "form" | "setData" | "setLoading" | "setOpenDialog" | "values" | "page"
 >;
 
 type SubmitHandlerDeleteProps = Pick<
@@ -192,6 +192,7 @@ type SubmitHandlerProps = Pick<
   | "setLoading"
   | "setOpenDialog"
   | "setSelectedRow"
+  | "page"
 > & {
   values: BudgetSchema;
 };

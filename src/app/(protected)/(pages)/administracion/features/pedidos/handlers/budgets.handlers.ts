@@ -289,6 +289,7 @@ const submitHandler = ({
   setLoading,
   setOpenDialog,
   setSelectedRow,
+  page,
   values,
 }: SubmitHandlerProps): void => {
   if (selectedRow) {
@@ -307,6 +308,7 @@ const submitHandler = ({
       setData,
       setLoading,
       setOpenDialog,
+      page,
       values,
     });
   }
@@ -317,12 +319,13 @@ const submitHandlerCreate = async ({
   setData,
   setLoading,
   setOpenDialog,
+  page,
   values,
 }: SubmitHandlerCreateProps): Promise<void> => {
   setLoading(true);
 
   try {
-    const { budget, error, success } = await createBudget({ values });
+    const { budget, error, success } = await createBudget({ page, values });
 
     if (error) {
       toast.error(error);
@@ -515,8 +518,8 @@ const submitEmailHandler = async ({
     const messageMap = {
       budget: "el presupuesto solicitado",
       invoice: "la factura proforma solicitada",
-      orderConfirmation: "la confirmación de pedido",
-      deliveryNote: "la hoja de entrega",
+      orderConfirmation: "la confirmación de pedido solicitada",
+      deliveryNote: "la hoja de entrega solicitada",
     };
 
     const subjectMap = {
@@ -628,6 +631,7 @@ const BudgetsHandlers = ({
   setSignLoading,
   signatureRef,
   setEmailLoading,
+  page,
 }: BudgetsHandlersProps): BudgetsHandlersReturn => {
   return {
     handleClone: (row) => cloneHandler({ row, setData }),
@@ -701,6 +705,7 @@ const BudgetsHandlers = ({
         setLoading,
         setOpenDialog,
         setSelectedRow,
+        page,
         values,
       }),
     handleSubmitDelete: () =>

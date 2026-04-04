@@ -57,6 +57,7 @@ type CloneBudgetReturn = {
   success?: string;
 };
 type CreateBudgetProps = {
+  page: "budgets" | "orders";
   values: BudgetSchema;
 };
 
