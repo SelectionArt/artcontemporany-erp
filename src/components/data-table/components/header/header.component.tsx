@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CreateRecord } from "./components/create-record/create-record.component";
+import { Filters } from "./components/filters/filters.component";
 import { GlobalFilter } from "./components/global-filter/global-filter.component";
 import { ColumnsVisibility } from "./components/columns-visibility/columns-visibility.component";
 // Constants
@@ -18,32 +19,38 @@ import type { HeaderProps } from "./types/header.component.types";
 
 function Header<TData>({
   actions = [],
+  filters,
   globalFilter,
   onCreateRecord,
   setGlobalFilter,
   table,
 }: HeaderProps<TData>) {
   return (
-    <div className="flex shrink-0 items-center gap-4">
-      <GlobalFilter {...{ globalFilter, setGlobalFilter }} />
-      <CreateRecord {...{ onCreateRecord }} />
-      <ColumnsVisibility {...{ table }} />
-      {actions.length > 0 && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button {...constants.BUTTON_PROPS}>
-              <Ellipsis className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {actions.map(({ icon: Icon, label, onClick }, index) => (
-              <DropdownMenuItem key={index} onClick={onClick}>
-                {Icon && <Icon className="h-4 w-4" />}
-                <span>{label}</span>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <div className="flex shrink-0 flex-col gap-4">
+      <div className="flex shrink-0 items-center gap-4">
+        <GlobalFilter {...{ globalFilter, setGlobalFilter }} />
+        <CreateRecord {...{ onCreateRecord }} />
+        <ColumnsVisibility {...{ table }} />
+        {actions.length > 0 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button {...constants.BUTTON_PROPS}>
+                <Ellipsis className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {actions.map(({ icon: Icon, label, onClick }, index) => (
+                <DropdownMenuItem key={index} onClick={onClick}>
+                  {Icon && <Icon className="h-4 w-4" />}
+                  <span>{label}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
+      {filters && filters.length > 0 && (
+        <Filters filters={filters} table={table} />
       )}
     </div>
   );

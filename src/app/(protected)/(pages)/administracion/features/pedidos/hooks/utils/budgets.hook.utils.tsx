@@ -95,6 +95,8 @@ function getColumnsConfig({
     },
     {
       accessorKey: "status",
+      filterFn: (row, id, value: string[]) =>
+        value.includes(row.getValue(id)),
       header: "Estado",
       id: "status",
       cell: ({ row }) => {

@@ -2,8 +2,11 @@
 // Vendors
 import { useState } from "react";
 import {
+  ColumnFiltersState,
   FilterFn,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
@@ -22,6 +25,7 @@ const DataTableHook = <TData, TValue>({
   data,
   initialColumnVisibility,
 }: DataTableHookProps<TData, TValue>): DataTableHookReturn<TData> => {
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
     initialColumnVisibility,
   );
@@ -49,15 +53,19 @@ const DataTableHook = <TData, TValue>({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getRowId: (row) => (row as { id: string }).id,
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     state: {
+      columnFilters,
       columnVisibility,
       globalFilter,
       rowSelection,

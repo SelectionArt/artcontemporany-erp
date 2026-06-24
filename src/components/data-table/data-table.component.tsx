@@ -11,6 +11,7 @@ import type { DataTableProps } from "./types/data-table.component.types";
 function DataTable<TData>({
   columns,
   data,
+  filters,
   headerActions,
   initialColumnVisibility,
   multipleSelectActionsProps,
@@ -27,6 +28,7 @@ function DataTable<TData>({
       <Header
         {...{
           actions: headerActions,
+          filters,
           globalFilter,
           onCreateRecord,
           setGlobalFilter,

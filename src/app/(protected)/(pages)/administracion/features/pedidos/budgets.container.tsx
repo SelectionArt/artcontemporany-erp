@@ -81,6 +81,18 @@ const BudgetsContainer = ({
       <DataTable
         columns={columns}
         data={data}
+        filters={[
+          {
+            columnId: "status",
+            title: "Estado",
+            options: [
+              { label: "Pendiente", value: "pending" },
+              { label: "Aceptado", value: "accepted" },
+              { label: "Rechazado", value: "rejected" },
+              { label: "Completado", value: "closed" },
+            ],
+          },
+        ]}
         initialColumnVisibility={{}}
         multipleSelectActionsProps={multipleSelectActionsProps}
         onCreateRecord={handleCreate}
