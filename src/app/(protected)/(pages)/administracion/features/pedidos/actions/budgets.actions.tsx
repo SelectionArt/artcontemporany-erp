@@ -802,6 +802,7 @@ const gneratePDF = async ({
     y: rightY,
     font,
     align: "right",
+    maxWidth: 80,
   });
   rightY -= rowSpacing;
 
@@ -821,6 +822,7 @@ const gneratePDF = async ({
       y: rightY,
       font,
       align: "right",
+      maxWidth: 80,
     });
     rightY -= rowSpacing;
   }
@@ -840,6 +842,7 @@ const gneratePDF = async ({
     y: rightY,
     font,
     align: "right",
+    maxWidth: 80,
   });
   rightY -= rowSpacing;
 
@@ -858,6 +861,7 @@ const gneratePDF = async ({
     y: rightY,
     font,
     align: "right",
+    maxWidth: 80,
   });
   rightY -= rowSpacing;
 
@@ -877,6 +881,7 @@ const gneratePDF = async ({
       y: rightY,
       font,
       align: "right",
+      maxWidth: 80,
     });
     rightY -= rowSpacing;
   }
@@ -896,6 +901,7 @@ const gneratePDF = async ({
     y: rightY,
     font: boldFont,
     align: "right",
+    maxWidth: 80,
   });
   rightY -= 20;
 
