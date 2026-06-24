@@ -191,35 +191,7 @@ const previewPDFHandler = async ({
   const cleanBuffer = pdf.slice().buffer;
   const blob = new Blob([cleanBuffer], { type: "application/pdf" });
   const url = URL.createObjectURL(blob);
-
-  const newWindow = window.open();
-  if (newWindow) {
-    newWindow.document.write(`
-      <html>
-        <head>
-          <style>
-            html, body {
-              margin: 0;
-              padding: 0;
-              height: 100%;
-              overflow: hidden;
-            }
-            iframe {
-              width: 100%;
-              height: 100%;
-              border: none;
-            }
-          </style>
-        </head>
-        <body>
-          <iframe src="${url}"></iframe>
-        </body>
-      </html>
-    `);
-    newWindow.document.close();
-  } else {
-    window.location.href = url;
-  }
+  window.open(url, "_blank");
 };
 
 const sendEmailHandler = async ({
