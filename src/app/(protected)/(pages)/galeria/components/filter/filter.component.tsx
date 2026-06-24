@@ -55,10 +55,7 @@ const Filter = ({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent
-        className="max-h-52 w-[200px] overflow-hidden p-0"
-        align="start"
-      >
+      <PopoverContent className="w-[200px] p-0" align="start">
         <Command>
           <CommandInput placeholder={`Filtrar ${title}`} />
           <CommandList>
