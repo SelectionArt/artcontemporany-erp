@@ -12,7 +12,7 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
           in: ["accepted", "closed"],
         },
       },
-      orderBy: [{ sortAt: "desc" }],
+      orderBy: [{ createdAt: "desc" }],
       select: {
         id: true,
         clientId: true,
@@ -65,20 +65,26 @@ const fetchBudgets = async (): Promise<FetchBudgetsReturn> => {
       },
     });
 
-    return budgets.map(({ budgetItems, ...budget }) => ({
-      ...budget,
-      observations: budget.observations ?? "",
-      reference: budget.reference ?? "",
-      sendAddress: budget.sendAddress ?? "",
-      items: budgetItems.map((item) => ({
-        ...item,
-        artworkPricingId: item.artworkPricingId ?? "",
-        frameId: item.frameId ?? "",
-        framePricingId: item.framePricingId ?? "",
-        observations: item.observations ?? "",
-      })),
-      signature: budget.budgetSignature ?? null,
-    }));
+    return budgets
+      .map(({ budgetItems, ...budget }) => ({
+        ...budget,
+        observations: budget.observations ?? "",
+        reference: budget.reference ?? "",
+        sendAddress: budget.sendAddress ?? "",
+        items: budgetItems.map((item) => ({
+          ...item,
+          artworkPricingId: item.artworkPricingId ?? "",
+          frameId: item.frameId ?? "",
+          framePricingId: item.framePricingId ?? "",
+          observations: item.observations ?? "",
+        })),
+        signature: budget.budgetSignature ?? null,
+      }))
+      .sort(
+        (a, b) =>
+          new Date(b.acceptedAt ?? b.createdAt).getTime() -
+          new Date(a.acceptedAt ?? a.createdAt).getTime(),
+      );
   } catch (error) {
     console.error(error);
     return [];

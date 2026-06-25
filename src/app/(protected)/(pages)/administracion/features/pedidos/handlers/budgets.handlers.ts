@@ -56,7 +56,9 @@ const cloneHandler = async ({
       toast.success(success);
       setData((prev) =>
         [...prev, budget].sort(
-          (a, b) => new Date(b.sortAt).getTime() - new Date(a.sortAt).getTime(),
+          (a, b) =>
+            new Date(b.acceptedAt ?? b.createdAt).getTime() -
+            new Date(a.acceptedAt ?? a.createdAt).getTime(),
         ),
       );
     }
@@ -307,7 +309,9 @@ const submitHandlerCreate = async ({
     if (success && budget) {
       setData((prev) =>
         [...prev, budget].sort(
-          (a, b) => new Date(b.sortAt).getTime() - new Date(a.sortAt).getTime(),
+          (a, b) =>
+            new Date(b.acceptedAt ?? b.createdAt).getTime() -
+            new Date(a.acceptedAt ?? a.createdAt).getTime(),
         ),
       );
       form.reset();
@@ -354,7 +358,8 @@ const submitHandlerEdit = async ({
           .map((item) => (item.id === budget.id ? budget : item))
           .sort(
             (a, b) =>
-              new Date(b.sortAt).getTime() - new Date(a.sortAt).getTime(),
+              new Date(b.acceptedAt ?? b.createdAt).getTime() -
+              new Date(a.acceptedAt ?? a.createdAt).getTime(),
           ),
       );
       form.reset();
@@ -566,14 +571,31 @@ const statusChangeHandler = async ({
       return;
     }
     if (success) {
+      const now = new Date();
       setData((prev) =>
         prev
-          .map((item) =>
-            item.id === id ? { ...item, status: newStatus } : item,
-          )
+          .map((item) => {
+            if (item.id !== id) {
+              return item;
+            }
+
+            const updated = { ...item, status: newStatus };
+
+            if (newStatus === "accepted" && item.status !== "accepted") {
+              updated.acceptedAt = now;
+              updated.closedAt = null;
+            }
+
+            if (newStatus === "closed" && item.status !== "closed") {
+              updated.closedAt = now;
+            }
+
+            return updated;
+          })
           .sort(
             (a, b) =>
-              new Date(b.sortAt).getTime() - new Date(a.sortAt).getTime(),
+              new Date(b.acceptedAt ?? b.createdAt).getTime() -
+              new Date(a.acceptedAt ?? a.createdAt).getTime(),
           ),
       );
       toast.success(success);

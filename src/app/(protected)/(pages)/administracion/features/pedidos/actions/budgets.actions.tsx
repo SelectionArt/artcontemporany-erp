@@ -1846,13 +1846,11 @@ const updateStatus = async ({
 
     if (newStatus === "accepted" && current.status !== "accepted") {
       data.acceptedAt = now;
-      data.sortAt = now;
       data.closedAt = null;
     }
 
     if (newStatus === "closed" && current.status !== "closed") {
       data.closedAt = now;
-      data.sortAt = now;
     }
 
     await prisma.budget.update({
